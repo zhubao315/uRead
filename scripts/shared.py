@@ -18,6 +18,7 @@ def ensure_public_dirs() -> None:
         PUBLIC_DIR,
         PUBLIC_DIR / "books",
         PUBLIC_DIR / "cards",
+        PUBLIC_DIR / "lists",
         PUBLIC_DIR / "api",
         PUBLIC_DIR / "jsonld",
         PUBLIC_DIR / "vectors",
@@ -129,6 +130,8 @@ def markdown_to_html(body: str) -> str:
     html_lines: list[str] = []
     in_list = False
     in_quote = False
+    in_code = False
+    code_lang = ""
 
     def close_blocks() -> None:
         nonlocal in_list, in_quote
@@ -141,18 +144,37 @@ def markdown_to_html(body: str) -> str:
 
     for raw_line in lines:
         line = raw_line.rstrip()
+
+        # fenced code blocks
+        if line.startswith("```"):
+            if in_code:
+                html_lines.append("</code></pre>")
+                in_code = False
+            else:
+                close_blocks()
+                in_code = True
+                code_lang = line[3:].strip()
+                lang_attr = f' class="language-{code_lang}"' if code_lang else ""
+                html_lines.append(f"<pre><code{lang_attr}>")
+            continue
+        if in_code:
+            html_lines.append(escape(line))
+            continue
+
         if not line:
             close_blocks()
             continue
 
+        # headings
         if line.startswith("#"):
             close_blocks()
-            level = len(line) - len(line.lstrip("#"))
+            level = min(len(line) - len(line.lstrip("#")), 6)
             content = render_inline(line[level:].strip())
             html_lines.append(f"<h{level}>{content}</h{level}>")
             continue
 
-        if line.startswith("- "):
+        # unordered list
+        if line.startswith("- ") or line.startswith("* "):
             if in_quote:
                 html_lines.append("</blockquote>")
                 in_quote = False
@@ -162,6 +184,14 @@ def markdown_to_html(body: str) -> str:
             html_lines.append(f"<li>{render_inline(line[2:].strip())}</li>")
             continue
 
+        # ordered list
+        ol_match = re.match(r"^(\d+)\.\s+(.*)", line)
+        if ol_match:
+            close_blocks()
+            html_lines.append(f"<p>{render_inline(line)}</p>")
+            continue
+
+        # blockquote
         if line.startswith(">"):
             if in_list:
                 html_lines.append("</ul>")
@@ -170,6 +200,22 @@ def markdown_to_html(body: str) -> str:
                 html_lines.append("<blockquote>")
                 in_quote = True
             html_lines.append(f"<p>{render_inline(line[1:].strip())}</p>")
+            continue
+
+        # horizontal rule
+        if re.match(r"^[-*_]{3,}\s*$", line):
+            close_blocks()
+            html_lines.append("<hr>")
+            continue
+
+        # table row
+        if "|" in line and line.strip().startswith("|"):
+            close_blocks()
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if all(re.match(r"^[-:]+$", c) for c in cells):
+                continue  # skip separator
+            row = "".join(f"<td>{render_inline(c)}</td>" for c in cells)
+            html_lines.append(f"<tr>{row}</tr>")
             continue
 
         close_blocks()
@@ -181,8 +227,24 @@ def markdown_to_html(body: str) -> str:
 
 def render_inline(text: str) -> str:
     text = escape(text)
-    text = re.sub(r"\[\[([^\]]+)\]\]", lambda m: f'<span class="wikilink">{escape(m.group(1))}</span>', text)
+    # wikilinks
+    text = re.sub(
+        r"\[\[([^\]]+)\]\]",
+        lambda m: f'<span class="wikilink">{escape(m.group(1))}</span>',
+        text,
+    )
+    # inline code
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
+    # bold
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    # italic
+    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
+    # images
+    text = re.sub(
+        r"!\[([^\]]*)\]\(([^)]+)\)", r'<img src="\2" alt="\1" loading="lazy">', text
+    )
+    # links
+    text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text)
     return text
 
 
@@ -199,22 +261,28 @@ def site_shell(title: str, body: str, description: str = "") -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escape(title)}</title>
   <meta name="description" content="{description_meta}">
+  <meta name="theme-color" content="#c0553a">
   <link rel="stylesheet" href="/uRead/styles.css">
 </head>
 <body>
-  <div class="background"></div>
-  <header class="site-header">
-    <a href="/uRead/" class="brand">uRead</a>
-    <nav>
+  <nav class="nav">
+    <a href="/uRead/" class="nav-brand">uRead</a>
+    <button class="nav-toggle" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links">
       <a href="/uRead/">首页</a>
       <a href="/uRead/books/">深度笔记</a>
+      <a href="/uRead/lists/">精选书单</a>
       <a href="/uRead/cards/">知识卡片</a>
       <a href="/uRead/api/books.json">API</a>
-    </nav>
-  </header>
+    </div>
+  </nav>
   <main class="container">
     {body}
   </main>
+  <footer class="footer">
+    <p>uRead — 开源深度读书笔记 · <a href="https://github.com/zhubao315/uRead">GitHub</a> · <a href="/uRead/api/books.json">API</a></p>
+  </footer>
 </body>
-</html>
-"""
+</html>"""
