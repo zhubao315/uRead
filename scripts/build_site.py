@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-
 from shared import (
     PUBLIC_DIR,
     ensure_public_dirs,
@@ -11,77 +10,65 @@ from shared import (
     write_json,
 )
 
-
-# ── 9 大分类定义 ──────────────────────────────────────────────
 CATEGORIES = [
     {
         "id": "01",
         "name": "文学虚构类",
-        "emoji": "📖",
+        "icon": "M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25",
         "desc": "审美体验、情感共鸣、人性探索",
-        "keywords": ["文学与审美"],
     },
     {
         "id": "02",
         "name": "实用技能类",
-        "emoji": "🛠",
+        "icon": "M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.049.58.025 1.193-.14 1.743",
         "desc": "创业技能、时间管理、效率提升",
-        "keywords": ["创业与增长", "组织与管理"],
     },
     {
         "id": "03",
         "name": "认知成长类",
-        "emoji": "🧠",
+        "icon": "M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z",
         "desc": "心理认知、学习成长、思维升级",
-        "keywords": ["学习方法", "心理与认知"],
     },
     {
         "id": "04",
         "name": "历史社科类",
-        "emoji": "🏛",
+        "icon": "M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z",
         "desc": "历史洞察、社会规律、人文思辨",
-        "keywords": ["文明与历史", "系统思考"],
     },
     {
         "id": "05",
         "name": "科技科普类",
-        "emoji": "🔬",
+        "icon": "M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5",
         "desc": "技术前沿、科普知识、创新思维",
-        "keywords": ["技术前沿"],
     },
     {
         "id": "06",
         "name": "投资理财类",
-        "emoji": "💰",
+        "icon": "M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z",
         "desc": "财富观念、价值投资、金融智慧",
-        "keywords": ["价值投资", "长期主义"],
     },
     {
         "id": "07",
         "name": "传记人物类",
-        "emoji": "👤",
+        "icon": "M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z",
         "desc": "人物传记、榜样力量、人生智慧",
-        "keywords": ["人物传记"],
     },
     {
         "id": "08",
         "name": "艺术美学类",
-        "emoji": "🎨",
+        "icon": "M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42",
         "desc": "艺术修养、美学理论、审美品味",
-        "keywords": ["文学与审美"],
     },
     {
         "id": "09",
         "name": "哲学宗教类",
-        "emoji": "🕉",
+        "icon": "M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 1 0-7.517 0c.85.493 1.509 1.333 1.509 2.316V18",
         "desc": "哲学思辨、精神追求、智慧启蒙",
-        "keywords": ["哲学修养"],
     },
 ]
 
 CATEGORY_MAP = {c["name"]: c for c in CATEGORIES}
 
-# ── 精选书单数据 ─────────────────────────────────────────────
 CURATED_LISTS = [
     {
         "slug": "rushidao",
@@ -97,7 +84,7 @@ CURATED_LISTS = [
                     ),
                     (
                         "《中庸》",
-                        "以“中庸”为核心道德准则，阐释了不偏不倚、过犹不及的处世智慧，以及天人合一的终极理念。",
+                        "以“中庸”为核心道德准则，阐释了不偏不倚、过犹不及的处世智慧。",
                     ),
                     (
                         "《论语》",
@@ -137,7 +124,7 @@ CURATED_LISTS = [
                     ),
                     (
                         "《荀子》",
-                        "提出“性恶论”“礼法并重”“天行有常”等思想，融合儒法理念发展儒家治国与修身学说。",
+                        "提出“性恶论”“礼法并重”“天行有常”等思想，融合儒法理念发展儒家学说。",
                     ),
                 ],
             },
@@ -162,7 +149,7 @@ CURATED_LISTS = [
                     ),
                     (
                         "《六祖坛经》",
-                        "唯一由中国僧人创作被尊为“经”的典籍，阐释“明心见性、顿悟成佛”的禅宗核心思想。",
+                        "唯一由中国僧人创作被尊为“经”的典籍，阐释“明心见性、顿悟成佛”。",
                     ),
                     (
                         "《维摩诘经》",
@@ -178,7 +165,7 @@ CURATED_LISTS = [
                     ),
                     (
                         "《瑜伽师地论》",
-                        "全面阐释十七种修行境界与唯识思想，佛教修行的百科全书式典籍。",
+                        "全面阐释十七种修行境界与唯识思想，佛教修行百科全书式典籍。",
                     ),
                 ],
             },
@@ -187,31 +174,31 @@ CURATED_LISTS = [
                 "books": [
                     (
                         "《道德经》",
-                        "道家奠基之作，以“道”为核心阐释“道法自然”“无为而治”，中国流传最广的哲学经典之一。",
+                        "道家奠基之作，以“道”为核心阐释“道法自然”“无为而治”。",
                     ),
                     (
                         "《庄子》",
-                        "以汪洋恣肆的寓言阐释“逍遥游”“齐物论”，追求精神绝对自由，哲学与文学的巅峰之作。",
+                        "以汪洋恣肆的寓言阐释“逍遥游”“齐物论”，追求精神绝对自由。",
                     ),
                     (
                         "《列子》",
-                        "以寓言故事阐释道家“贵虚”“顺应自然”思想，《愚公移山》《杞人忧天》均出自此书。",
+                        "以寓言故事阐释道家“贵虚”“顺应自然”思想，《愚公移山》出自此书。",
                     ),
                     (
                         "《周易参同契》",
-                        "被誉为“万古丹经王”，以《周易》卦象阐释内外丹修炼原理与方法。",
+                        "被誉为“万古丹经王”，以《周易》卦象阐释内外丹修炼原理。",
                     ),
                     (
                         "《黄庭经》",
-                        "以七言韵文阐释道教存思修炼法门，提出“三丹田”“脏腑诸神”理念。",
+                        "以七言韵文阐释道教存思修炼法门，提出“三丹田”理念。",
                     ),
                     (
                         "《悟真篇》",
-                        "以诗词形式系统阐释内丹修炼次第与方法，与《周易参同契》并称“丹经双璧”。",
+                        "以诗词形式系统阐释内丹修炼次第与方法，与参同契并称“丹经双璧”。",
                     ),
                     (
                         "《阴符经》",
-                        "篇幅简短却意蕴深厚，融合道家宇宙观、兵家谋略与道教修炼思想。",
+                        "篇幅简短却意蕴深厚，融合道家宇宙观、兵家谋略与修炼思想。",
                     ),
                     (
                         "《抱朴子》",
@@ -219,7 +206,7 @@ CURATED_LISTS = [
                     ),
                     (
                         "《云笈七签》",
-                        "被誉为“小道藏”，系统摘录道藏核心内容，是了解道教文化的百科全书。",
+                        "被誉为“小道藏”，系统摘录道藏核心内容，了解道教文化百科全书。",
                     ),
                 ],
             },
@@ -227,596 +214,405 @@ CURATED_LISTS = [
     },
 ]
 
-# ── CSS 样式 ─────────────────────────────────────────────────
 STYLES = """
+/* ═══════════════════════════════════════════════════════════
+   uRead VIS — Sapphire / Amber / Teal
+   ═══════════════════════════════════════════════════════════ */
 :root {
-  --bg: #faf8f3;
-  --bg-warm: #f5f0e8;
-  --paper: #ffffff;
-  --paper-hover: #fffdf8;
-  --ink: #1a1a1a;
-  --ink-light: #555;
-  --muted: #8a8a8a;
-  --accent: #c0553a;
-  --accent-light: rgba(192,85,58,0.08);
-  --accent-bg: rgba(192,85,58,0.05);
-  --border: #e8e2d8;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
-  --shadow-lg: 0 16px 48px rgba(0,0,0,0.08);
-  --radius: 12px;
-  --radius-lg: 20px;
-  --nav-h: 60px;
-  --max-w: 1140px;
-  --transition: 0.2s ease;
+  --blue:    #133D72;
+  --blue-l:  #1e5aa8;
+  --blue-bg: rgba(19,61,114,.06);
+  --amber:   #FBBF24;
+  --amber-l: rgba(251,191,36,.12);
+  --teal:    #2DD4BF;
+  --teal-l:  rgba(45,212,191,.10);
+  --gray:    #4B5563;
+  --bg:      #F8FAFC;
+  --paper:   #FFFFFF;
+  --ink:     #111827;
+  --ink2:    #374151;
+  --muted:   #6B7280;
+  --border:  #E5E7EB;
+  --sh-sm:   0 1px 3px rgba(0,0,0,.06);
+  --sh-md:   0 4px 16px rgba(0,0,0,.08);
+  --sh-lg:   0 12px 40px rgba(0,0,0,.10);
+  --r:       10px;
+  --r-lg:    16px;
+  --nav-h:   56px;
+  --max-w:   1160px;
+  --tr:      .18s ease;
+  --font-h:  'Lora', Georgia, serif;
+  --font-b:  'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-m:  'JetBrains Mono', 'Fira Code', monospace;
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 24px); }
-
-body {
-  color: var(--ink);
-  background: var(--bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-               "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
-  -webkit-font-smoothing: antialiased;
-}
-
-a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
-a:hover { color: #a04030; }
-
-code {
-  background: #f0ece4;
-  padding: 0.15em 0.4em;
-  border-radius: 4px;
-  font-size: 0.88em;
-}
-
-/* ── NAV ──────────────────────────────────────────────────── */
-.nav {
-  position: sticky; top: 0; z-index: 100;
-  height: var(--nav-h);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 clamp(1rem, 3vw, 2rem);
-  background: rgba(250,248,243,0.88);
-  backdrop-filter: blur(16px) saturate(1.6);
-  -webkit-backdrop-filter: blur(16px) saturate(1.6);
-  border-bottom: 1px solid var(--border);
-}
-.nav-brand {
-  font-size: 1.25rem; font-weight: 700; color: var(--ink);
-  letter-spacing: 0.03em;
-}
-.nav-brand:hover { color: var(--ink); }
-.nav-links { display: flex; gap: 0.15rem; }
-.nav-links a {
-  padding: 0.35rem 0.75rem; border-radius: 8px;
-  color: var(--ink-light); font-size: 0.88rem; font-weight: 500;
-  transition: all var(--transition);
-}
-.nav-links a:hover { background: var(--accent-light); color: var(--accent); }
-.nav-links a.active { background: var(--accent-light); color: var(--accent); }
-
-/* hamburger */
-.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
-.nav-toggle span {
-  display: block; width: 20px; height: 2px; background: var(--ink);
-  margin: 5px 0; border-radius: 2px; transition: all 0.3s;
-}
-.nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
-.nav-toggle.open span:nth-child(2) { opacity: 0; }
-.nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
-/* ── CONTAINER ────────────────────────────────────────────── */
-.container { width: min(var(--max-w), calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
-
-/* ── HERO ─────────────────────────────────────────────────── */
-.hero {
-  background: var(--paper); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
-  padding: clamp(2rem, 5vw, 3.5rem); margin-bottom: 2rem;
-}
-.hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.2; margin-bottom: 0.75rem; }
-.hero p { color: var(--ink-light); font-size: 1.05rem; max-width: 640px; }
-.hero-eyebrow {
-  display: inline-block; color: var(--accent);
-  font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.14em;
-  margin-bottom: 0.75rem;
-}
-
-/* ── STATS ────────────────────────────────────────────────── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.75rem; margin-bottom: 2rem;
-}
-.stat {
-  background: var(--paper); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.2rem;
-  text-align: center; box-shadow: var(--shadow-sm);
-}
-.stat-num { font-size: 1.75rem; font-weight: 700; color: var(--accent); line-height: 1; }
-.stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
-
-/* ── SECTION HEADER ───────────────────────────────────────── */
-.section-header {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 1rem; margin: 2.5rem 0 1rem; flex-wrap: wrap;
-}
-.section-header h2 { font-size: 1.35rem; font-weight: 700; }
-.section-header h2 .emoji { margin-right: 0.4rem; }
-.view-all {
-  font-size: 0.82rem; font-weight: 600; color: var(--accent);
-  display: flex; align-items: center; gap: 0.25rem;
-}
-.view-all::after { content: "→"; transition: transform var(--transition); }
-.view-all:hover::after { transform: translateX(3px); }
-
-/* ── CATEGORY NAV ─────────────────────────────────────────── */
-.cat-nav {
-  display: flex; flex-wrap: wrap; gap: 0.4rem;
-  margin-bottom: 1.5rem; padding: 0.5rem 0;
-}
-.cat-nav a {
-  display: inline-flex; align-items: center; gap: 0.3rem;
-  padding: 0.3rem 0.65rem; border-radius: 999px;
-  background: var(--paper); border: 1px solid var(--border);
-  font-size: 0.8rem; font-weight: 500; color: var(--ink-light);
-  transition: all var(--transition); white-space: nowrap;
-}
-.cat-nav a .emoji { font-size: 0.85rem; }
-.cat-nav a:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
-.cat-nav a.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-/* ── CARD ─────────────────────────────────────────────────── */
-.card {
-  background: var(--paper); border: 1px solid var(--border);
-  border-radius: var(--radius); box-shadow: var(--shadow-sm);
-  padding: 1.25rem; transition: all var(--transition);
-  display: flex; flex-direction: column;
-}
-.card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: transparent; }
-.card-eyebrow {
-  color: var(--accent); font-size: 0.72rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;
-}
-.card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; line-height: 1.35; }
-.card h3 a { color: var(--ink); }
-.card h3 a:hover { color: var(--accent); }
-.card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; flex: 1; }
-.card-author { color: var(--muted); font-size: 0.78rem; margin-top: 0.5rem; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
-/* ── PILL ─────────────────────────────────────────────────── */
-.pill {
-  display: inline-block; margin: 0.15rem 0.3rem 0.15rem 0;
-  padding: 0.2rem 0.5rem; border-radius: 999px;
-  background: var(--accent-light); color: var(--accent);
-  font-size: 0.78rem; font-weight: 500;
-}
-
-/* ── CATEGORY SECTION ─────────────────────────────────────── */
-.cat-section { margin-bottom: 2.5rem; }
-.cat-title {
-  font-size: 1.15rem; font-weight: 700; padding-bottom: 0.6rem;
-  margin-bottom: 1rem; border-bottom: 2px solid var(--border);
-  display: flex; align-items: center; gap: 0.5rem;
-}
-.cat-title .emoji { font-size: 1.2rem; }
-.cat-title .count {
-  font-size: 0.75rem; font-weight: 500; color: var(--muted);
-  background: var(--bg-warm); padding: 0.15rem 0.5rem; border-radius: 999px;
-}
-
-/* ── NOTE (DETAIL) ────────────────────────────────────────── */
-.note {
-  background: var(--paper); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); box-shadow: var(--shadow-md);
-  padding: clamp(1.5rem, 4vw, 2.5rem); max-width: 860px;
-}
-.note h1 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.25; margin-bottom: 0.5rem; }
-.note h2 { font-size: 1.3rem; margin-top: 2rem; margin-bottom: 0.75rem; }
-.note h3 { font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-.note-meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 1rem; }
-.note p, .note li { font-size: 1rem; line-height: 1.85; }
-.note ul { padding-left: 1.25rem; margin: 0.5rem 0; }
-.note blockquote {
-  margin: 1rem 0; padding: 0.8rem 1rem;
-  border-left: 4px solid var(--accent);
-  background: var(--accent-bg); border-radius: 0 8px 8px 0;
-}
-.note .tag-row { margin: 0.75rem 0 1.5rem; }
-.wikilink { color: var(--accent); border-bottom: 1px dashed rgba(192,85,58,0.4); }
-
-/* ── BOOK LIST (CURATED) ──────────────────────────────────── */
-.list-section { margin-bottom: 2rem; }
-.list-section-title {
-  font-size: 1.1rem; font-weight: 700; margin: 1.5rem 0 0.75rem;
-  padding-bottom: 0.4rem; border-bottom: 1px solid var(--border);
-}
-.list-item {
-  display: flex; gap: 0.75rem; padding: 0.6rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.92rem; line-height: 1.65;
-}
-.list-item:last-child { border-bottom: none; }
-.list-num {
-  flex-shrink: 0; width: 1.8rem; text-align: right;
-  color: var(--muted); font-weight: 600; font-size: 0.82rem;
-  padding-top: 0.15rem;
-}
-.list-book-title { font-weight: 600; color: var(--ink); }
-.list-desc { color: var(--ink-light); }
-.list-card {
-  background: var(--paper); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
-  padding: clamp(1.25rem, 3vw, 2rem); margin-bottom: 1.5rem;
-  transition: all var(--transition);
-}
-.list-card:hover { box-shadow: var(--shadow-md); }
-.list-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
-.list-card h3 a { color: var(--ink); }
-.list-card h3 a:hover { color: var(--accent); }
-.list-card p { color: var(--muted); font-size: 0.85rem; }
-.list-card-meta { display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.78rem; color: var(--muted); }
-
-/* ── PREVIEW GRID (homepage cards) ────────────────────────── */
-.preview-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem; margin-bottom: 1.5rem;
-}
-
-/* ── FOOTER ───────────────────────────────────────────────── */
-.footer {
-  text-align: center; padding: 2rem;
-  color: var(--muted); font-size: 0.82rem;
-  border-top: 1px solid var(--border); margin-top: 2rem;
-}
-.footer a { color: var(--accent); }
-
-/* ── RESPONSIVE ───────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .nav-links {
-    display: none; position: absolute;
-    top: var(--nav-h); left: 0; right: 0;
-    flex-direction: column; gap: 0;
-    background: rgba(250,248,243,0.97);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
-    padding: 0.5rem 0;
+@media(prefers-color-scheme:dark){
+  :root {
+    --bg:      #0B1120;
+    --paper:   #151E31;
+    --ink:     #F1F5F9;
+    --ink2:    #CBD5E1;
+    --muted:   #94A3B8;
+    --border:  #1E293B;
+    --blue-bg: rgba(19,61,114,.18);
+    --amber-l: rgba(251,191,36,.15);
+    --teal-l:  rgba(45,212,191,.12);
+    --sh-sm:   0 1px 3px rgba(0,0,0,.3);
+    --sh-md:   0 4px 16px rgba(0,0,0,.35);
+    --sh-lg:   0 12px 40px rgba(0,0,0,.4);
   }
-  .nav-links.open { display: flex; }
-  .nav-links a { padding: 0.65rem 1.5rem; border-radius: 0; }
-  .nav-links a:hover { background: var(--accent-light); }
-  .nav-toggle { display: block; }
-
-  .grid { grid-template-columns: 1fr; }
-  .preview-grid { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-
-  .hero h1 { font-size: 1.6rem; }
-
-  .cat-nav { gap: 0.3rem; }
-  .cat-nav a { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 20px)}
+body{font-family:var(--font-b);font-size:15px;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:var(--blue-l);text-decoration:none;transition:color var(--tr)}
+a:hover{color:var(--amber)}
+code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;border-radius:5px;font-size:.88em}
 
-@media (max-width: 480px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .hero { padding: 1.25rem; }
-  .note { padding: 1.25rem; }
-}
+/* ── NAV ─────────────────────────────── */
+.nav{position:sticky;top:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,3vw,2rem);background:var(--paper);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:.5rem;font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.02em}
+.brand:hover{color:var(--blue)}
+.brand-icon{width:26px;height:26px;color:var(--blue)}
+.nav-links{display:flex;gap:2px}
+.nav-links a{padding:.4rem .8rem;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--muted);transition:all var(--tr)}
+.nav-links a:hover{background:var(--blue-bg);color:var(--blue)}
+.nav-api{font-family:var(--font-m)!important;font-size:.78rem!important;background:var(--teal-l);color:var(--teal)!important;border-radius:6px!important}
+.nav-burger{display:none;background:none;border:none;cursor:pointer;padding:.4rem}
+.nav-burger span{display:block;width:20px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px;transition:.3s}
+.nav-burger.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.nav-burger.on span:nth-child(2){opacity:0}
+.nav-burger.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 
-@media (min-width: 769px) and (max-width: 1024px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-  .preview-grid { grid-template-columns: repeat(2, 1fr); }
+/* ── MAIN ────────────────────────────── */
+.main{width:min(var(--max-w),calc(100% - 2rem));margin:0 auto;padding:2rem 0 4rem}
+
+/* ── HERO ────────────────────────────── */
+.hero{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-md);padding:clamp(2rem,5vw,3rem);margin-bottom:1.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(251,191,36,.08),transparent 70%);pointer-events:none}
+.hero h1{font-family:var(--font-h);font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.2;margin-bottom:.6rem;color:var(--blue)}
+.hero p{color:var(--ink2);font-size:1rem;max-width:600px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);margin-bottom:.6rem}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
+
+/* ── STATS ───────────────────────────── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:2rem}
+.stat{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;text-align:center;box-shadow:var(--sh-sm);transition:all var(--tr)}
+.stat:hover{box-shadow:var(--sh-md);border-color:var(--blue-l)}
+.stat-n{font-size:1.8rem;font-weight:700;color:var(--blue);line-height:1;font-family:var(--font-h)}
+.stat-l{font-size:.75rem;color:var(--muted);margin-top:.3rem;letter-spacing:.04em}
+.stat-icon{width:20px;height:20px;margin:0 auto .4rem;color:var(--amber)}
+
+/* ── SECTION HDR ─────────────────────── */
+.sh{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:2.5rem 0 1rem;flex-wrap:wrap}
+.sh h2{font-family:var(--font-h);font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.sh h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--amber)}
+.sh a{font-size:.82rem;font-weight:600;color:var(--blue-l);display:flex;align-items:center;gap:.2rem}
+.sh a::after{content:'→';transition:transform var(--tr)}
+.sh a:hover::after{transform:translateX(3px)}
+
+/* ── CAT NAV ─────────────────────────── */
+.cn{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem}
+.cn a{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;border-radius:999px;background:var(--paper);border:1px solid var(--border);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--tr);white-space:nowrap}
+.cn a:hover{border-color:var(--blue-l);color:var(--blue);background:var(--blue-bg)}
+.cn a.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* ── CARD ────────────────────────────── */
+.card{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh-sm);padding:1.2rem;transition:all var(--tr);display:flex;flex-direction:column}
+.card:hover{box-shadow:var(--sh-md);transform:translateY(-2px);border-color:var(--blue-l)}
+.card-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:.4rem}
+.card h3{font-family:var(--font-h);font-size:1rem;margin-bottom:.35rem;line-height:1.35}
+.card h3 a{color:var(--ink)}
+.card h3 a:hover{color:var(--blue)}
+.card p{color:var(--muted);font-size:.84rem;line-height:1.6;flex:1}
+.card-author{color:var(--muted);font-size:.76rem;margin-top:.5rem;display:flex;align-items:center;gap:.3rem}
+.card-author::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--blue-bg);display:inline-block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+
+/* ── PILL ────────────────────────────── */
+.pill{display:inline-block;margin:.15rem .25rem .15rem 0;padding:.18rem .5rem;border-radius:999px;background:var(--blue-bg);color:var(--blue);font-size:.76rem;font-weight:500}
+
+/* ── CAT SECTION ─────────────────────── */
+.cs{margin-bottom:2.5rem}
+.cs-t{font-family:var(--font-h);font-size:1.1rem;font-weight:700;padding-bottom:.5rem;margin-bottom:1rem;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:.5rem}
+.cs-t .n{font-size:.72rem;font-weight:500;color:var(--muted);background:var(--amber-l);padding:.15rem .5rem;border-radius:999px}
+
+/* ── NOTE ────────────────────────────── */
+.note{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-md);padding:clamp(1.5rem,4vw,2.5rem);max-width:860px}
+.note h1{font-family:var(--font-h);font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.25;margin-bottom:.4rem}
+.note h2{font-family:var(--font-h);font-size:1.25rem;margin-top:2rem;margin-bottom:.6rem;color:var(--blue)}
+.note h3{font-family:var(--font-h);font-size:1.05rem;margin-top:1.5rem;margin-bottom:.4rem}
+.note-meta{color:var(--muted);font-size:.82rem;margin-bottom:1rem}
+.note p,.note li{font-size:.97rem;line-height:1.85}
+.note ul{padding-left:1.2rem;margin:.5rem 0}
+.note blockquote{margin:1rem 0;padding:.8rem 1rem;border-left:3px solid var(--amber);background:var(--amber-l);border-radius:0 8px 8px 0}
+.note .tag-row{margin:.75rem 0 1.5rem}
+.note pre{background:var(--ink);color:#e2e8f0;padding:1rem;border-radius:var(--r);overflow-x:auto;margin:1rem 0}
+.note pre code{background:none;padding:0;color:inherit}
+.wl{color:var(--blue-l);border-bottom:1px dashed rgba(19,61,114,.3)}
+
+/* ── LIST CARD ───────────────────────── */
+.lc{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-sm);padding:clamp(1.2rem,3vw,1.8rem);margin-bottom:1.5rem;transition:all var(--tr)}
+.lc:hover{box-shadow:var(--sh-md)}
+.lc h3{font-family:var(--font-h);font-size:1.05rem;margin-bottom:.25rem}
+.lc h3 a{color:var(--ink)}
+.lc h3 a:hover{color:var(--blue)}
+.lc p{color:var(--muted);font-size:.84rem}
+.lc-meta{display:flex;gap:1rem;margin-top:.5rem;font-size:.76rem;color:var(--muted)}
+.ls{margin-bottom:2rem}
+.ls-t{font-family:var(--font-h);font-size:1.05rem;font-weight:700;margin:1.5rem 0 .6rem;padding-bottom:.35rem;border-bottom:1px solid var(--border)}
+.li{display:flex;gap:.6rem;padding:.55rem 0;border-bottom:1px solid var(--border);font-size:.9rem;line-height:1.6}
+.li:last-child{border-bottom:none}
+.li-n{flex-shrink:0;width:1.6rem;text-align:right;color:var(--muted);font-weight:600;font-size:.78rem;padding-top:.1rem}
+.li-t{font-weight:600;color:var(--ink)}
+.li-d{color:var(--ink2)}
+
+/* ── FOOTER ──────────────────────────── */
+.foot{border-top:1px solid var(--border);margin-top:3rem;padding:2rem 0;text-align:center}
+.foot-inner{max-width:600px;margin:0 auto}
+.foot-brand{font-family:var(--font-h);font-weight:700;color:var(--blue);font-size:.95rem;margin-bottom:.4rem}
+.foot-links{font-size:.8rem;color:var(--muted);margin-bottom:.3rem}
+.foot-links a{color:var(--muted)}
+.foot-links a:hover{color:var(--blue)}
+.dot{margin:0 .3rem}
+.foot-copy{font-size:.75rem;color:var(--muted);opacity:.7}
+
+/* ── RESPONSIVE ──────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none;position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;background:var(--paper);border-bottom:1px solid var(--border);box-shadow:var(--sh-md);padding:.5rem 0}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:.65rem 1.5rem;border-radius:0}
+  .nav-burger{display:block}
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .hero h1{font-size:1.5rem}
+  .cn{gap:.25rem}
+  .cn a{font-size:.72rem;padding:.25rem .5rem}
 }
+@media(min-width:769px) and (max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
 """
 
 
-# ═══════════════════════════════════════════════════════════════
-#  BUILD
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════
+#  SVG icon helper
+# ═══════════════════════════════════════════════════════════
+def _icon(d: str, size: int = 20) -> str:
+    return f'<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="{size}" height="{size}"><path stroke-linecap="round" stroke-linejoin="round" d="{d}"/></svg>'
 
 
-def main() -> None:
-    ensure_public_dirs()
-    notes = [n for n in load_notes() if n["type"] != "template"]
-    books = [n for n in notes if n["type"] == "book"]
-    cards = [n for n in notes if n["type"] == "concept"]
-
-    # static assets
-    (PUBLIC_DIR / "styles.css").write_text(STYLES, encoding="utf-8")
-
-    # JSON API
-    write_json(PUBLIC_DIR / "api" / "books.json", _books_api(books))
-    write_json(PUBLIC_DIR / "api" / "tags.json", _tags_api(notes))
-    write_json(PUBLIC_DIR / "api" / "graph.json", _graph_api(notes))
-
-    # pages
-    build_home(notes, books, cards)
-    build_notes_page(books)
-    build_lists_page()
-    build_cards_page(cards)
-    build_detail_pages("books", books)
-    build_detail_pages("cards", cards)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  HELPERS
-# ═══════════════════════════════════════════════════════════════
-
-
-def _books_of_cat(books: list, cat_name: str) -> list:
-    return [b for b in books if b["meta"].get("theme") == cat_name]
+def _card(note: dict, base: str) -> str:
+    author = note["meta"].get("author", "")
+    ah = f'<div class="card-author">{author}</div>' if author else ""
+    return f'<article class="card"><div class="card-cat">{note["meta"].get("theme", note["section"])}</div><h3><a href="{base}/{note["slug"]}/">{note["title"]}</a></h3><p>{note["summary"]}</p>{ah}</article>'
 
 
 def _cat_nav(active: str = "") -> str:
     items = []
     for c in CATEGORIES:
-        cls = ' class="active"' if c["name"] == active else ""
+        cls = ' class="on"' if c["name"] == active else ""
         items.append(
-            f'<a href="/uRead/books/#{c["name"]}"{cls}><span class="emoji">{c["emoji"]}</span>{c["name"]}</a>'
+            f'<a href="/uRead/books/#{c["name"]}"{cls}>{_icon(c["icon"], 14)}{c["name"]}</a>'
         )
-    return f'<div class="cat-nav">{"".join(items)}</div>'
+    return f'<div class="cn">{"".join(items)}</div>'
 
 
-def _card_html(note: dict, base: str) -> str:
-    author = note["meta"].get("author", "")
-    author_html = f'<div class="card-author">{author}</div>' if author else ""
-    return f'''<article class="card">
-  <div class="card-eyebrow">{note["meta"].get("theme", note["section"])}</div>
-  <h3><a href="{base}/{note["slug"]}/">{note["title"]}</a></h3>
-  <p>{note["summary"]}</p>
-  {author_html}
-</article>'''
+def _books_cat(books, name):
+    return [b for b in books if b["meta"].get("theme") == name]
 
 
-# ═══════════════════════════════════════════════════════════════
-#  HOME
-# ═══════════════════════════════════════════════════════════════
-
-
-def build_home(notes, books, cards) -> None:
+# ═══════════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════════
+def main() -> None:
+    ensure_public_dirs()
+    notes = [n for n in load_notes() if n["type"] != "template"]
+    books = [n for n in notes if n["type"] == "book"]
+    cards = [n for n in notes if n["type"] == "concept"]
+    enriched = sum(1 for b in books if "整合" in b["meta"].get("source", ""))
     tag_count = len({t for n in notes for t in n["meta"].get("tags", [])})
 
-    # stats
-    stats = [
-        ("深度笔记", str(len(books))),
-        ("知识卡片", str(len(cards))),
-        ("标签数量", str(tag_count)),
-        ("精选书单", str(len(CURATED_LISTS))),
+    (PUBLIC_DIR / "styles.css").write_text(STYLES, encoding="utf-8")
+    write_json(PUBLIC_DIR / "api" / "books.json", _api_books(books))
+    write_json(PUBLIC_DIR / "api" / "tags.json", _api_tags(notes))
+    write_json(PUBLIC_DIR / "api" / "graph.json", _api_graph(notes))
+
+    build_home(notes, books, cards, enriched, tag_count)
+    build_books(books)
+    build_lists()
+    build_cards(cards)
+    _details("books", books)
+    _details("cards", cards)
+
+
+# ═══════════════════════════════════════════════════════════
+#  HOME
+# ═══════════════════════════════════════════════════════════
+def build_home(notes, books, cards, enriched, tag_count) -> None:
+    stat_defs = [
+        (
+            "M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25",
+            str(len(books)),
+            "深度笔记",
+        ),
+        (
+            "M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z",
+            str(len(cards)),
+            "知识卡片",
+        ),
+        (
+            "M9.562 3.104a4.5 4.5 0 0 1 .908 0l1.07 3.292a4.5 4.5 0 0 0 3.396 3.396l3.292 1.07a4.5 4.5 0 0 1 0 .908l-3.292 1.07a4.5 4.5 0 0 0-3.396 3.396l-1.07 3.292a4.5 4.5 0 0 1-.908 0l-1.07-3.292a4.5 4.5 0 0 0-3.396-3.396L2.25 9.678a4.5 4.5 0 0 1 0-.908l3.292-1.07a4.5 4.5 0 0 0 3.396-3.396L9.562 3.104Z",
+            str(tag_count),
+            "标签数量",
+        ),
+        (
+            "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z",
+            str(enriched),
+            "已整合笔记",
+        ),
+        (
+            "M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21",
+            str(len(CATEGORIES)),
+            "九大分类",
+        ),
+        (
+            "M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z",
+            str(len(CURATED_LISTS)),
+            "精选书单",
+        ),
     ]
-    stats_html = "\n".join(
-        f'<div class="stat"><div class="stat-num">{v}</div><div class="stat-label">{l}</div></div>'
-        for l, v in stats
+    stats_h = "\n".join(
+        f'<div class="stat">{_icon(d, 22)}<div class="stat-n">{v}</div><div class="stat-label">{l}</div></div>'.replace(
+            'class="stat-label"', f'class="stat-l"'
+        ).replace(_icon(d, 22), f'<div class="stat-icon">{_icon(d, 20)}</div>')
+        for d, v, l in stat_defs
     )
 
-    # category sections (show up to 6 per cat)
-    cat_sections = ""
+    # category preview (max 6 per cat)
+    cat_h = ""
     for c in CATEGORIES:
-        cat_books = _books_of_cat(books, c["name"])[:6]
-        if not cat_books:
+        cb = _books_cat(books, c["name"])[:6]
+        if not cb:
             continue
-        grid = "\n".join(_card_html(b, "/uRead/books") for b in cat_books)
-        cat_sections += f"""
-<section class="cat-section">
-  <div class="cat-title"><span class="emoji">{c["emoji"]}</span>{c["name"]}<span class="count">{len(_books_of_cat(books, c["name"]))}</span></div>
-  <div class="grid">{grid}</div>
-</section>"""
+        g = "\n".join(_card(b, "/uRead/books") for b in cb)
+        total = len(_books_cat(books, c["name"]))
+        cat_h += f'<section class="cs"><div class="cs-t">{_icon(c["icon"], 18)}{c["name"]}<span class="n">{total}</span></div><div class="grid">{g}</div></section>'
 
-    # curated list preview
-    list_cards = ""
+    # curated lists
+    list_h = ""
     for lst in CURATED_LISTS:
         total = sum(len(s["books"]) for s in lst["sections"])
-        list_cards += f"""<article class="list-card">
-  <h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3>
-  <p>{lst["summary"]}</p>
-  <div class="list-card-meta"><span>{len(lst["sections"])} 个分类</span><span>{total} 本经典</span></div>
-</article>"""
+        list_h += f'<article class="lc"><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="lc-meta"><span>{len(lst["sections"])} 个分类</span><span>{total} 本经典</span></div></article>'
 
-    # cards preview
-    cards_preview = "\n".join(_card_html(c, "/uRead/cards") for c in cards[:6])
+    cards_h = "\n".join(_card(c, "/uRead/cards") for c in cards[:6])
 
     body = f"""
 <section class="hero">
-  <div class="hero-eyebrow">Open Reading OS</div>
+  <div class="hero-eyebrow"><span class="dot"></span>Open Reading OS</div>
   <h1>盘活经典书单资产<br>打造可发布、可检索的深度读书笔记</h1>
-  <p>uRead 用 GitHub 维护内容，用结构化元数据和静态 API 提升可读性、复用性与机器可用性。</p>
+  <p>uRead 用 GitHub 维护内容，用结构化元数据和静态 API 提升可读性、复用性与机器可用性。让知识如同代码和资产一样可被解析、调用与变现。</p>
 </section>
-
-<div class="stats">{stats_html}</div>
-
+<div class="stats">{stats_h}</div>
 {_cat_nav()}
-
-<div class="section-header"><h2>精选书单</h2><a href="/uRead/lists/" class="view-all">查看全部</a></div>
-<div class="preview-grid">{list_cards}</div>
-
-{cat_sections}
-
-<div class="section-header"><h2>知识卡片</h2><a href="/uRead/cards/" class="view-all">查看全部</a></div>
-<div class="grid">{cards_preview}</div>
+<div class="sh"><h2><span class="dot"></span>精选书单</h2><a href="/uRead/lists/">查看全部</a></div>
+{list_h}
+{cat_h}
+<div class="sh"><h2><span class="dot"></span>知识卡片</h2><a href="/uRead/cards/">查看全部</a></div>
+<div class="grid">{cards_h}</div>
 """
     (PUBLIC_DIR / "index.html").write_text(
         site_shell(
-            "uRead — 深度读书笔记", body, "结构化深度读书笔记与 Agent 友好知识资产"
+            "uRead — 深度读书笔记", body, "结构化深度读书笔记与Agent友好知识资产"
         ),
         encoding="utf-8",
     )
 
 
-# ═══════════════════════════════════════════════════════════════
-#  NOTES LIST (books)
-# ═══════════════════════════════════════════════════════════════
-
-
-def build_notes_page(books) -> None:
-    sections = ""
+# ═══════════════════════════════════════════════════════════
+#  BOOKS LIST
+# ═══════════════════════════════════════════════════════════
+def build_books(books) -> None:
+    secs = ""
     for c in CATEGORIES:
-        cat_books = _books_of_cat(books, c["name"])
-        if not cat_books:
+        cb = _books_cat(books, c["name"])
+        if not cb:
             continue
-        grid = "\n".join(_card_html(b, "/uRead/books") for b in cat_books)
-        sections += f'''
-<section class="cat-section" id="{c["name"]}">
-  <div class="cat-title"><span class="emoji">{c["emoji"]}</span>{c["name"]}<span class="count">{len(cat_books)}</span></div>
-  <div class="grid">{grid}</div>
-</section>'''
-
-    body = f"""
-<section class="hero">
-  <div class="hero-eyebrow">深度笔记</div>
-  <h1>深度笔记</h1>
-  <p>所有内容同时生成静态页面、JSON API 与 JSON-LD 元数据，便于读者阅读，也便于 Agent 检索。</p>
-</section>
-{_cat_nav()}
-{sections}
-"""
+        g = "\n".join(_card(b, "/uRead/books") for b in cb)
+        secs += f'<section class="cs" id="{c["name"]}"><div class="cs-t">{_icon(c["icon"], 18)}{c["name"]}<span class="n">{len(cb)}</span></div><div class="grid">{g}</div></section>'
+    body = f'<section class="hero"><div class="hero-eyebrow"><span class="dot"></span>深度笔记</div><h1>深度笔记</h1><p>按九大分类浏览所有深度读书笔记，同步生成 JSON API 与 JSON-LD 元数据。</p></section>{_cat_nav()}{secs}'
     (PUBLIC_DIR / "books" / "index.html").write_text(
         site_shell("深度笔记 | uRead", body, "按九大分类浏览深度读书笔记"),
         encoding="utf-8",
     )
 
 
-# ═══════════════════════════════════════════════════════════════
-#  CURATED LISTS
-# ═══════════════════════════════════════════════════════════════
-
-
-def build_lists_page() -> None:
-    # lists index
-    cards = ""
+# ═══════════════════════════════════════════════════════════
+#  LISTS
+# ═══════════════════════════════════════════════════════════
+def build_lists() -> None:
+    cards_h = ""
     for lst in CURATED_LISTS:
-        total = sum(len(s["books"]) for s in lst["sections"])
-        cards += f"""<article class="card">
-  <h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3>
-  <p>{lst["summary"]}</p>
-  <div class="card-author">{len(lst["sections"])} 个分类 · {total} 本经典</div>
-</article>"""
+        t = sum(len(s["books"]) for s in lst["sections"])
+        cards_h += f'<article class="card"><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="card-author">{len(lst["sections"])} 个分类 · {t} 本经典</div></article>'
+    body = f'<section class="hero"><div class="hero-eyebrow"><span class="dot"></span>精选书单</div><h1>精选书单</h1><p>按主题精心编排的经典著作导读，每本书附一句话定位。</p></section><div class="grid">{cards_h}</div>'
+    p = PUBLIC_DIR / "lists" / "index.html"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(site_shell("精选书单 | uRead", body), encoding="utf-8")
 
-    body = f"""
-<section class="hero">
-  <div class="hero-eyebrow">精选书单</div>
-  <h1>精选书单</h1>
-  <p>按主题精心编排的经典著作导读，每本书附一句话定位，帮你快速建立认知地图。</p>
-</section>
-<div class="grid">{cards}</div>
-"""
-    target = PUBLIC_DIR / "lists" / "index.html"
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(
-        site_shell("精选书单 | uRead", body, "按主题编排的经典著作导读"),
-        encoding="utf-8",
-    )
-
-    # each list detail page
     for lst in CURATED_LISTS:
-        sections_html = ""
+        secs_h = ""
         for sec in lst["sections"]:
             items = ""
             for i, (title, desc) in enumerate(sec["books"], 1):
-                items += f"""<div class="list-item">
-  <span class="list-num">{i}.</span>
-  <div><span class="list-book-title">{title}</span>：<span class="list-desc">{desc}</span></div>
-</div>"""
-            sections_html += f"""
-<div class="list-section">
-  <h2 class="list-section-title">{sec["name"]}</h2>
-  {items}
-</div>"""
-
-        body = f"""
-<article class="note">
-  <div class="hero-eyebrow">精选书单</div>
-  <h1>{lst["title"]}</h1>
-  <p style="color:var(--muted);margin-bottom:1.5rem">{lst["summary"]}</p>
-  {sections_html}
-</article>
-"""
-        folder = PUBLIC_DIR / "lists" / lst["slug"]
-        folder.mkdir(parents=True, exist_ok=True)
-        (folder / "index.html").write_text(
+                items += f'<div class="li"><span class="li-n">{i}.</span><div><span class="li-t">{title}</span>：<span class="li-d">{desc}</span></div></div>'
+            secs_h += (
+                f'<div class="ls"><h2 class="ls-t">{sec["name"]}</h2>{items}</div>'
+            )
+        body = f'<article class="note"><div class="hero-eyebrow"><span class="dot"></span>精选书单</div><h1>{lst["title"]}</h1><p style="color:var(--muted);margin-bottom:1.5rem">{lst["summary"]}</p>{secs_h}</article>'
+        f2 = PUBLIC_DIR / "lists" / lst["slug"]
+        f2.mkdir(parents=True, exist_ok=True)
+        (f2 / "index.html").write_text(
             site_shell(f"{lst['title']} | 精选书单 | uRead", body, lst["summary"]),
             encoding="utf-8",
         )
 
 
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════
 #  CARDS LIST
-# ═══════════════════════════════════════════════════════════════
-
-
-def build_cards_page(cards) -> None:
-    grid = "\n".join(_card_html(c, "/uRead/cards") for c in cards)
-    body = f"""
-<section class="hero">
-  <div class="hero-eyebrow">知识卡片</div>
-  <h1>知识卡片</h1>
-  <p>从深度阅读中提炼的核心概念、模型与方法论，便于速查与引用。</p>
-</section>
-<div class="grid">{grid}</div>
-"""
+# ═══════════════════════════════════════════════════════════
+def build_cards(cards) -> None:
+    g = "\n".join(_card(c, "/uRead/cards") for c in cards)
+    body = f'<section class="hero"><div class="hero-eyebrow"><span class="dot"></span>知识卡片</div><h1>知识卡片</h1><p>从深度阅读中提炼的核心概念、模型与方法论。</p></section><div class="grid">{g}</div>'
     (PUBLIC_DIR / "cards" / "index.html").write_text(
-        site_shell("知识卡片 | uRead", body, "核心概念与方法论速查"),
-        encoding="utf-8",
+        site_shell("知识卡片 | uRead", body), encoding="utf-8"
     )
 
 
-# ═══════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════
 #  DETAIL PAGES
-# ═══════════════════════════════════════════════════════════════
-
-
-def build_detail_pages(section: str, notes) -> None:
+# ═══════════════════════════════════════════════════════════
+def _details(section: str, notes) -> None:
     for note in notes:
         folder = PUBLIC_DIR / section / note["slug"]
         folder.mkdir(parents=True, exist_ok=True)
-
-        tags_html = "".join(
+        tags_h = "".join(
             f'<span class="pill">{t}</span>' for t in note["meta"].get("tags", [])
         )
-        meta = note["meta"]
-        meta_text = (
-            f"{meta.get('author', 'uRead')} / {meta.get('theme', note['section'])}"
-        )
-        rating = meta.get("rating", 0)
-        if rating:
-            meta_text += f" / {'★' * rating}{'☆' * (5 - rating)}"
-
-        content_html = markdown_to_html(note["body"])
-
-        body = f"""
-<article class="note">
-  <div class="hero-eyebrow">{note["type"]}</div>
-  <h1>{note["title"]}</h1>
-  <div class="note-meta">{meta_text}</div>
-  <p style="color:var(--ink-light)">{note["summary"]}</p>
-  <div class="tag-row">{tags_html}</div>
-  {content_html}
-</article>
-"""
+        m = note["meta"]
+        mt = f"{m.get('author', 'uRead')} / {m.get('theme', note['section'])}"
+        r = m.get("rating", 0)
+        if r:
+            mt += f" / {'★' * r}{'☆' * (5 - r)}"
+        ch = markdown_to_html(note["body"])
+        body = f'<article class="note"><div class="hero-eyebrow"><span class="dot"></span>{note["type"]}</div><h1>{note["title"]}</h1><div class="note-meta">{mt}</div><p style="color:var(--ink2)">{note["summary"]}</p><div class="tag-row">{tags_h}</div>{ch}</article>'
         (folder / "index.html").write_text(
             site_shell(f"{note['title']} | uRead", body, note["summary"]),
             encoding="utf-8",
         )
 
 
-# ═══════════════════════════════════════════════════════════════
-#  JSON API BUILDERS
-# ═══════════════════════════════════════════════════════════════
-
-
-def _books_api(books):
+# ═══════════════════════════════════════════════════════════
+#  API BUILDERS
+# ═══════════════════════════════════════════════════════════
+def _api_books(books):
     return [
         {
             "title": n["title"],
@@ -833,8 +629,8 @@ def _books_api(books):
     ]
 
 
-def _tags_api(notes):
-    tags: dict[str, list[str]] = {}
+def _api_tags(notes):
+    tags = {}
     for n in notes:
         for t in n["meta"].get("tags", []):
             tags.setdefault(t, []).append(n["title"])
@@ -843,7 +639,7 @@ def _tags_api(notes):
     ]
 
 
-def _graph_api(notes):
+def _api_graph(notes):
     nodes = [{"id": n["title"], "group": n["type"]} for n in notes]
     links = []
     titles = {n["title"] for n in notes}

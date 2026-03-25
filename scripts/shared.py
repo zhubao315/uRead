@@ -7,7 +7,6 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_DIR = ROOT / "content"
 PUBLIC_DIR = ROOT / "public"
@@ -42,7 +41,6 @@ def parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
     meta: dict[str, Any] = {}
     current_key: str | None = None
     list_values: list[str] | None = None
-
     for line in meta_lines:
         if not line.strip():
             continue
@@ -63,7 +61,6 @@ def parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
         else:
             list_values = None
             meta[current_key] = parsed
-
     return meta, body
 
 
@@ -131,7 +128,6 @@ def markdown_to_html(body: str) -> str:
     in_list = False
     in_quote = False
     in_code = False
-    code_lang = ""
 
     def close_blocks() -> None:
         nonlocal in_list, in_quote
@@ -144,8 +140,6 @@ def markdown_to_html(body: str) -> str:
 
     for raw_line in lines:
         line = raw_line.rstrip()
-
-        # fenced code blocks
         if line.startswith("```"):
             if in_code:
                 html_lines.append("</code></pre>")
@@ -153,27 +147,23 @@ def markdown_to_html(body: str) -> str:
             else:
                 close_blocks()
                 in_code = True
-                code_lang = line[3:].strip()
-                lang_attr = f' class="language-{code_lang}"' if code_lang else ""
-                html_lines.append(f"<pre><code{lang_attr}>")
+                lang = line[3:].strip()
+                la = f' class="language-{lang}"' if lang else ""
+                html_lines.append(f"<pre><code{la}>")
             continue
         if in_code:
             html_lines.append(escape(line))
             continue
-
         if not line:
             close_blocks()
             continue
-
-        # headings
         if line.startswith("#"):
             close_blocks()
             level = min(len(line) - len(line.lstrip("#")), 6)
-            content = render_inline(line[level:].strip())
-            html_lines.append(f"<h{level}>{content}</h{level}>")
+            html_lines.append(
+                f"<h{level}>{render_inline(line[level:].strip())}</h{level}>"
+            )
             continue
-
-        # unordered list
         if line.startswith("- ") or line.startswith("* "):
             if in_quote:
                 html_lines.append("</blockquote>")
@@ -183,15 +173,6 @@ def markdown_to_html(body: str) -> str:
                 in_list = True
             html_lines.append(f"<li>{render_inline(line[2:].strip())}</li>")
             continue
-
-        # ordered list
-        ol_match = re.match(r"^(\d+)\.\s+(.*)", line)
-        if ol_match:
-            close_blocks()
-            html_lines.append(f"<p>{render_inline(line)}</p>")
-            continue
-
-        # blockquote
         if line.startswith(">"):
             if in_list:
                 html_lines.append("</ul>")
@@ -201,49 +182,29 @@ def markdown_to_html(body: str) -> str:
                 in_quote = True
             html_lines.append(f"<p>{render_inline(line[1:].strip())}</p>")
             continue
-
-        # horizontal rule
         if re.match(r"^[-*_]{3,}\s*$", line):
             close_blocks()
             html_lines.append("<hr>")
             continue
-
-        # table row
-        if "|" in line and line.strip().startswith("|"):
-            close_blocks()
-            cells = [c.strip() for c in line.strip().strip("|").split("|")]
-            if all(re.match(r"^[-:]+$", c) for c in cells):
-                continue  # skip separator
-            row = "".join(f"<td>{render_inline(c)}</td>" for c in cells)
-            html_lines.append(f"<tr>{row}</tr>")
-            continue
-
         close_blocks()
         html_lines.append(f"<p>{render_inline(line)}</p>")
-
     close_blocks()
     return "\n".join(html_lines)
 
 
 def render_inline(text: str) -> str:
     text = escape(text)
-    # wikilinks
     text = re.sub(
         r"\[\[([^\]]+)\]\]",
-        lambda m: f'<span class="wikilink">{escape(m.group(1))}</span>',
+        lambda m: f'<span class="wl">{escape(m.group(1))}</span>',
         text,
     )
-    # inline code
     text = re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
-    # bold
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
-    # italic
     text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
-    # images
     text = re.sub(
         r"!\[([^\]]*)\]\(([^)]+)\)", r'<img src="\2" alt="\1" loading="lazy">', text
     )
-    # links
     text = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', text)
     return text
 
@@ -253,21 +214,33 @@ def write_json(path: Path, data: Any) -> None:
 
 
 def site_shell(title: str, body: str, description: str = "") -> str:
-    description_meta = escape(description or title)
+    dm = escape(description or title)
     return f"""<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{escape(title)}</title>
-  <meta name="description" content="{description_meta}">
-  <meta name="theme-color" content="#c0553a">
+  <meta name="description" content="{dm}">
+  <meta name="theme-color" content="#133D72">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/uRead/styles.css">
 </head>
 <body>
-  <nav class="nav">
-    <a href="/uRead/" class="nav-brand">uRead</a>
-    <button class="nav-toggle" onclick="this.classList.toggle('open');document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">
+  <nav class="nav" id="top">
+    <a href="/uRead/" class="brand">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="6" width="28" height="20" rx="3" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 6v20" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
+        <path d="M8 12h6M8 16h8M8 20h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+        <circle cx="23" cy="13" r="3" fill="var(--amber)"/>
+        <path d="M21 19l2 2 4-4" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>uRead</span>
+    </a>
+    <button class="nav-burger" onclick="this.classList.toggle('on');document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">
       <span></span><span></span><span></span>
     </button>
     <div class="nav-links">
@@ -275,14 +248,24 @@ def site_shell(title: str, body: str, description: str = "") -> str:
       <a href="/uRead/books/">深度笔记</a>
       <a href="/uRead/lists/">精选书单</a>
       <a href="/uRead/cards/">知识卡片</a>
-      <a href="/uRead/api/books.json">API</a>
+      <a href="/uRead/api/books.json" class="nav-api">API</a>
     </div>
   </nav>
-  <main class="container">
-    {body}
-  </main>
-  <footer class="footer">
-    <p>uRead — 开源深度读书笔记 · <a href="https://github.com/zhubao315/uRead">GitHub</a> · <a href="/uRead/api/books.json">API</a></p>
+  <main class="main">{body}</main>
+  <footer class="foot">
+    <div class="foot-inner">
+      <p class="foot-brand">uRead — Open Reading OS</p>
+      <p class="foot-links">
+        <a href="https://github.com/zhubao315/uRead">GitHub</a>
+        <span class="dot">·</span>
+        <a href="/uRead/api/books.json">Books API</a>
+        <span class="dot">·</span>
+        <a href="/uRead/api/tags.json">Tags API</a>
+        <span class="dot">·</span>
+        <a href="/uRead/api/graph.json">Graph API</a>
+      </p>
+      <p class="foot-copy">让知识如同代码和资产一样可被机器解析、调用与变现</p>
+    </div>
   </footer>
 </body>
 </html>"""
