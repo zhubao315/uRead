@@ -294,10 +294,17 @@ code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;bord
 .hero-eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);margin-bottom:.6rem}
 .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
 
+/* ── SEARCH ──────────────────────────── */
+.search-bar{display:flex;align-items:center;gap:.6rem;margin-top:1.2rem;padding:.6rem 1rem;background:var(--bg);border:1px solid var(--border);border-radius:999px;max-width:480px;transition:border-color var(--tr)}
+.search-bar:focus-within{border-color:var(--blue-l);box-shadow:0 0 0 3px var(--blue-bg)}
+.search-bar svg{flex-shrink:0;color:var(--muted)}
+.search-bar input{flex:1;border:none;background:none;outline:none;font-size:.9rem;font-family:var(--font-b);color:var(--ink)}
+.search-bar input::placeholder{color:var(--muted)}
+
 /* ── STATS ───────────────────────────── */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin-bottom:2rem}
-.stat{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;text-align:center;box-shadow:var(--sh-sm);transition:all var(--tr)}
-.stat:hover{box-shadow:var(--sh-md);border-color:var(--blue-l)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem}
+a.stat{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;text-align:center;box-shadow:var(--sh-sm);transition:all var(--tr);display:block;color:var(--ink);text-decoration:none}
+a.stat:hover{box-shadow:var(--sh-md);border-color:var(--blue-l);transform:translateY(-2px);color:var(--ink)}
 .stat-n{font-size:1.8rem;font-weight:700;color:var(--blue);line-height:1;font-family:var(--font-h)}
 .stat-l{font-size:.75rem;color:var(--muted);margin-top:.3rem;letter-spacing:.04em}
 .stat-icon{width:20px;height:20px;margin:0 auto .4rem;color:var(--amber)}
@@ -452,38 +459,30 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
             "M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25",
             str(len(books)),
             "深度笔记",
+            "/uRead/books/",
         ),
         (
             "M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z",
             str(len(cards)),
             "知识卡片",
-        ),
-        (
-            "M9.562 3.104a4.5 4.5 0 0 1 .908 0l1.07 3.292a4.5 4.5 0 0 0 3.396 3.396l3.292 1.07a4.5 4.5 0 0 1 0 .908l-3.292 1.07a4.5 4.5 0 0 0-3.396 3.396l-1.07 3.292a4.5 4.5 0 0 1-.908 0l-1.07-3.292a4.5 4.5 0 0 0-3.396-3.396L2.25 9.678a4.5 4.5 0 0 1 0-.908l3.292-1.07a4.5 4.5 0 0 0 3.396-3.396L9.562 3.104Z",
-            str(tag_count),
-            "标签数量",
-        ),
-        (
-            "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z",
-            str(enriched),
-            "已整合笔记",
+            "/uRead/cards/",
         ),
         (
             "M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21",
             str(len(CATEGORIES)),
             "九大分类",
+            "/uRead/books/",
         ),
         (
             "M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z",
             str(len(CURATED_LISTS)),
             "精选书单",
+            "/uRead/lists/",
         ),
     ]
     stats_h = "\n".join(
-        f'<div class="stat">{_icon(d, 22)}<div class="stat-n">{v}</div><div class="stat-label">{l}</div></div>'.replace(
-            'class="stat-label"', f'class="stat-l"'
-        ).replace(_icon(d, 22), f'<div class="stat-icon">{_icon(d, 20)}</div>')
-        for d, v, l in stat_defs
+        f'<a href="{href}" class="stat"><div class="stat-icon">{_icon(d, 20)}</div><div class="stat-n">{v}</div><div class="stat-l">{l}</div></a>'
+        for d, v, l, href in stat_defs
     )
 
     # category preview (max 6 per cat)
@@ -507,8 +506,12 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
     body = f"""
 <section class="hero">
   <div class="hero-eyebrow"><span class="dot"></span>Open Reading OS</div>
-  <h1>盘活经典书单资产<br>打造可发布、可检索的深度读书笔记</h1>
-  <p>uRead 用 GitHub 维护内容，用结构化元数据和静态 API 提升可读性、复用性与机器可用性。让知识如同代码和资产一样可被解析、调用与变现。</p>
+  <h1>让每一次阅读，都留下可生长的沉淀</h1>
+  <p>uRead 帮你打造可发布、可检索的深度读书笔记，系统化盘活你的经典书单。让读过的书、写下的思考，不再沉睡，真正成为能复用、能变现的个人知识资产。</p>
+  <div class="search-bar">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+    <input type="text" id="searchInput" placeholder="搜索书名、作者、标签…" oninput="filterCards(this.value)">
+  </div>
 </section>
 <div class="stats">{stats_h}</div>
 {_cat_nav()}
@@ -517,7 +520,19 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
 {cat_h}
 <div class="sh"><h2><span class="dot"></span>知识卡片</h2><a href="/uRead/cards/">查看全部</a></div>
 <div class="grid">{cards_h}</div>
-"""
+<script>
+function filterCards(q) {{
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.card').forEach(c => {{
+    const t = (c.textContent || '').toLowerCase();
+    c.style.display = (!q || t.includes(q)) ? '' : 'none';
+  }});
+  document.querySelectorAll('.cs').forEach(s => {{
+    const vis = s.querySelectorAll('.card:not([style*="display: none"])');
+    s.style.display = vis.length ? '' : 'none';
+  }});
+}}
+</script>"""
     (PUBLIC_DIR / "index.html").write_text(
         site_shell(
             "uRead — 深度读书笔记", body, "结构化深度读书笔记与Agent友好知识资产"
