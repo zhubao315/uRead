@@ -86,7 +86,7 @@ def load_notes() -> list[dict[str, Any]]:
     for path in sorted(CONTENT_DIR.rglob("*.md")):
         raw = path.read_text(encoding="utf-8")
         meta, body = parse_frontmatter(raw)
-        title = meta.get("title") or path.stem
+        title = str(meta.get("title") or path.stem)
         note_type = meta.get("type") or infer_type(path)
         note = {
             "title": title,
@@ -96,7 +96,7 @@ def load_notes() -> list[dict[str, Any]]:
             "section": infer_section(path),
             "type": note_type,
             "meta": meta,
-            "summary": meta.get("summary", ""),
+            "summary": str(meta.get("summary", "")),
             "body": body.strip(),
             "links": extract_wiki_links(body),
             "updatedAt": datetime.now(timezone.utc).isoformat(),
