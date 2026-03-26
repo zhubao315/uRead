@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr"><head><title>动手学深度学习</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Quartz 4"/><meta property="og:title" content="动手学深度学习"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="动手学深度学习"/><meta name="twitter:description" content="一句话定位 交互式深度学习教程，从理论到实践的桥梁 这本书为什么值得读 所属分类：科技科普类 主题聚焦：科技科普类、学习方法、技术前沿、李沐 阅读价值：理解关键技术、底层原理与未来趋势，避免只追热点。 阅读目标 厘清关键技术原理、演化方向与真实应用边界。 提炼可复用的认知模型、方法框架或行动清单。 建立与其他书籍、知识卡片之间的双向链接。 核心主题 主题标签：科技科普类、学习方法、技术前沿、李沐 书单摘要：交互式深度学习教程，从理论到实践的桥梁 推荐切入：先厘清技术对象、原理、约束和应用场景。 深度阅读框架 作者到底在回答什么问题 围绕“动手学深度学习 试图解决什么核心问题”展开，优先识别作者..."/><meta property="og:description" content="一句话定位 交互式深度学习教程，从理论到实践的桥梁 这本书为什么值得读 所属分类：科技科普类 主题聚焦：科技科普类、学习方法、技术前沿、李沐 阅读价值：理解关键技术、底层原理与未来趋势，避免只追热点。 阅读目标 厘清关键技术原理、演化方向与真实应用边界。 提炼可复用的认知模型、方法框架或行动清单。 建立与其他书籍、知识卡片之间的双向链接。 核心主题 主题标签：科技科普类、学习方法、技术前沿、李沐 书单摘要：交互式深度学习教程，从理论到实践的桥梁 推荐切入：先厘清技术对象、原理、约束和应用场景。 深度阅读框架 作者到底在回答什么问题 围绕“动手学深度学习 试图解决什么核心问题”展开，优先识别作者..."/><meta property="og:image:alt" content="一句话定位 交互式深度学习教程，从理论到实践的桥梁 这本书为什么值得读 所属分类：科技科普类 主题聚焦：科技科普类、学习方法、技术前沿、李沐 阅读价值：理解关键技术、底层原理与未来趋势，避免只追热点。 阅读目标 厘清关键技术原理、演化方向与真实应用边界。 提炼可复用的认知模型、方法框架或行动清单。 建立与其他书籍、知识卡片之间的双向链接。 核心主题 主题标签：科技科普类、学习方法、技术前沿、李沐 书单摘要：交互式深度学习教程，从理论到实践的桥梁 推荐切入：先厘清技术对象、原理、约束和应用场景。 深度阅读框架 作者到底在回答什么问题 围绕“动手学深度学习 试图解决什么核心问题”展开，优先识别作者..."/><meta property="og:image" content="https://zhubao315.github.io/uRead/static/og-image.png"/><meta property="og:image:url" content="https://zhubao315.github.io/uRead/static/og-image.png"/><meta name="twitter:image" content="https://zhubao315.github.io/uRead/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="zhubao315.github.io/uRead"/><meta property="og:url" content="https://zhubao315.github.io/uRead/02-深度笔记/科技科普类/动手学深度学习-李沐"/><meta property="twitter:url" content="https://zhubao315.github.io/uRead/02-深度笔记/科技科普类/动手学深度学习-李沐"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="一句话定位 交互式深度学习教程，从理论到实践的桥梁 这本书为什么值得读 所属分类：科技科普类 主题聚焦：科技科普类、学习方法、技术前沿、李沐 阅读价值：理解关键技术、底层原理与未来趋势，避免只追热点。 阅读目标 厘清关键技术原理、演化方向与真实应用边界。 提炼可复用的认知模型、方法框架或行动清单。 建立与其他书籍、知识卡片之间的双向链接。 核心主题 主题标签：科技科普类、学习方法、技术前沿、李沐 书单摘要：交互式深度学习教程，从理论到实践的桥梁 推荐切入：先厘清技术对象、原理、约束和应用场景。 深度阅读框架 作者到底在回答什么问题 围绕“动手学深度学习 试图解决什么核心问题”展开，优先识别作者..."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" data-persist="true"/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1lcm1haWQuaW5saW5lLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTtFQUNBOztBQUdGO0VBQ0U7OztBQUtGO0VBQ0U7RUFDQTs7O0FBSUo7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTtFQUNBOztBQUlKO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTs7QUFFQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFOztBQUlGO0VBQ0U7RUFDQTtFQUNBIiwic291cmNlc0NvbnRlbnQiOlsiLmV4cGFuZC1idXR0b24ge1xuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsb2F0OiByaWdodDtcbiAgcGFkZGluZzogMC40cmVtO1xuICBtYXJnaW46IDAuM3JlbTtcbiAgcmlnaHQ6IDA7IC8vIE5PVEU6IHJpZ2h0IHdpbGwgYmUgc2V0IGluIG1lcm1haWQuaW5saW5lLnRzXG4gIGNvbG9yOiB2YXIoLS1ncmF5KTtcbiAgYm9yZGVyLWNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tbGlnaHQpO1xuICBib3JkZXI6IDFweCBzb2xpZDtcbiAgYm9yZGVyLXJhZGl1czogNXB4O1xuICBvcGFjaXR5OiAwO1xuICB0cmFuc2l0aW9uOiAwLjJzO1xuXG4gICYgPiBzdmcge1xuICAgIGZpbGw6IHZhcigtLWxpZ2h0KTtcbiAgICBmaWx0ZXI6IGNvbnRyYXN0KDAuMyk7XG4gIH1cblxuICAmOmhvdmVyIHtcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgYm9yZGVyLWNvbG9yOiB2YXIoLS1zZWNvbmRhcnkpO1xuICB9XG5cbiAgJjpmb2N1cyB7XG4gICAgb3V0bGluZTogMDtcbiAgfVxufVxuXG5wcmUge1xuICAmOmhvdmVyID4gLmV4cGFuZC1idXR0b24ge1xuICAgIG9wYWNpdHk6IDE7XG4gICAgdHJhbnNpdGlvbjogMC4ycztcbiAgfVxufVxuXG4jbWVybWFpZC1jb250YWluZXIge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIGNvbnRhaW46IGxheW91dDtcbiAgei1pbmRleDogOTk5O1xuICBsZWZ0OiAwO1xuICB0b3A6IDA7XG4gIHdpZHRoOiAxMDB2dztcbiAgaGVpZ2h0OiAxMDB2aDtcbiAgb3ZlcmZsb3c6IGhpZGRlbjtcbiAgZGlzcGxheTogbm9uZTtcbiAgYmFja2Ryb3AtZmlsdGVyOiBibHVyKDRweCk7XG4gIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC41KTtcblxuICAmLmFjdGl2ZSB7XG4gICAgZGlzcGxheTogaW5saW5lLWJsb2NrO1xuICB9XG5cbiAgJiA+ICNtZXJtYWlkLXNwYWNlIHtcbiAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgICBib3JkZXItcmFkaXVzOiA1cHg7XG4gICAgcG9zaXRpb246IGZpeGVkO1xuICAgIHRvcDogNTAlO1xuICAgIGxlZnQ6IDUwJTtcbiAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZSgtNTAlLCAtNTAlKTtcbiAgICBoZWlnaHQ6IDgwdmg7XG4gICAgd2lkdGg6IDgwdnc7XG4gICAgb3ZlcmZsb3c6IGhpZGRlbjtcblxuICAgICYgPiAubWVybWFpZC1jb250ZW50IHtcbiAgICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICAgIHRyYW5zZm9ybS1vcmlnaW46IDAgMDtcbiAgICAgIHRyYW5zaXRpb246IHRyYW5zZm9ybSAwLjFzIGVhc2U7XG4gICAgICBvdmVyZmxvdzogdmlzaWJsZTtcbiAgICAgIG1pbi1oZWlnaHQ6IDIwMHB4O1xuICAgICAgbWluLXdpZHRoOiAyMDBweDtcblxuICAgICAgcHJlIHtcbiAgICAgICAgbWFyZ2luOiAwO1xuICAgICAgICBib3JkZXI6IG5vbmU7XG4gICAgICB9XG5cbiAgICAgIHN2ZyB7XG4gICAgICAgIG1heC13aWR0aDogbm9uZTtcbiAgICAgICAgaGVpZ2h0OiBhdXRvO1xuICAgICAgfVxuICAgIH1cblxuICAgICYgPiAubWVybWFpZC1jb250cm9scyB7XG4gICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICBib3R0b206IDIwcHg7XG4gICAgICByaWdodDogMjBweDtcbiAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICBnYXA6IDhweDtcbiAgICAgIHBhZGRpbmc6IDhweDtcbiAgICAgIGJhY2tncm91bmQ6IHZhcigtLWxpZ2h0KTtcbiAgICAgIGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLWxpZ2h0Z3JheSk7XG4gICAgICBib3JkZXItcmFkaXVzOiA2cHg7XG4gICAgICBib3gtc2hhZG93OiAwIDJweCA0cHggcmdiYSgwLCAwLCAwLCAwLjEpO1xuICAgICAgei1pbmRleDogMjtcblxuICAgICAgLm1lcm1haWQtY29udHJvbC1idXR0b24ge1xuICAgICAgICBkaXNwbGF5OiBmbGV4O1xuICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyO1xuICAgICAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgICAgICAgd2lkdGg6IDMycHg7XG4gICAgICAgIGhlaWdodDogMzJweDtcbiAgICAgICAgcGFkZGluZzogMDtcbiAgICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgICBjb2xvcjogdmFyKC0tZGFyayk7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDRweDtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBmb250LXNpemU6IDE2cHg7XG4gICAgICAgIGZvbnQtZmFtaWx5OiB2YXIoLS1ib2R5Rm9udCk7XG4gICAgICAgIHRyYW5zaXRpb246IGFsbCAwLjJzIGVhc2U7XG5cbiAgICAgICAgJjpob3ZlciB7XG4gICAgICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgICAgfVxuXG4gICAgICAgICY6YWN0aXZlIHtcbiAgICAgICAgICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoMXB4KTtcbiAgICAgICAgfVxuXG4gICAgICAgIC8vIFN0eWxlIHRoZSByZXNldCBidXR0b24gZGlmZmVyZW50bHlcbiAgICAgICAgJjpudGgtY2hpbGQoMikge1xuICAgICAgICAgIHdpZHRoOiBhdXRvO1xuICAgICAgICAgIHBhZGRpbmc6IDAgMTJweDtcbiAgICAgICAgICBmb250LXNpemU6IDE0cHg7XG4gICAgICAgIH1cbiAgICAgIH1cbiAgICB9XG4gIH1cbn1cbiJdfQ== */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" data-persist="true"/><script src="../../prescript.js" type="application/javascript" data-persist="true"></script><script type="application/javascript" data-persist="true">const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://zhubao315.github.io/uRead/index.xml"/></head><body data-slug="02-深度笔记/科技科普类/动手学深度学习-李沐"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Quartz 4</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Search</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Search for something" placeholder="Search for something"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Dark mode"><title>Dark mode</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Light mode"><title>Light mode</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Reader mode"><title>Reader mode</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-397"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Explorer</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-397" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../02-深度笔记/">02 深度笔记</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../02-深度笔记/科技科普类/">科技科普类</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>动手学深度学习</a></div></nav><h1 class="article-title">动手学深度学习</h1><p show-comma="true" class="content-meta"><time datetime="2023-12-31T16:00:00.000Z">Jan 01, 2024</time><span>30 min read</span></p><ul class="tags"><li><a href="../../tags/科技科普类" class="internal tag-link">科技科普类</a></li><li><a href="../../tags/学习方法" class="internal tag-link">学习方法</a></li><li><a href="../../tags/技术前沿" class="internal tag-link">技术前沿</a></li><li><a href="../../tags/李沐" class="internal tag-link">李沐</a></li><li><a href="../../tags/深度学习" class="internal tag-link">深度学习</a></li><li><a href="../../tags/IanGoodfellow" class="internal tag-link">IanGoodfellow</a></li><li><a href="../../tags/GAN" class="internal tag-link">GAN</a></li><li><a href="../../tags/机器学习" class="internal tag-link">机器学习</a></li><li><a href="../../tags/人工智能" class="internal tag-link">人工智能</a></li><li><a href="../../tags/神经网络" class="internal tag-link">神经网络</a></li><li><a href="../../tags/卷积网络" class="internal tag-link">卷积网络</a></li><li><a href="../../tags/循环神经网络" class="internal tag-link">循环神经网络</a></li><li><a href="../../tags/深度学习工程" class="internal tag-link">深度学习工程</a></li><li><a href="../../tags/AI实践" class="internal tag-link">AI实践</a></li><li><a href="../../tags/职场效率" class="internal tag-link">职场效率</a></li><li><a href="../../tags/生活收纳" class="internal tag-link">生活收纳</a></li><li><a href="../../tags/创业思维" class="internal tag-link">创业思维</a></li><li><a href="../../tags/动手学深度学习" class="internal tag-link">动手学深度学习</a></li><li><a href="../../tags/D2L" class="internal tag-link">D2L</a></li><li><a href="../../tags/PyTorch" class="internal tag-link">PyTorch</a></li><li><a href="../../tags/教材" class="internal tag-link">教材</a></li><li><a href="../../tags/编程" class="internal tag-link">编程</a></li><li><a href="../../tags/实战" class="internal tag-link">实战</a></li><li><a href="../../tags/开源" class="internal tag-link">开源</a></li></ul></div></div><article class="popover-hint"><h1 id="一句话定位">一句话定位<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#一句话定位" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>交互式深度学习教程，从理论到实践的桥梁</p>
+<h1 id="这本书为什么值得读">这本书为什么值得读<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#这本书为什么值得读" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<ul>
+<li>所属分类：科技科普类</li>
+<li>主题聚焦：科技科普类、学习方法、技术前沿、李沐</li>
+<li>阅读价值：理解关键技术、底层原理与未来趋势，避免只追热点。</li>
+</ul>
+<h1 id="阅读目标">阅读目标<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#阅读目标" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<ul>
+<li>厘清关键技术原理、演化方向与真实应用边界。</li>
+<li>提炼可复用的认知模型、方法框架或行动清单。</li>
+<li>建立与其他书籍、知识卡片之间的双向链接。</li>
+</ul>
+<h1 id="核心主题">核心主题<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#核心主题" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<ul>
+<li>主题标签：科技科普类、学习方法、技术前沿、李沐</li>
+<li>书单摘要：交互式深度学习教程，从理论到实践的桥梁</li>
+<li>推荐切入：先厘清技术对象、原理、约束和应用场景。</li>
+</ul>
+<h1 id="深度阅读框架">深度阅读框架<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#深度阅读框架" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="作者到底在回答什么问题">作者到底在回答什么问题<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#作者到底在回答什么问题" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>围绕“动手学深度学习 试图解决什么核心问题”展开，优先识别作者的时代背景、对象问题和核心命题。</p>
+<h2 id="书中的关键模型">书中的关键模型<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#书中的关键模型" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>记录作者最重要的 3 个概念、判断或方法。</li>
+<li>区分哪些是事实描述，哪些是价值判断，哪些是行动建议。</li>
+</ul>
+<h2 id="与我现有知识体系的连接">与我现有知识体系的连接<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#与我现有知识体系的连接" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>这本书与哪些已读作品互补或冲突。</li>
+<li>哪个观点最值得沉淀为知识卡片。</li>
+</ul>
+<h1 id="行动提炼">行动提炼<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#行动提炼" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<ul>
+<li>把这本书中最能落地的一条建议，转成自己的执行动作：把一个核心技术概念解释给非技术读者，检验自己是否真的理解。</li>
+<li>如果是理论型作品，至少提炼一个可用于判断现实问题的分析框架。</li>
+</ul>
+<h1 id="关联知识卡片">关联知识卡片<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#关联知识卡片" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<ul>
+<li><a href="../../03-知识卡片/学习方法" class="internal alias" data-slug="03-知识卡片/学习方法">学习方法</a></li>
+<li><a href="../../03-知识卡片/技术前沿" class="internal alias" data-slug="03-知识卡片/技术前沿">技术前沿</a></li>
+</ul>
+<hr/>
+<h1 id="微信读书笔记">微信读书笔记<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#微信读书笔记" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>以下内容整合自微信读书导出的高亮划线与读书笔记。</p>
+</blockquote>
+<h2 id="一作者介绍">一、作者介绍<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#一作者介绍" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>伊恩·古德费洛（Ian Goodfellow）是深度学习领域<strong>里程碑式的学者</strong>，被誉为“生成对抗网络（GAN）之父”。1992年出生于加拿大蒙特利尔，2017年获蒙特利尔大学机器学习博士学位，导师是深度学习三巨头之一的约书亚·本吉奥（Yoshua Bengio）。</p>
+<p>学术生涯中，他在谷歌大脑实习期间（2014年）提出GAN概念，引发深度学习领域生成模型的革命，相关论文引用量超10万次，成为计算机视觉、自然语言处理等领域的核心技术基础。除GAN外，他在对抗样本、深度学习安全性、神经网络优化等方向的研究均具有开创性。</p>
+<p>工业界经历丰富：2017年加入OpenAI担任研究科学家，参与GPT项目早期研发；2019年出任苹果公司机器学习研究总监，主导基础研究方向。</p>
+<p>核心著作《深度学习》（2016年MIT出版社出版）是领域内<strong>权威教科书</strong>，中文版2017年由人民邮电出版社发行，被全球顶尖高校（斯坦福、MIT等）和科技公司（谷歌、Facebook、微软）列为核心教材与培训资料。</p>
+<h2 id="二创作背景">二、创作背景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#二创作背景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="1-时代背景">1. 时代背景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-时代背景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>2010年代初是深度学习“复兴与爆发”的黄金期：2012年，AlexNet在ImageNet图像识别竞赛中以碾压性优势夺冠，证明深度神经网络在复杂任务上的巨大潜力，标志深度学习时代正式到来。</p>
+<p>但当时行业面临关键痛点——<strong>缺乏系统性、跨层次的权威教材</strong>：现有资料要么偏向工程实践（缺乏理论支撑），要么过于学术化（难以被工程师落地），导致学术界与工业界存在知识壁垒，新人入门门槛极高。</p>
+<h3 id="2-创作动机">2. 创作动机<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-创作动机" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>古德费洛联合本吉奥、亚伦·库维尔（Aaron Courville），希望打造一本“兼顾理论深度与实践指导”的教材，全面覆盖深度学习的数学基础、核心算法、训练技巧与前沿方向，为学生、研究人员和工程师提供统一的知识框架，填补行业空白。</p>
+<h3 id="3-创作过程与影响">3. 创作过程与影响<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-创作过程与影响" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>全书历时5年完成，三人分工明确：古德费洛负责机器学习基础、反向传播等核心章节；本吉奥主导概率论、信息论与深度学习理论；库维尔聚焦概率模型部分。</p>
+<p>2016年出版后，立即成为斯坦福CS230、MIT 6.034等顶级课程的指定教材，被《Nature》评价为“深度学习的‘圣经’”，至今仍是入门与进阶的<strong>必备权威资料</strong>。</p>
+<h2 id="三大纲章节结构与核心观点">三、大纲（章节结构与核心观点）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#三大纲章节结构与核心观点" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>全书按“基础-实践-研究”逻辑分层，共三大部分19章：</p>
+<h3 id="第一部分应用数学与机器学习基础1-5章">第一部分：应用数学与机器学习基础（1-5章）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#第一部分应用数学与机器学习基础1-5章" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>第2章 线性代数：向量/矩阵运算、特征值分解、SVD（数据降维核心工具）</li>
+<li>第3章 概率与信息论：贝叶斯概率、信息熵、交叉熵（模型训练的理论基础）</li>
+<li>第4章 数值计算：数值稳定性、优化数值方法（避免训练中计算误差）</li>
+<li>第5章 机器学习基础：监督/无监督学习、泛化与过拟合、模型评估指标</li>
+</ul>
+<h3 id="第二部分深度网络现代实践6-12章">第二部分：深度网络：现代实践（6-12章）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#第二部分深度网络现代实践6-12章" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>第6章 深度前馈网络：网络结构、激活函数、反向传播算法（深度学习核心框架）</li>
+<li>第7章 正则化：L1/L2、Dropout、数据增强（解决过拟合的关键技术）</li>
+<li>第8章 优化算法：SGD、动量法、Adam（模型训练效率的核心）</li>
+<li>第9章 卷积网络（CNN）：局部连接、参数共享、经典架构（计算机视觉核心）</li>
+<li>第10章 序列建模：RNN、LSTM、GRU（处理文本/语音等序列数据）</li>
+<li>第11章 实用方法论：数据预处理、超参数调优、模型评估流程</li>
+<li>第12章 应用：计算机视觉、语音识别、自然语言处理</li>
+</ul>
+<h3 id="第三部分深度学习研究13-19章">第三部分：深度学习研究（13-19章）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#第三部分深度学习研究13-19章" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>第13-14章 线性因子模型与自编码器（无监督表示学习）</li>
+<li>第15章 表示学习（深度学习的核心本质）</li>
+<li>第16章 蒙特卡罗方法（概率模型的数值计算工具）</li>
+<li>第17章 深度生成模型（含GAN，生成式AI的基础）</li>
+<li>第18章 注意力机制与序列模型（Transformer架构前身）</li>
+<li>第19章 深度学习前沿：强化学习融合、图神经网络等</li>
+</ul>
+<h2 id="四主要内容核心模块解读">四、主要内容（核心模块解读）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#四主要内容核心模块解读" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="1-数学基础深度学习的语言">1. 数学基础：深度学习的“语言”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-数学基础深度学习的语言" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>书中强调，数学不是“附加知识”，而是理解深度学习的前提——</p>
+<ul>
+<li><strong>线性代数</strong>：图像、文本等数据在计算机中以向量/矩阵形式存在，SVD、特征值分解能帮助提取数据核心特征（如PCA降维）；</li>
+<li><strong>概率论</strong>：机器学习本质是“基于概率的决策”，贝叶斯思维能解决“数据噪声下的预测问题”（如垃圾邮件分类）；</li>
+<li><strong>信息论</strong>：熵衡量数据不确定性，交叉熵是分类模型的损失函数核心（量化“预测与真实的差距”）。</li>
+</ul>
+<h3 id="2-核心算法从反向传播到gan">2. 核心算法：从“反向传播”到“GAN”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-核心算法从反向传播到gan" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="1反向传播深度学习的训练引擎">（1）反向传播：深度学习的“训练引擎”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1反向传播深度学习的训练引擎" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>原理：通过“前向计算预测值→计算损失→反向求梯度→更新参数”的循环，让模型“从错误中学习”——类似学生“做题→批改→纠正→提升”的过程，数学核心是“链式求导法则”。</p>
+<h4 id="2cnn计算机视觉的革命">（2）CNN：计算机视觉的“革命”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2cnn计算机视觉的革命" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>核心特性：局部连接（只关注输入局部区域）、参数共享（同一卷积核复用），实现“平移不变性”（无论物体在图像哪个位置都能识别）。经典架构从LeNet-5（1998）到ResNet（2015，跳跃连接解决“深层网络梯度消失”），逐步突破模型深度限制。</p>
+<h4 id="3rnn与lstm序列数据的解码器">（3）RNN与LSTM：序列数据的“解码器”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3rnn与lstm序列数据的解码器" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>RNN通过“记忆上一步输出”处理序列数据，但存在“长期依赖问题”（记不住长序列早期信息）；LSTM通过“遗忘门、输入门、输出门”的门控机制，解决长期依赖，成为文本翻译、语音识别的核心模型。</p>
+<h4 id="4gan生成式ai的开山之作">（4）GAN：生成式AI的“开山之作”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4gan生成式ai的开山之作" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>古德费洛的核心贡献：让“生成器”（造假数据）与“判别器”（辨真假）相互博弈，在对抗中共同进步。相比传统生成模型，GAN生成的图像、文本更逼真，奠定了后来StyleGAN、DALL·E等工具的基础。</p>
+<h3 id="3-训练技巧让模型学透不学死">3. 训练技巧：让模型“学透”不“学死”<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-训练技巧让模型学透不学死" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>正则化</strong>：防止模型“死记硬背训练数据”（过拟合），如Dropout训练时随机丢弃神经元，相当于“训练多个模型取平均”；</li>
+<li><strong>优化算法</strong>：从SGD（简单但震荡）到Adam（结合动量与自适应学习率，目前最常用），核心是“高效找到最优参数”；</li>
+<li><strong>数据预处理</strong>：标准化、归一化让数据分布更稳定，数据增强（图像旋转/翻转）让有限数据发挥更大价值。</li>
+</ul>
+<h2 id="五核心观点">五、核心观点<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#五核心观点" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>深度学习的本质是“层次化表示学习”</strong>：不依赖人工设计特征，模型通过多层网络自动从数据中学习“低级特征→中级特征→高级特征”（如图像：像素→边缘→纹理→物体）；</li>
+<li><strong>数学基础决定理解深度</strong>：不懂线性代数无法理解数据表示，不懂概率论无法设计损失函数，深度学习不是“黑盒”，而是可通过数学解释的系统；</li>
+<li><strong>实践与理论缺一不可</strong>：再好的理论模型，没有工程优化（如数值稳定性、超参数调优）也无法落地；脱离理论的实践只能是“盲目调参”；</li>
+<li><strong>正则化是“泛化能力”的关键</strong>：模型在训练集上表现好没用，正则化能让模型学到“数据规律”而非“噪声”，适应新数据；</li>
+<li><strong>对抗训练开辟新方向</strong>：GAN的“博弈思想”突破了传统生成模型的局限，让AI从“识别”走向“创造”；</li>
+<li><strong>注意力机制重构序列建模</strong>：相比RNN的“顺序计算”，注意力机制能“并行计算+聚焦关键信息”，为Transformer架构（BERT、GPT基础）奠定基础；</li>
+<li><strong>跨领域融合是趋势</strong>：深度学习与强化学习（如DQN玩游戏）、图论（图神经网络）的融合，正在解决更复杂的现实问题。</li>
+</ol>
+<h2 id="六金句摘录附解读">六、金句摘录（附解读）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#六金句摘录附解读" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li>
+<p><strong>“深度学习的本质是通过多层非线性变换学习数据的层次化表示。”</strong><br/>
+解读：点出深度学习与传统机器学习的核心区别——无需人工设计特征，模型自主学习数据的内在结构，这是其在复杂任务上表现优异的根本原因。</p>
+</li>
+<li>
+<p><strong>“数学是深度学习的语言。没有数学基础，就无法真正理解深度学习的精髓。”</strong><br/>
+解读：反驳“深度学习只需调参”的误区，强调数学是“看透黑盒”的工具，比如用链式求导理解反向传播，用概率理解损失函数。</p>
+</li>
+<li>
+<p><strong>“正则化的目标是让模型学习到真正重要的模式，而不是记住训练数据。”</strong><br/>
+解读：正则化的核心不是“限制模型能力”，而是“引导模型学对规律”，比如Dropout让模型不依赖单个神经元，增强鲁棒性。</p>
+</li>
+<li>
+<p><strong>“GAN的提出标志着生成模型进入新时代，从被动生成到主动博弈。”</strong><br/>
+解读：传统生成模型“被动拟合数据分布”，而GAN通过“生成器与判别器的对抗”主动优化，生成的结果更逼真、更多样，开启了生成式AI的浪潮。</p>
+</li>
+<li>
+<p><strong>“注意力机制的提出让序列建模不再依赖循环结构，实现了并行计算。”</strong><br/>
+解读：指出注意力机制的革命性价值——解决了RNN“顺序计算效率低”的痛点，为Transformer的诞生铺垫，直接推动了NLP领域的“预训练模型革命”。</p>
+</li>
+</ol>
+<h2 id="七生活学习和工作中的应用指导">七、生活、学习和工作中的应用指导<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#七生活学习和工作中的应用指导" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="实例1用正则化思维优化职场汇报工作场景">实例1：用“正则化思维”优化职场汇报（工作场景）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#实例1用正则化思维优化职场汇报工作场景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="场景">场景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#场景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>职场人小李每次汇报都堆砌细节，领导抓不住重点（类似模型“过拟合”：记住细节，没抓住核心规律）。</p>
+<h4 id="应用原理">应用原理<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#应用原理" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>正则化的核心是“剔除噪声，聚焦关键”，对应汇报中“删减无关信息，突出核心结论”。</p>
+<h4 id="操作步骤">操作步骤<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#操作步骤" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li>先定“核心结论”（如“本季度销售额提升10%，核心原因是新品上线”）——相当于“模型目标函数”；</li>
+<li>删减“与核心无关的细节”（如剔除3个月前的无效数据、非关键部门的配合流程）——相当于“L1正则化（稀疏化特征）”；</li>
+<li>用“数据+案例”支撑核心（如“新品占销售额30%，某客户反馈新品解决了痛点”）——相当于“有效特征保留”；</li>
+<li>结尾总结“下一步动作”（如“下月加大新品推广”）——相当于“模型优化方向”。</li>
+</ol>
+<h4 id="效果">效果<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#效果" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>领导快速get核心，汇报效率提升50%。</p>
+<h3 id="实例2用反向传播思维提升考试成绩学习场景">实例2：用“反向传播思维”提升考试成绩（学习场景）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#实例2用反向传播思维提升考试成绩学习场景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="场景-1">场景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#场景-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>学生小王模拟考失分多，不知道该补哪部分（类似模型“训练后损失高，但不知道梯度方向”）。</p>
+<h4 id="应用原理-1">应用原理<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#应用原理-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>反向传播“从损失（失分）反向找原因（知识漏洞），针对性优化（补短板）”。</p>
+<h4 id="操作步骤-1">操作步骤<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#操作步骤-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li>统计“各题型失分情况”（如数学选择错3题、大题错2题）——相当于“计算损失分布”；</li>
+<li>分析“失分原因”（选择错因是“公式记混”，大题错因是“解题步骤不规范”）——相当于“反向求梯度（找参数问题）”；</li>
+<li>针对性训练（每天花30分钟记公式、练解题步骤）——相当于“参数更新（梯度下降）”；</li>
+<li>每周做1次小测，验证“失分是否减少”——相当于“模型验证（验证集评估）”。</li>
+</ol>
+<h4 id="效果-1">效果<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#效果-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>1个月后模拟考总分提升20分，错题率下降30%。</p>
+<h3 id="实例3用cnn局部连接思维整理生活收纳生活场景">实例3：用“CNN局部连接思维”整理生活收纳（生活场景）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#实例3用cnn局部连接思维整理生活收纳生活场景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="场景-2">场景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#场景-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>小张的衣柜杂乱无章，找衣服要翻很久（类似“未经过CNN处理的图像：像素混乱，无特征提取”）。</p>
+<h4 id="应用原理-2">应用原理<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#应用原理-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>CNN“局部连接”——每个神经元关注局部区域，对应收纳“按‘局部场景’分类，不混放”。</p>
+<h4 id="操作步骤-2">操作步骤<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#操作步骤-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li>按“穿着场景”划分“局部区域”（如“上班装、运动装、休闲装”）——相当于CNN“局部感受野”；</li>
+<li>每个区域内再细分“子类别”（如上班装里分“上衣、裤子、外套”）——相当于CNN“多层特征提取（像素→边缘→物体）”；</li>
+<li>给每个区域贴标签（如“运动装-瑜伽服”）——相当于CNN“特征映射”；</li>
+<li>每次取放后“归位到对应区域”——相当于“模型参数更新，保持特征稳定性”。</li>
+</ol>
+<h4 id="效果-2">效果<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#效果-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>找衣服时间从10分钟缩短到1分钟，衣柜长期保持整洁。</p>
+<h3 id="实例4用gan对抗思维提升产品竞争力创业场景">实例4：用“GAN对抗思维”提升产品竞争力（创业场景）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#实例4用gan对抗思维提升产品竞争力创业场景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<h4 id="场景-3">场景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#场景-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>初创公司做奶茶，产品同质化严重（类似“传统生成模型：被动模仿，无差异化”）。</p>
+<h4 id="应用原理-3">应用原理<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#应用原理-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>GAN“生成器（自身产品）与判别器（竞品/用户需求）对抗，持续优化”——让产品在竞争中找到差异化优势。</p>
+<h4 id="操作步骤-3">操作步骤<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#操作步骤-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<ol>
+<li>定义“判别器”（竞品优势：如A品牌口感甜、B品牌包装潮；用户痛点：怕胖、想健康）——相当于“判别器识别‘好产品’的标准”；</li>
+<li>设计“生成器”（自身产品：低糖奶茶+环保包装）——相当于“生成器造‘假数据’（差异化产品）”；</li>
+<li>投放市场收集反馈（用户是否认可“低糖+环保”）——相当于“判别器判断‘生成结果’（产品）是否合格”；</li>
+<li>迭代优化（如用户觉得低糖不够香，就调整配方）——相当于“生成器根据判别器反馈优化，提升竞争力”。</li>
+</ol>
+<h4 id="效果-3">效果<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#效果-3" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h4>
+<p>产品差异化明显，3个月内用户复购率提升25%。</p>
+<h2 id="八相关笔记关联学习用">八、相关笔记（关联学习用）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#八相关笔记关联学习用" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><a href="../../深度学习数学基础：线性代数核心工具实操" class="internal alias" data-slug="深度学习数学基础：线性代数核心工具实操">深度学习数学基础：线性代数核心工具实操</a><br/>
+<a href="../../反向传播算法：从数学推导到代码实现" class="internal alias" data-slug="反向传播算法：从数学推导到代码实现">反向传播算法：从数学推导到代码实现</a><br/>
+<a href="../../CNN实战：用PyTorch搭建图像分类模型" class="internal alias" data-slug="CNN实战：用PyTorch搭建图像分类模型">CNN实战：用PyTorch搭建图像分类模型</a><br/>
+<a href="../../LSTM与GRU：解决序列数据的长期依赖问题" class="internal alias" data-slug="LSTM与GRU：解决序列数据的长期依赖问题">LSTM与GRU：解决序列数据的长期依赖问题</a><br/>
+<a href="../../GAN入门：从原理到实战生成艺术图像" class="internal alias" data-slug="GAN入门：从原理到实战生成艺术图像">GAN入门：从原理到实战生成艺术图像</a><br/>
+<a href="../../正则化技巧：5种防止过拟合的落地方法" class="internal alias" data-slug="正则化技巧：5种防止过拟合的落地方法">正则化技巧：5种防止过拟合的落地方法</a><br/>
+<a href="../../深度学习优化算法：SGD、Adam对比与选择" class="internal alias" data-slug="深度学习优化算法：SGD、Adam对比与选择">深度学习优化算法：SGD、Adam对比与选择</a><br/>
+<a href="../../注意力机制：Transformer架构的核心原理" class="internal alias" data-slug="注意力机制：Transformer架构的核心原理">注意力机制：Transformer架构的核心原理</a><br/>
+<a href="../../深度学习在NLP中的应用：文本分类实战" class="internal alias" data-slug="深度学习在NLP中的应用：文本分类实战">深度学习在NLP中的应用：文本分类实战</a><br/>
+<a href="../../深度强化学习：DQN玩游戏的原理与实现" class="internal alias" data-slug="深度强化学习：DQN玩游戏的原理与实现">深度强化学习：DQN玩游戏的原理与实现</a></p>
+<h2 id="九标签">九、标签<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#九标签" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><a href="../.././../tags/深度学习" class="tag-link internal alias" data-slug="tags/深度学习">深度学习</a> <a href="../.././../tags/IanGoodfellow" class="tag-link internal alias" data-slug="tags/IanGoodfellow">IanGoodfellow</a> <a href="../.././../tags/GAN" class="tag-link internal alias" data-slug="tags/GAN">GAN</a> <a href="../.././../tags/机器学习" class="tag-link internal alias" data-slug="tags/机器学习">机器学习</a> <a href="../.././../tags/人工智能" class="tag-link internal alias" data-slug="tags/人工智能">人工智能</a> <a href="../.././../tags/神经网络" class="tag-link internal alias" data-slug="tags/神经网络">神经网络</a> <a href="../.././../tags/卷积网络" class="tag-link internal alias" data-slug="tags/卷积网络">卷积网络</a> <a href="../.././../tags/循环神经网络" class="tag-link internal alias" data-slug="tags/循环神经网络">循环神经网络</a> <a href="../.././../tags/深度学习工程" class="tag-link internal alias" data-slug="tags/深度学习工程">深度学习工程</a> <a href="../.././../tags/AI实践" class="tag-link internal alias" data-slug="tags/AI实践">AI实践</a> <a href="../.././../tags/职场效率" class="tag-link internal alias" data-slug="tags/职场效率">职场效率</a> <a href="../.././../tags/学习方法" class="tag-link internal alias" data-slug="tags/学习方法">学习方法</a> <a href="../.././../tags/生活收纳" class="tag-link internal alias" data-slug="tags/生活收纳">生活收纳</a> <a href="../.././../tags/创业思维" class="tag-link internal alias" data-slug="tags/创业思维">创业思维</a></p>
+<hr/>
+<h1 id="cc-读书笔记">cc 读书笔记<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#cc-读书笔记" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>以下内容整合自 cc 仓库的深度阅读笔记。</p>
+</blockquote>
+<h1 id="动手学深度学习dive-into-deep-learning">《动手学深度学习》（Dive into Deep Learning）<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#动手学深度学习dive-into-deep-learning" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<h2 id="李沐mu-li阿斯顿张aston-zhang等">李沐（Mu Li）、阿斯顿·张（Aston Zhang）等<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#李沐mu-li阿斯顿张aston-zhang等" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p>“纸上得来终觉浅，绝知此事要躬行。“</p>
+</blockquote>
+<hr/>
+<h2 id="作者介绍">作者介绍<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#作者介绍" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>李沐（Mu Li）</strong></p>
+<p><strong>生平背景</strong>
+亚马逊首席科学家（AWS AI），加州大学伯克利分校客座教授。他是深度学习框架MXNet的作者之一。</p>
+<p><strong>主要成就</strong></p>
+<ul>
+<li><strong>开源布道者：</strong> 李沐不仅是顶尖的科学家，更是热情的教育家。他在B站上的深度学习课程（跟李沐学AI）播放量破千万，被誉为”AI界的郭德纲”。</li>
+<li><strong>D2L项目：</strong> 他发起的《动手学深度学习》（D2L）开源书项目，旨在降低深度学习的学习门槛，让每个人都能免费学到最前沿的AI知识。</li>
+</ul>
+<p><strong>影响力</strong>
+这本书被全球数百所大学用作教材。它的特点是<strong>交互式学习</strong>：每一节不仅有文字讲解，还有可运行的代码（Jupyter Notebook）。它彻底改变了深度学习的教学方式。</p>
+<hr/>
+<h2 id="创作背景">创作背景<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#创作背景" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>创作时间</strong>
+2019年发布，持续更新中（支持PyTorch、MXNet、TensorFlow）。</p>
+<p><strong>社会环境</strong>
+深度学习发展极快，新论文层出不穷。传统的纸质教材更新太慢，跟不上节奏。</p>
+<p><strong>写作动机</strong>
+李沐希望写一本”活”的书。这本书应该像软件一样不断迭代，并且让读者能够边看边跑代码，真正”动手”学。</p>
+<hr/>
+<h2 id="大纲">大纲<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#大纲" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>第一部分：基础知识</strong></p>
+<ul>
+<li>线性回归、Softmax回归。</li>
+<li>多层感知机（MLP）。</li>
+<li>深度学习计算。</li>
+</ul>
+<p><strong>第二部分：卷积神经网络（CNN）</strong></p>
+<ul>
+<li>LeNet、AlexNet、VGG、ResNet。</li>
+</ul>
+<p><strong>第三部分：循环神经网络（RNN）</strong></p>
+<ul>
+<li>LSTM、GRU。</li>
+<li>机器翻译。</li>
+</ul>
+<p><strong>第四部分：前沿应用</strong></p>
+<ul>
+<li>注意力机制（Transformer/BERT）。</li>
+<li>计算机视觉（目标检测、语义分割）。</li>
+<li>生成对抗网络（GAN）。</li>
+</ul>
+<hr/>
+<h2 id="主要内容">主要内容<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#主要内容" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="1-动手学的理念">1. 动手学的理念<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-动手学的理念" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Code is Truth：</strong> 数学公式是抽象的，代码是具体的。公式可能会骗你（如果你没看懂），但代码不会（跑不通就是跑不通）。</li>
+<li><strong>Jupyter Notebook：</strong> 全书基于Jupyter Notebook编写。你可以直接在网页上修改参数、运行代码，实时看到结果。这种”所见即所得”的体验极大地降低了学习难度。</li>
+</ul>
+<h3 id="2-经典模型复现">2. 经典模型复现<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-经典模型复现" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>这本书最硬核的地方在于，它手把手教你<strong>从零实现</strong>（不调包）每一个经典模型，然后再教你用框架（调包）实现一遍。</p>
+<ul>
+<li><strong>ResNet（残差网络）：</strong> 解决了深层网络难以训练的问题（梯度消失）。核心思想是”短路连接”（Shortcut Connection）。</li>
+<li><strong>LSTM（长短期记忆网络）：</strong> 解决了RNN记不住长序列的问题。核心思想是”门控机制”（遗忘门、输入门、输出门）。</li>
+<li><strong>Transformer：</strong> 抛弃了循环结构，完全基于注意力机制。它是现代大模型（如GPT）的基石。</li>
+</ul>
+<h3 id="3-深度学习工程化">3. 深度学习工程化<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-深度学习工程化" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>数据加载：</strong> 如何高效地读取海量数据？</li>
+<li><strong>GPU加速：</strong> 如何利用显卡并行计算？</li>
+<li><strong>模型微调（Fine-tuning）：</strong> 只有少量数据怎么办？拿别人在大规模数据集上训练好的模型（预训练模型），在自己的数据上微调一下。这是工业界最常用的技巧。</li>
+</ul>
+<h3 id="4-优化算法">4. 优化算法<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-优化算法" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>梯度下降（GD）：</strong> 下山算法。</li>
+<li><strong>随机梯度下降（SGD）：</strong> 每次只看一个样本，跑得快但震荡。</li>
+<li><strong>小批量随机梯度下降（Mini-batch SGD）：</strong> 折中方案，每次看一小批样本。工业界标配。</li>
+<li><strong>Adam：</strong> 自适应学习率。傻瓜式优化器，效果通常不错。</li>
+</ul>
+<hr/>
+<h2 id="核心观点">核心观点<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#核心观点" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>深度学习是实验科学：</strong> 理论很重要，但实验更重要。很多SOTA（State of the Art）模型是试出来的，不是推导出来的。</li>
+<li><strong>端到端（End-to-End）：</strong> 深度学习的趋势是减少人工特征工程，让模型直接从原始数据（像素、字符）学到最终结果。</li>
+<li><strong>算力决定上限：</strong> 很多算法几十年前就有了，但直到有了GPU和大数据，它们才真正爆发威力。</li>
+</ol>
+<hr/>
+<h2 id="金句摘录">金句摘录<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#金句摘录" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p><strong>“纸上得来终觉浅，绝知此事要躬行。”</strong></p>
+</blockquote>
+<p><strong>解析：</strong> 书名的由来。</p>
+<blockquote>
+<p><strong>“Talk is cheap. Show me the code.”</strong></p>
+</blockquote>
+<p><strong>解析：</strong> 程序员的信条。</p>
+<blockquote>
+<p><strong>“深度学习不仅是一门科学，更是一门艺术（炼丹）。”</strong></p>
+</blockquote>
+<p><strong>解析：</strong> 调参的玄学。</p>
+<blockquote>
+<p><strong>“模型越深，效果越好（在一定范围内）。”</strong></p>
+</blockquote>
+<p><strong>解析：</strong> 深度学习的基本假设。</p>
+<hr/>
+<h2 id="应用指导">应用指导<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#应用指导" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="1-入门路径">1. 入门路径<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-入门路径" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>场景：</strong> 零基础小白。</li>
+<li><strong>应用：</strong>
+<ul>
+<li><strong>看视频：</strong> 先去B站看李沐的视频课程，幽默风趣，容易坚持。</li>
+<li><strong>跑代码：</strong> 下载书中的Notebook，一行行运行。不要只看不练。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-论文复现">2. 论文复现<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-论文复现" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>场景：</strong> 读了论文想复现。</li>
+<li><strong>应用：</strong>
+<ul>
+<li>这本书提供了很多经典论文的复现代码。</li>
+<li>学习作者的代码风格和架构设计，这对复现新论文非常有帮助。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-工业落地">3. 工业落地<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-工业落地" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>场景：</strong> 公司要上AI项目。</li>
+<li><strong>应用：</strong>
+<ul>
+<li><strong>微调（Fine-tuning）：</strong> 别想着从头训练一个ResNet或BERT（太贵了）。下载开源的预训练权重，针对你的业务数据微调一下，性价比最高。</li>
+</ul>
+</li>
+</ul>
+<hr/>
+<h2 id="相关笔记">相关笔记<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#相关笔记" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><a href="../../Python深度学习" class="internal alias" data-slug="Python深度学习">Python深度学习</a> <a href="../../Python机器学习" class="internal alias" data-slug="Python机器学习">Python机器学习</a> <a href="../../机器学习" class="internal alias" data-slug="机器学习">机器学习</a> <a href="../../深度学习" class="internal alias" data-slug="深度学习">深度学习</a> <a href="../../统计学习方法" class="internal alias" data-slug="统计学习方法">统计学习方法</a> <a href="../../AI极简经济学" class="internal alias" data-slug="AI极简经济学">AI极简经济学</a> <a href="../../AI产品经理手册" class="internal alias" data-slug="AI产品经理手册">AI产品经理手册</a> <a href="../../算法导论" class="internal alias" data-slug="算法导论">算法导论</a> <a href="../../黑客与画家" class="internal alias" data-slug="黑客与画家">黑客与画家</a> <a href="../../代码大全" class="internal alias" data-slug="代码大全">代码大全</a></p>
+<hr/>
+<h2 id="标签">标签<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#标签" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><a href="../.././../tags/动手学深度学习" class="tag-link internal alias" data-slug="tags/动手学深度学习">动手学深度学习</a> <a href="../.././../tags/李沐" class="tag-link internal alias" data-slug="tags/李沐">李沐</a> <a href="../.././../tags/D2L" class="tag-link internal alias" data-slug="tags/D2L">D2L</a> <a href="../.././../tags/深度学习" class="tag-link internal alias" data-slug="tags/深度学习">深度学习</a> <a href="../.././../tags/PyTorch" class="tag-link internal alias" data-slug="tags/PyTorch">PyTorch</a> <a href="../.././../tags/人工智能" class="tag-link internal alias" data-slug="tags/人工智能">人工智能</a> <a href="../.././../tags/教材" class="tag-link internal alias" data-slug="tags/教材">教材</a> <a href="../.././../tags/编程" class="tag-link internal alias" data-slug="tags/编程">编程</a> <a href="../.././../tags/实战" class="tag-link internal alias" data-slug="tags/实战">实战</a> <a href="../.././../tags/开源" class="tag-link internal alias" data-slug="tags/开源">开源</a></p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Graph View</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-180" aria-expanded="true"><h3>Table of Contents</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#一句话定位" data-for="一句话定位">一句话定位</a></li><li class="depth-0"><a href="#这本书为什么值得读" data-for="这本书为什么值得读">这本书为什么值得读</a></li><li class="depth-0"><a href="#阅读目标" data-for="阅读目标">阅读目标</a></li><li class="depth-0"><a href="#核心主题" data-for="核心主题">核心主题</a></li><li class="depth-0"><a href="#深度阅读框架" data-for="深度阅读框架">深度阅读框架</a></li><li class="depth-1"><a href="#作者到底在回答什么问题" data-for="作者到底在回答什么问题">作者到底在回答什么问题</a></li><li class="depth-1"><a href="#书中的关键模型" data-for="书中的关键模型">书中的关键模型</a></li><li class="depth-1"><a href="#与我现有知识体系的连接" data-for="与我现有知识体系的连接">与我现有知识体系的连接</a></li><li class="depth-0"><a href="#行动提炼" data-for="行动提炼">行动提炼</a></li><li class="depth-0"><a href="#关联知识卡片" data-for="关联知识卡片">关联知识卡片</a></li><li class="depth-0"><a href="#微信读书笔记" data-for="微信读书笔记">微信读书笔记</a></li><li class="depth-1"><a href="#一作者介绍" data-for="一作者介绍">一、作者介绍</a></li><li class="depth-1"><a href="#二创作背景" data-for="二创作背景">二、创作背景</a></li><li class="depth-2"><a href="#1-时代背景" data-for="1-时代背景">1. 时代背景</a></li><li class="depth-2"><a href="#2-创作动机" data-for="2-创作动机">2. 创作动机</a></li><li class="depth-2"><a href="#3-创作过程与影响" data-for="3-创作过程与影响">3. 创作过程与影响</a></li><li class="depth-1"><a href="#三大纲章节结构与核心观点" data-for="三大纲章节结构与核心观点">三、大纲（章节结构与核心观点）</a></li><li class="depth-2"><a href="#第一部分应用数学与机器学习基础1-5章" data-for="第一部分应用数学与机器学习基础1-5章">第一部分：应用数学与机器学习基础（1-5章）</a></li><li class="depth-2"><a href="#第二部分深度网络现代实践6-12章" data-for="第二部分深度网络现代实践6-12章">第二部分：深度网络：现代实践（6-12章）</a></li><li class="depth-2"><a href="#第三部分深度学习研究13-19章" data-for="第三部分深度学习研究13-19章">第三部分：深度学习研究（13-19章）</a></li><li class="depth-1"><a href="#四主要内容核心模块解读" data-for="四主要内容核心模块解读">四、主要内容（核心模块解读）</a></li><li class="depth-2"><a href="#1-数学基础深度学习的语言" data-for="1-数学基础深度学习的语言">1. 数学基础：深度学习的“语言”</a></li><li class="depth-2"><a href="#2-核心算法从反向传播到gan" data-for="2-核心算法从反向传播到gan">2. 核心算法：从“反向传播”到“GAN”</a></li><li class="depth-2"><a href="#3-训练技巧让模型学透不学死" data-for="3-训练技巧让模型学透不学死">3. 训练技巧：让模型“学透”不“学死”</a></li><li class="depth-1"><a href="#五核心观点" data-for="五核心观点">五、核心观点</a></li><li class="depth-1"><a href="#六金句摘录附解读" data-for="六金句摘录附解读">六、金句摘录（附解读）</a></li><li class="depth-1"><a href="#七生活学习和工作中的应用指导" data-for="七生活学习和工作中的应用指导">七、生活、学习和工作中的应用指导</a></li><li class="depth-2"><a href="#实例1用正则化思维优化职场汇报工作场景" data-for="实例1用正则化思维优化职场汇报工作场景">实例1：用“正则化思维”优化职场汇报（工作场景）</a></li><li class="depth-2"><a href="#实例2用反向传播思维提升考试成绩学习场景" data-for="实例2用反向传播思维提升考试成绩学习场景">实例2：用“反向传播思维”提升考试成绩（学习场景）</a></li><li class="depth-2"><a href="#实例3用cnn局部连接思维整理生活收纳生活场景" data-for="实例3用cnn局部连接思维整理生活收纳生活场景">实例3：用“CNN局部连接思维”整理生活收纳（生活场景）</a></li><li class="depth-2"><a href="#实例4用gan对抗思维提升产品竞争力创业场景" data-for="实例4用gan对抗思维提升产品竞争力创业场景">实例4：用“GAN对抗思维”提升产品竞争力（创业场景）</a></li><li class="depth-1"><a href="#八相关笔记关联学习用" data-for="八相关笔记关联学习用">八、相关笔记（关联学习用）</a></li><li class="depth-1"><a href="#九标签" data-for="九标签">九、标签</a></li><li class="depth-0"><a href="#cc-读书笔记" data-for="cc-读书笔记">cc 读书笔记</a></li><li class="depth-0"><a href="#动手学深度学习dive-into-deep-learning" data-for="动手学深度学习dive-into-deep-learning">《动手学深度学习》（Dive into Deep Learning）</a></li><li class="depth-1"><a href="#李沐mu-li阿斯顿张aston-zhang等" data-for="李沐mu-li阿斯顿张aston-zhang等">李沐（Mu Li）、阿斯顿·张（Aston Zhang）等</a></li><li class="depth-1"><a href="#作者介绍" data-for="作者介绍">作者介绍</a></li><li class="depth-1"><a href="#创作背景" data-for="创作背景">创作背景</a></li><li class="depth-1"><a href="#大纲" data-for="大纲">大纲</a></li><li class="depth-1"><a href="#主要内容" data-for="主要内容">主要内容</a></li><li class="depth-2"><a href="#1-动手学的理念" data-for="1-动手学的理念">1. 动手学的理念</a></li><li class="depth-2"><a href="#2-经典模型复现" data-for="2-经典模型复现">2. 经典模型复现</a></li><li class="depth-2"><a href="#3-深度学习工程化" data-for="3-深度学习工程化">3. 深度学习工程化</a></li><li class="depth-2"><a href="#4-优化算法" data-for="4-优化算法">4. 优化算法</a></li><li class="depth-1"><a href="#核心观点" data-for="核心观点">核心观点</a></li><li class="depth-1"><a href="#金句摘录" data-for="金句摘录">金句摘录</a></li><li class="depth-1"><a href="#应用指导" data-for="应用指导">应用指导</a></li><li class="depth-2"><a href="#1-入门路径" data-for="1-入门路径">1. 入门路径</a></li><li class="depth-2"><a href="#2-论文复现" data-for="2-论文复现">2. 论文复现</a></li><li class="depth-2"><a href="#3-工业落地" data-for="3-工业落地">3. 工业落地</a></li><li class="depth-1"><a href="#相关笔记" data-for="相关笔记">相关笔记</a></li><li class="depth-1"><a href="#标签" data-for="标签">标签</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Created with <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript" data-persist="true">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module" data-persist="true">function E(a,e){if(!a)return;function t(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function n(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}a?.addEventListener("click",t),window.addCleanup(()=>a?.removeEventListener("click",t)),document.addEventListener("keydown",n),window.addCleanup(()=>document.removeEventListener("keydown",n))}function f(a){for(;a.firstChild;)a.removeChild(a.firstChild)}var m=class{constructor(e,t){this.container=e;this.content=t;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),t=this.onMouseMove.bind(this),n=this.onMouseUp.bind(this),o=this.onTouchStart.bind(this),r=this.onTouchMove.bind(this),i=this.onTouchEnd.bind(this),s=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",t),document.addEventListener("mouseup",n),this.container.addEventListener("touchstart",o,{passive:!1}),document.addEventListener("touchmove",r,{passive:!1}),document.addEventListener("touchend",i),window.addEventListener("resize",s),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",t),()=>document.removeEventListener("mouseup",n),()=>this.container.removeEventListener("touchstart",o),()=>document.removeEventListener("touchmove",r),()=>document.removeEventListener("touchend",i),()=>window.removeEventListener("resize",s))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let t=this.createButton("+",()=>this.zoom(.1)),n=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(n),e.appendChild(o),e.appendChild(t),this.container.appendChild(e)}createButton(e,t){let n=document.createElement("button");return n.textContent=e,n.className="mermaid-control-button",n.addEventListener("click",t),window.addCleanup(()=>n.removeEventListener("click",t)),n}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}onTouchStart(e){if(e.touches.length!==1)return;this.isDragging=!0;let t=e.touches[0];this.startPan={x:t.clientX-this.currentPan.x,y:t.clientY-this.currentPan.y}}onTouchMove(e){if(!this.isDragging||e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];this.currentPan={x:t.clientX-this.startPan.x,y:t.clientY-this.startPan.y},this.updateTransform()}onTouchEnd(){this.isDragging=!1}zoom(e){let t=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),n=this.content.getBoundingClientRect(),o=n.width/2,r=n.height/2,i=t-this.scale;this.currentPan.x-=o*i,this.currentPan.y-=r*i,this.scale=t,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){let t=this.content.querySelector("svg").getBoundingClientRect(),n=t.width/this.scale,o=t.height/this.scale;this.scale=1,this.currentPan={x:(this.container.clientWidth-n)/2,y:(this.container.clientHeight-o)/2},this.updateTransform()}},T=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],y;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;y||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let t=y.default,n=new WeakMap;for(let r of e)n.set(r,r.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let c=n.get(s);c&&(s.innerHTML=c)}let r=T.reduce((s,c)=>(s[c]=window.getComputedStyle(document.documentElement).getPropertyValue(c),s),{}),i=document.documentElement.getAttribute("saved-theme")==="dark";t.initialize({startOnLoad:!1,securityLevel:"loose",theme:i?"dark":"base",themeVariables:{fontFamily:r["--codeFont"],primaryColor:r["--light"],primaryTextColor:r["--darkgray"],primaryBorderColor:r["--tertiary"],lineColor:r["--darkgray"],secondaryColor:r["--secondary"],tertiaryColor:r["--tertiary"],clusterBkg:r["--light"],edgeLabelBackground:r["--highlight"]}}),await t.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let r=0;r<e.length;r++){let v=function(){let g=l.querySelector("#mermaid-space"),h=l.querySelector(".mermaid-content");if(!h)return;f(h);let w=i.querySelector("svg").cloneNode(!0);h.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new m(g,h)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},i=e[r],s=i.parentElement,c=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(c),L=c.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),E(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript" data-persist="true"></script><script src="../../postscript.js" type="module" data-persist="true"></script></html>
