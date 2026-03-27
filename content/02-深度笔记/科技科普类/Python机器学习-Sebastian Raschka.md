@@ -1,6 +1,4 @@
 ---
-
-
 title: Python机器学习
 author: Sebastian Raschka
 status: enriched
@@ -68,6 +66,7 @@ Python实现机器学习算法的实践指南
 
 ---
 
+- [[系统思考]]
 # 微信读书笔记
 
 > 以下内容整合自微信读书导出的高亮划线与读书笔记。

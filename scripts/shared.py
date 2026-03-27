@@ -231,15 +231,11 @@ def site_shell(title: str, body: str, description: str = "") -> str:
 </head>
 <body>
   <nav class="nav" id="top">
-    <a href="/uRead/" class="brand">
-      <svg class="brand-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="6" width="28" height="20" rx="3" stroke="currentColor" stroke-width="2"/>
-        <path d="M16 6v20" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
-        <path d="M8 12h6M8 16h8M8 20h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
-        <circle cx="23" cy="13" r="3" fill="var(--amber)"/>
-        <path d="M21 19l2 2 4-4" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <a href="/uRead/" class="brand" aria-label="uRead 首页">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+        <rect width="36" height="36" rx="8" fill="#133D72"/>
+        <text x="18" y="26" font-family="Georgia,serif" font-size="24" font-weight="700" fill="white" text-anchor="middle">R</text>
       </svg>
-      <span>uRead</span>
     </a>
     <button class="nav-burger" onclick="this.classList.toggle('on');document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">
       <span></span><span></span><span></span>

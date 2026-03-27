@@ -1,5 +1,4 @@
 ---
-
 title: 操纵心理学
 author: 哈丽雅特·B·布瑞克
 status: enriched
@@ -67,6 +66,7 @@ agents_public: true
 
 ---
 
+- [[系统思考]]
 # cc 读书笔记
 
 > 以下内容整合自 cc 仓库的深度阅读笔记。

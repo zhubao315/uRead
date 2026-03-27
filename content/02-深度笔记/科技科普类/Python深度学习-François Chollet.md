@@ -1,6 +1,4 @@
 ---
-
-
 title: Python深度学习
 author: François Chollet
 status: enriched
@@ -68,6 +66,7 @@ Keras作者实战指南，深度学习工程实践
 
 ---
 
+- [[系统思考]]
 # 微信读书笔记
 
 > 以下内容整合自微信读书导出的高亮划线与读书笔记。

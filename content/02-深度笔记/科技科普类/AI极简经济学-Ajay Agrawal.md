@@ -1,5 +1,4 @@
 ---
-
 title: AI极简经济学
 author: Ajay Agrawal
 status: enriched
@@ -67,6 +66,7 @@ AI技术对经济的影响与商业价值洞察
 
 ---
 
+- [[系统思考]]
 # cc 读书笔记
 
 > 以下内容整合自 cc 仓库的深度阅读笔记。

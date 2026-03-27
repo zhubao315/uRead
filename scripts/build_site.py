@@ -270,8 +270,8 @@ code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;bord
 
 /* ── NAV ─────────────────────────────── */
 .nav{position:sticky;top:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,3vw,2rem);background:var(--paper);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
-.brand{display:flex;align-items:center;gap:.5rem;font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.02em}
-.brand:hover{color:var(--blue)}
+.brand{display:flex;align-items:center;gap:0;font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.02em;transition:opacity var(--tr)}
+.brand:hover{opacity:.8}
 .brand-icon{width:26px;height:26px;color:var(--blue)}
 .nav-links{display:flex;gap:2px}
 .nav-links a{padding:.4rem .8rem;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--muted);transition:all var(--tr)}
@@ -508,11 +508,15 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
   <div class="hero-eyebrow"><span class="dot"></span>Open Reading OS</div>
   <h1>让每一次阅读，都留下可生长的沉淀</h1>
   <p>uRead 帮你打造可发布、可检索的深度读书笔记，系统化盘活你的经典书单。让读过的书、写下的思考，不再沉睡，真正成为能复用、能变现的个人知识资产。</p>
+</section>
+
+<div class="search-wrap">
   <div class="search-bar">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
     <input type="text" id="searchInput" placeholder="搜索书名、作者、标签…" oninput="filterCards(this.value)">
   </div>
-</section>
+</div>
+
 <div class="stats">{stats_h}</div>
 {_cat_nav()}
 <div class="sh"><h2><span class="dot"></span>精选书单</h2><a href="/uRead/lists/">查看全部</a></div>

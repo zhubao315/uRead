@@ -1,5 +1,4 @@
 ---
-
 title: 自然语言处理综论
 author: Daniel Jurafsky
 status: enriched
@@ -65,6 +64,8 @@ NLP领域最权威教科书，构建语言技术基础
 
 ---
 
+- [[系统思考]]
+- [[学习方法]]
 # cc 读书笔记
 
 > 以下内容整合自 cc 仓库的深度阅读笔记。
