@@ -916,10 +916,10 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
 
 <div class="stats">{stats_h}</div>
 {_cat_nav()}
-<div class="sh"><h2><span class="dot"></span>🎲 精选书单（随机3个）</h2><a href="/uRead/lists/">查看全部</a></div>
+<div class="sh"><h2><span class="dot"></span>精选书单</h2><a href="/uRead/lists/">查看全部</a></div>
 {list_h}
 {cat_h}
-<div class="sh"><h2><span class="dot"></span>🎲 知识卡片（随机3个）</h2><a href="/uRead/cards/">查看全部</a></div>
+<div class="sh"><h2><span class="dot"></span>知识卡片</h2><a href="/uRead/cards/">查看全部</a></div>
 <div class="grid">{cards_h}</div>
 <script>
 function filterCards(q) {{
