@@ -272,7 +272,14 @@ def site_shell(title: str, body: str, description: str = "") -> str:
   <main class="main">{body}</main>
   <footer class="foot">
     <div class="foot-inner">
-      <p class="foot-brand">uRead — Open Reading OS</p>
+      <div class="foot-logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+          <rect width="32" height="32" rx="8" fill="#133D72"/>
+          <path d="M9 7h6.5c3 0 5.5 2 5.5 5.5 0 1.5-.8 3-2 4l3.5 5.5h-5.5l-2.5-4h-3v4H9V7z" fill="url(#lg)"/>
+        </svg>
+        <span>uRead</span>
+      </div>
+      <p class="foot-brand">让知识如同代码和资产一样可被机器解析、调用与变现</p>
       <p class="foot-links">
         <a href="https://github.com/zhubao315/uRead">GitHub</a>
         <span class="dot">·</span>
@@ -282,7 +289,7 @@ def site_shell(title: str, body: str, description: str = "") -> str:
         <span class="dot">·</span>
         <a href="/uRead/api/graph.json">Graph API</a>
       </p>
-      <p class="foot-copy">让知识如同代码和资产一样可被机器解析、调用与变现</p>
+      <p class="foot-copy">© 2024 uRead · Made with ❤️ for Open Knowledge</p>
     </div>
   </footer>
 </body>

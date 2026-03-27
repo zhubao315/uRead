@@ -618,6 +618,9 @@ STYLES = """
     --sh-md:   0 6px 20px rgba(0,0,0,.3);
     --sh-lg:   0 12px 40px rgba(0,0,0,.35);
     --glow:    0 0 20px rgba(255,107,53,.15);
+    --blue-grad-start: #FF6B35;
+    --blue-grad-end: #FFB380;
+    --teal: #2DD4BF;
   }
 }
 @media(prefers-color-scheme:dark){
@@ -631,14 +634,19 @@ STYLES = """
     --blue-bg: rgba(19,61,114,.18);
     --amber-l: rgba(251,191,36,.15);
     --teal-l:  rgba(45,212,191,.12);
-    --sh-sm:   0 1px 3px rgba(0,0,0,.3);
-    --sh-md:   0 4px 16px rgba(0,0,0,.35);
-    --sh-lg:   0 12px 40px rgba(0,0,0,.4);
+    --orange-l: rgba(255,107,53,.12);
+    --sh-sm:   0 2px 8px rgba(0,0,0,.25);
+    --sh-md:   0 6px 20px rgba(0,0,0,.3);
+    --sh-lg:   0 12px 40px rgba(0,0,0,.35);
+    --glow:    0 0 20px rgba(255,107,53,.15);
+    --blue-grad-start: #FF6B35;
+    --blue-grad-end: #FFB380;
+    --teal: #2DD4BF;
   }
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 20px)}
-body{font-family:var(--font-b);font-size:15px;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-b);font-size:15px;line-height:1.7;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;font-feature-settings:"kern" 1,"liga" 1}
 a{color:var(--blue-l);text-decoration:none;transition:color var(--tr)}
 a:hover{color:var(--amber)}
 code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;border-radius:5px;font-size:.88em}
@@ -653,6 +661,7 @@ code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;bord
 .nav-links a:hover{background:var(--blue-bg);color:var(--amber)}
 .nav-links a.on{background:var(--amber-l);color:var(--amber);font-weight:600}
 .nav-random{background:linear-gradient(135deg,var(--orange-l),var(--amber-l))!important;color:var(--amber)!important;border-radius:20px!important}
+.nav-random:hover{box-shadow:var(--glow)!important}
 .nav-api{font-family:var(--font-m)!important;font-size:.78rem!important;background:var(--teal-l);color:var(--teal)!important;border-radius:6px!important}
 .nav-burger{display:none;background:none;border:none;cursor:pointer;padding:.4rem}
 .nav-burger span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px;transition:.3s}
@@ -705,18 +714,20 @@ a.stat:hover::before{opacity:1}
 .cn a.on{background:var(--amber);border-color:var(--amber);color:#000;font-weight:600}
 
 /* ── CARD ────────────────────────────── */
-.card{background:var(--paper);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh-sm);padding:1.3rem;transition:all var(--tr);display:flex;flex-direction:column;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--blue-grad-start),var(--blue-grad-end));opacity:0;transition:opacity var(--tr)}
-.card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);border-color:var(--amber);color:var(--ink)}
+.card{background:var(--paper);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-sm);padding:1.4rem;transition:all .25s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--blue-grad-start),var(--blue-grad-end));opacity:0;transition:opacity .25s ease}
+.card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle at top right,rgba(255,107,53,.06),transparent 70%);opacity:0;transition:opacity .25s ease}
+.card:hover{box-shadow:var(--sh-lg);transform:translateY(-6px);border-color:var(--amber)}
 .card:hover::before{opacity:1}
-.card-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:.4rem;padding:.2rem .5rem;background:var(--teal-l);border-radius:20px;display:inline-block;width:fit-content}
-.card h3{font-family:var(--font-h);font-size:1rem;margin-bottom:.35rem;line-height:1.35}
-.card h3 a{color:var(--ink)}
+.card:hover::after{opacity:1}
+.card-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:.5rem;padding:.2rem .6rem;background:var(--teal-l);border-radius:20px;display:inline-block;width:fit-content}
+.card h3{font-family:var(--font-h);font-size:1.05rem;margin-bottom:.4rem;line-height:1.4}
+.card h3 a{color:var(--ink);transition:color .2s ease}
 .card h3 a:hover{color:var(--amber)}
-.card p{color:var(--muted);font-size:.84rem;line-height:1.6;flex:1}
-.card-author{color:var(--muted);font-size:.76rem;margin-top:.5rem;display:flex;align-items:center;gap:.3rem}
-.card-author::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--blue-bg);display:inline-block}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.card p{color:var(--muted);font-size:.86rem;line-height:1.65;flex:1}
+.card-author{color:var(--muted);font-size:.78rem;margin-top:.6rem;display:flex;align-items:center;gap:.3rem;padding-top:.5rem;border-top:1px solid var(--border)}
+.card-author::before{content:'';width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));display:inline-block;flex-shrink:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
 
 /* ── PILL ────────────────────────────── */
 .pill{display:inline-block;margin:.15rem .25rem .15rem 0;padding:.18rem .5rem;border-radius:999px;background:var(--blue-bg);color:var(--blue);font-size:.76rem;font-weight:500;transition:all var(--tr)}
@@ -728,19 +739,25 @@ a.stat:hover::before{opacity:1}
 .cs-t .n{font-size:.72rem;font-weight:500;color:var(--muted);background:var(--amber-l);padding:.15rem .5rem;border-radius:999px}
 
 /* ── NOTE ────────────────────────────── */
-.note{background:var(--paper);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-md);padding:clamp(1.5rem,4vw,2.5rem);max-width:860px;position:relative}
-.note::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--blue-grad-start),var(--blue-grad-end))}
-.note h1{font-family:var(--font-h);font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.25;margin-bottom:.4rem;color:var(--ink)}
-.note h2{font-family:var(--font-h);font-size:1.25rem;margin-top:2rem;margin-bottom:.6rem;color:var(--blue);padding-bottom:.3rem;border-bottom:1px solid var(--border)}
-.note h3{font-family:var(--font-h);font-size:1.05rem;margin-top:1.5rem;margin-bottom:.4rem;color:var(--amber)}
-.note-meta{color:var(--muted);font-size:.82rem;margin-bottom:1rem;padding:.5rem .8rem;background:var(--bg);border-radius:20px;display:inline-block}
-.note p,.note li{font-size:.97rem;line-height:1.85}
+.note{background:var(--paper);border:1px solid var(--border);border-radius:20px;box-shadow:var(--sh-md);padding:clamp(2rem,5vw,3rem);max-width:860px;position:relative;overflow:hidden}
+.note::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue-grad-start),var(--amber),var(--blue-grad-end))}
+.note::after{content:'';position:absolute;top:4px;left:0;right:0;bottom:0;background:radial-gradient(ellipse at top right,rgba(255,107,53,.03),transparent 50%);pointer-events:none}
+.note h1{font-family:var(--font-h);font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.3;margin-bottom:.5rem;color:var(--ink);position:relative;z-index:1}
+.note h2{font-family:var(--font-h);font-size:1.25rem;margin-top:2.5rem;margin-bottom:.6rem;color:var(--blue);padding-bottom:.4rem;border-bottom:2px solid var(--border);position:relative}
+.note h2::before{content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--amber)}
+.note h3{font-family:var(--font-h);font-size:1.1rem;margin-top:1.5rem;margin-bottom:.4rem;color:var(--amber);position:relative;padding-left:1rem}
+.note h3::before{content:'';position:absolute;left:0;top:.4rem;width:4px;height:1em;background:linear-gradient(180deg,var(--blue-grad-start),var(--blue-grad-end));border-radius:2px}
+.note-meta{color:var(--muted);font-size:.84rem;margin-bottom:1.2rem;padding:.6rem 1rem;background:var(--bg);border-radius:25px;display:inline-flex;align-items:center;gap:.5rem}
+.note p,.note li{font-size:.97rem;line-height:1.85;color:var(--ink2)}
+.note p strong{color:var(--ink);font-weight:600}
 .note ul{padding-left:1.2rem;margin:.5rem 0}
-.note blockquote{margin:1rem 0;padding:1rem 1.2rem;border-left:4px solid var(--amber);background:var(--amber-l);border-radius:0 8px 8px 0;font-style:italic;color:var(--ink2)}
-.note .tag-row{margin:.75rem 0 1.5rem;display:flex;flex-wrap:wrap;gap:.3rem}
-.note pre{background:var(--ink);color:#e2e8f0;padding:1rem;border-radius:var(--r);overflow-x:auto;margin:1rem 0}
-.note pre code{background:none;padding:0;color:inherit}
-.wl{color:var(--amber);border-bottom:1px dashed rgba(251,191,36,.4)}
+.note blockquote{margin:1.5rem 0;padding:1rem 1.2rem;border-left:4px solid var(--amber);background:var(--amber-l);border-radius:0 12px 12px 0;font-style:italic;color:var(--ink2);position:relative}
+.note blockquote::before{content:'💡';position:absolute;top:-.5rem;left:.5rem;font-size:1rem;font-style:normal}
+.note .tag-row{margin:.75rem 0 1.5rem;display:flex;flex-wrap:wrap;gap:.4rem}
+.note pre{background:linear-gradient(135deg,#1a1a2e,#16213e);color:#e2e8f0;padding:1.2rem;border-radius:12px;overflow-x:auto;margin:1rem 0;box-shadow:inset 0 2px 8px rgba(0,0,0,.3)}
+.note pre code{background:none;padding:0;color:inherit;font-size:.85rem}
+.wl{color:var(--amber);border-bottom:1px dashed rgba(251,191,36,.4);transition:all .2s ease}
+.wl:hover{border-bottom-style:solid;background:var(--amber-l)}
 
 /* ── LIST CARD ───────────────────────── */
 .lc{background:var(--paper);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh-sm);padding:clamp(1.2rem,3vw,1.8rem);margin-bottom:1.5rem;transition:all var(--tr);position:relative;overflow:hidden}
@@ -761,14 +778,33 @@ a.stat:hover::before{opacity:1}
 .li-d{color:var(--ink2)}
 
 /* ── FOOTER ──────────────────────────── */
-.foot{border-top:1px solid var(--border);margin-top:3rem;padding:2rem 0;text-align:center}
-.foot-inner{max-width:600px;margin:0 auto}
-.foot-brand{font-family:var(--font-h);font-weight:700;color:var(--blue);font-size:.95rem;margin-bottom:.4rem}
-.foot-links{font-size:.8rem;color:var(--muted);margin-bottom:.3rem}
-.foot-links a{color:var(--muted)}
-.foot-links a:hover{color:var(--blue)}
-.dot{margin:0 .3rem}
-.foot-copy{font-size:.75rem;color:var(--muted);opacity:.7}
+.foot{border-top:1px solid var(--border);margin-top:4rem;padding:3rem 0;text-align:center;background:linear-gradient(180deg,var(--bg),var(--paper))}
+.foot-inner{max-width:600px;margin:0 auto;padding:0 1rem}
+.foot-logo{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-bottom:1rem;font-family:var(--font-h);font-weight:700;font-size:1.1rem;color:var(--blue)}
+.foot-logo svg{width:28px;height:28px}
+.foot-brand{font-size:.9rem;color:var(--ink2);margin-bottom:1rem;line-height:1.6}
+.foot-links{font-size:.82rem;color:var(--muted);margin-bottom:.8rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.2rem}
+.foot-links a{color:var(--muted);padding:.2rem .5rem;border-radius:6px;transition:all var(--tr)}
+.foot-links a:hover{color:var(--amber);background:var(--amber-l)}
+.dot{margin:0 .3rem;color:var(--border)}
+.foot-copy{font-size:.75rem;color:var(--muted);opacity:.6;margin-top:.5rem}
+
+/* ── ANIMATIONS ──────────────────────── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.fade-in{animation:fadeInUp .5s ease-out}
+.pulse{animation:pulse 2s infinite}
+
+/* ── TOOLTIP ─────────────────────────── */
+.tooltip{position:relative}
+.tooltip::after{content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.3rem .6rem;border-radius:6px;font-size:.72rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s ease}
+.tooltip:hover::after{opacity:1}
+
+/* ── SCROLLBAR ───────────────────────── */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
 
 /* ── RESPONSIVE ──────────────────────── */
 @media(max-width:768px){
@@ -910,13 +946,20 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
   </div>
 </div>
 
-<div class="agent-section" style="margin:1.5rem 0;padding:1.2rem;background:linear-gradient(135deg,rgba(255,107,53,.1),rgba(251,191,36,.08));border:1px solid var(--amber);border-radius:12px;position:relative;overflow:hidden">
-  <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(255,107,53,.15),transparent 70%);pointer-events:none"></div>
-  <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">🤖 <span style="font-size:1.1rem">让 AI Agent 学习</span></div>
-  <p style="font-size:.9rem;color:var(--ink2);margin-bottom:.8rem">复制以下链接发给 AI Agent，让它学习 uRead 的读书笔记：</p>
-  <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-    <code id="agentLink" style="flex:1;min-width:200px;background:var(--paper);color:var(--ink);padding:.75rem 1rem;border-radius:8px;font-size:.8rem;word-break:break-all;border:1px solid var(--border)">https://zhubao315.github.io/uRead/api/books.json</code>
-    <button onclick="copyAgentLink()" style="padding:.6rem 1.2rem;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;box-shadow:var(--sh-sm);transition:all var(--tr)">📋 复制链接</button>
+<div class="agent-section" style="margin:1.5rem 0;padding:1.5rem;background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(45,212,191,.05));border:1px solid var(--amber);border-radius:16px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,107,53,.12),transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(45,212,191,.08),transparent 70%);pointer-events:none"></div>
+  <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem">
+    <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));display:flex;align-items:center;justify-content:center;font-size:1.2rem">🤖</div>
+    <div>
+      <div style="font-weight:700;color:var(--ink);font-size:1.05rem">让 AI Agent 学习</div>
+      <div style="font-size:.78rem;color:var(--muted)">一键复制，即刻开始</div>
+    </div>
+  </div>
+  <p style="font-size:.9rem;color:var(--ink2);margin-bottom:1rem;line-height:1.6">复制以下链接发给 AI Agent，让它学习 uRead 的全部读书笔记：</p>
+  <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
+    <code id="agentLink" style="flex:1;min-width:200px;background:var(--paper);color:var(--ink);padding:.85rem 1rem;border-radius:10px;font-size:.82rem;word-break:break-all;border:1px solid var(--border);box-shadow:inset 0 1px 2px rgba(0,0,0,.05)">https://zhubao315.github.io/uRead/api/books.json</code>
+    <button onclick="copyAgentLink()" style="padding:.75rem 1.4rem;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,107,53,.3);transition:all .2s ease;white-space:nowrap" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px rgba(255,107,53,.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(255,107,53,.3)'">📋 复制链接</button>
   </div>
 </div>
 <script>function copyAgentLink(){{navigator.clipboard.writeText(document.getElementById('agentLink').textContent).then(()=>alert('已复制到粘贴板'))}}</script>
@@ -1060,16 +1103,26 @@ def _details(section: str, notes) -> None:
 </script>'''
 
         agent_h = f"""
-<div class="agent-section" style="margin-top:1.5rem;padding:1rem;background:linear-gradient(135deg,rgba(255,107,53,.1),rgba(251,191,36,.08));border:1px solid var(--amber);border-radius:12px">
-  <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem">🤖 让 AI Agent 学习</div>
-  <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">复制以下链接发给 AI Agent，让它学习这篇读书笔记：</p>
-  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">
-    <code id="agentLink_{note["slug"]}" style="flex:1;min-width:200px;background:var(--paper);color:var(--ink);padding:.75rem;border-radius:8px;font-size:.8rem;word-break:break-all;border:1px solid var(--border)">{note_url}</code>
-    <button onclick="copyAgentLink_{note["slug"]}()" style="padding:.5rem 1rem;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer">📋 复制</button>
+<div class="agent-section" style="margin-top:2rem;padding:1.5rem;background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(45,212,191,.05));border:1px solid var(--amber);border-radius:16px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,107,53,.12),transparent 70%);pointer-events:none"></div>
+  <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem">
+    <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));display:flex;align-items:center;justify-content:center;font-size:1.2rem">🤖</div>
+    <div>
+      <div style="font-weight:700;color:var(--ink);font-size:1.05rem">让 AI Agent 学习</div>
+      <div style="font-size:.78rem;color:var(--muted)">复制链接，发送给你的AI助手</div>
+    </div>
   </div>
-  <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem">或学习全部 <a href="{api_url}" style="color:var(--blue)">280本读书笔记</a></p>
+  <p style="font-size:.88rem;color:var(--ink2);margin-bottom:.8rem;line-height:1.6">复制以下链接发给 AI Agent，让它学习这篇读书笔记：</p>
+  <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem;flex-wrap:wrap">
+    <code id="agentLink_{note["slug"]}" style="flex:1;min-width:200px;background:var(--paper);color:var(--ink);padding:.85rem 1rem;border-radius:10px;font-size:.82rem;word-break:break-all;border:1px solid var(--border);box-shadow:inset 0 1px 2px rgba(0,0,0,.05)">{note_url}</code>
+    <button onclick="copyAgentLink_{note["slug"]}()" style="padding:.65rem 1.2rem;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,107,53,.3);transition:all .2s ease;white-space:nowrap" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">📋 复制</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--muted);margin-top:.5rem">
+    <span style="color:var(--teal)">✓</span>
+    <span>或学习全部 <a href="{api_url}" style="color:var(--blue);font-weight:500">280本读书笔记</a></span>
+  </div>
 </div>
-<script>function copyAgentLink_{note["slug"]}(){{navigator.clipboard.writeText('{note_url}').then(()=>alert('已复制到粘贴板'))}}</script>"""
+<script>function copyAgentLink_{note["slug"]}(){{navigator.clipboard.writeText('{note_url}').then(()=>{{const btn=event.target;btn.textContent='✓ 已复制';setTimeout(()=>{{btn.textContent='📋 复制'}},2000)}}).catch(()=>alert('已复制到粘贴板'))}}</script>"""
         body = f'{jsonld}<article class="note"><div class="hero-eyebrow"><span class="dot"></span>{note["type"]}</div><h1>{note["title"]}</h1><div class="note-meta">{mt}</div><p style="color:var(--ink2)">{note["summary"]}</p><div class="tag-row">{tags_h}</div>{ch}{agent_h}</article>'
         (folder / "index.html").write_text(
             site_shell(f"{note['title']} | uRead", body, note["summary"]),
