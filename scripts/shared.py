@@ -227,14 +227,22 @@ def site_shell(title: str, body: str, description: str = "") -> str:
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/uRead/styles.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23133D72'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='22' font-weight='700' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FF6B35'/%3E%3Cstop offset='100%25' stop-color='%23F7C59F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='120' height='40' rx='8' fill='%23133D72'/%3E%3Ctext x='18' y='28' font-family='Georgia,serif' font-size='22' font-weight='700' fill='url(%23g)'%3E%u%3C/text%3E%3Ctext x='38' y='28' font-family='Inter,sans-serif' font-size='18' font-weight='700' fill='white'%3ERead%3C/text%3E%3C/svg%3E">
 </head>
 <body>
   <nav class="nav" id="top">
     <a href="/uRead/" class="brand" aria-label="uRead 首页">
-      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
-        <rect width="36" height="36" rx="8" fill="#133D72"/>
-        <text x="18" y="26" font-family="Georgia,serif" font-size="24" font-weight="700" fill="white" text-anchor="middle">R</text>
+      <svg viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="150" height="36">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FF6B35"/>
+            <stop offset="100%" stop-color="#F7C59F"/>
+          </linearGradient>
+        </defs>
+        <rect width="160" height="40" rx="8" fill="#133D72"/>
+        <text x="20" y="28" font-family="Georgia,serif" font-size="24" font-weight="700" fill="url(#lg)">u</text>
+        <text x="46" y="28" font-family="Inter,sans-serif" font-size="20" font-weight="700" fill="white">Read</text>
+        <text x="90" y="38" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.6)">让知识可复用</text>
       </svg>
     </a>
     <button class="nav-burger" onclick="this.classList.toggle('on');document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">
