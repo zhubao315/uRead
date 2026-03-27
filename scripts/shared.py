@@ -245,8 +245,20 @@ def site_shell(title: str, body: str, description: str = "") -> str:
       <a href="/uRead/books/">深度笔记</a>
       <a href="/uRead/lists/">精选书单</a>
       <a href="/uRead/cards/">知识卡片</a>
+      <a href="#" class="nav-random" onclick="jumpRandom()" title="随机漫游">🎲 随机</a>
       <a href="/uRead/api/books.json" class="nav-api">API</a>
     </div>
+    <script>
+    async function jumpRandom() {{
+      try {{
+        const res = await fetch('/uRead/api/books.json');
+        const data = await res.json();
+        const books = data.filter(b => b.title);
+        const rand = books[Math.floor(Math.random() * books.length)];
+        if (rand && rand.url) window.location.href = rand.url;
+      }} catch(e) {{ console.error(e); }}
+    }}
+    </script>
   </nav>
   <main class="main">{body}</main>
   <footer class="foot">
