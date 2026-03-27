@@ -227,7 +227,7 @@ def site_shell(title: str, body: str, description: str = "") -> str:
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/uRead/styles.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FF6B35'/%3E%3Cstop offset='50%25' stop-color='%23FF8C42'/%3E%3Cstop offset='100%25' stop-color='%23FFB380'/%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='1.5' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Crect width='40' height='40' rx='10' fill='%23133D72'/%3E%3Crect x='2' y='2' width='36' height='36' rx='8' fill='%231a4a8a'/%3E%3Ctext x='20' y='28' font-family='Georgia,serif' font-size='22' font-weight='700' fill='url(%23g)' text-anchor='middle' filter='url(%23glow)'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FF6B35'/%3E%3Cstop offset='100%25' stop-color='%23FFB380'/%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='1' result='coloredBlur'/%3E%3CfeMerge%3E%3CfeMergeNode in='coloredBlur'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23133D72'/%3E%3Crect x='1.5' y='1.5' width='29' height='29' rx='6.5' fill='%231a4a8a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='18' font-weight='700' fill='url(%23g)' text-anchor='middle' filter='url(%23glow)'%3ER%3C/text%3E%3C/svg%3E">
 </head>
 <body>
   <nav class="nav" id="top">
@@ -236,24 +236,22 @@ def site_shell(title: str, body: str, description: str = "") -> str:
         <defs>
           <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stop-color="#FF6B35"/>
-            <stop offset="50%" stop-color="#FF8C42"/>
             <stop offset="100%" stop-color="#FFB380"/>
           </linearGradient>
           <filter id="glow">
-            <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+            <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
             <feMerge>
               <feMergeNode in="coloredBlur"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
         </defs>
-        <rect width="160" height="40" rx="10" fill="#133D72"/>
-        <rect x="2" y="2" width="156" height="36" rx="8" fill="#1a4a8a"/>
-        <path d="M12 8h12c4 0 8 3 8 8s-4 12-8 12H12V8z" fill="url(#lg)" opacity="0.15"/>
-        <text x="24" y="28" font-family="Georgia,serif" font-size="22" font-weight="700" fill="url(#lg)" filter="url(#glow)">R</text>
-        <text x="52" y="26" font-family="Inter,sans-serif" font-size="18" font-weight="700" fill="white">uRead</text>
-        <text x="52" y="36" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.55)">Open Reading OS</text>
-        <text x="118" y="26" font-family="Inter,sans-serif" font-size="10" fill="rgba(255,255,255,0.4)" font-style="italic">让知识可复用</text>
+        <rect width="160" height="40" rx="8" fill="#133D72"/>
+        <rect x="2" y="2" width="156" height="36" rx="6" fill="#1a4a8a"/>
+        <text x="24" y="27" font-family="Georgia,serif" font-size="20" font-weight="700" fill="url(#lg)" filter="url(#glow)">R</text>
+        <text x="50" y="26" font-family="Inter,sans-serif" font-size="17" font-weight="700" fill="white">uRead</text>
+        <text x="50" y="36" font-family="Inter,sans-serif" font-size="8" fill="rgba(255,255,255,0.5)">Open Reading OS</text>
+        <text x="110" y="26" font-family="Inter,sans-serif" font-size="9" fill="rgba(255,255,255,0.4)" font-style="italic">让知识可复用</text>
       </svg>
     </a>
     <button class="nav-burger" onclick="this.classList.toggle('on');document.querySelector('.nav-links').classList.toggle('open')" aria-label="菜单">
