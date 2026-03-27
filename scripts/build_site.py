@@ -592,31 +592,33 @@ STYLES = """
    uRead VIS — Sapphire / Amber / Teal
    ═══════════════════════════════════════════════════════════ */
 :root {
-  --blue:    #133D72;
-  --blue-l:  #1e5aa8;
-  --blue-bg: rgba(19,61,114,.06);
-  --amber:   #FBBF24;
-  --amber-l: rgba(251,191,36,.12);
-  --teal:    #2DD4BF;
-  --teal-l:  rgba(45,212,191,.10);
-  --gray:    #4B5563;
-  --bg:      #F8FAFC;
-  --paper:   #FFFFFF;
-  --ink:     #111827;
-  --ink2:    #374151;
-  --muted:   #6B7280;
-  --border:  #E5E7EB;
-  --sh-sm:   0 1px 3px rgba(0,0,0,.06);
-  --sh-md:   0 4px 16px rgba(0,0,0,.08);
-  --sh-lg:   0 12px 40px rgba(0,0,0,.10);
-  --r:       10px;
-  --r-lg:    16px;
-  --nav-h:   56px;
   --max-w:   1160px;
-  --tr:      .18s ease;
+  --tr:      .2s ease;
   --font-h:  'Lora', Georgia, serif;
   --font-b:  'MiSans', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-m:  'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* 增强配色 */
+  --blue-grad-start: #FF6B35;
+  --blue-grad-end: #FFB380;
+}
+@media(prefers-color-scheme:dark){
+  :root {
+    --bg:      #0B1120;
+    --paper:   #151E31;
+    --ink:     #F1F5F9;
+    --ink2:    #CBD5E1;
+    --muted:   #94A3B8;
+    --border:  #1E293B;
+    --blue-bg: rgba(19,61,114,.18);
+    --amber-l: rgba(251,191,36,.15);
+    --teal-l:  rgba(45,212,191,.12);
+    --orange-l: rgba(255,107,53,.12);
+    --sh-sm:   0 2px 8px rgba(0,0,0,.25);
+    --sh-md:   0 6px 20px rgba(0,0,0,.3);
+    --sh-lg:   0 12px 40px rgba(0,0,0,.35);
+    --glow:    0 0 20px rgba(255,107,53,.15);
+  }
 }
 @media(prefers-color-scheme:dark){
   :root {
@@ -642,16 +644,18 @@ a:hover{color:var(--amber)}
 code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;border-radius:5px;font-size:.88em}
 
 /* ── NAV ─────────────────────────────── */
-.nav{position:sticky;top:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,3vw,2rem);background:var(--paper);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav{position:sticky;top:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1rem,3vw,2rem);background:var(--paper);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);box-shadow:0 2px 12px rgba(0,0,0,.15)}
 .brand{display:flex;align-items:center;gap:0;font-family:var(--font-h);font-size:1.2rem;font-weight:700;color:var(--blue);letter-spacing:.02em;transition:opacity var(--tr)}
 .brand:hover{opacity:.8}
 .brand-icon{width:26px;height:26px;color:var(--blue)}
-.nav-links{display:flex;gap:2px}
-.nav-links a{padding:.4rem .8rem;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--muted);transition:all var(--tr)}
-.nav-links a:hover{background:var(--blue-bg);color:var(--blue)}
+.nav-links{display:flex;gap:4px}
+.nav-links a{padding:.5rem .85rem;border-radius:8px;font-size:.85rem;font-weight:500;color:var(--muted);transition:all var(--tr)}
+.nav-links a:hover{background:var(--blue-bg);color:var(--amber)}
+.nav-links a.on{background:var(--amber-l);color:var(--amber);font-weight:600}
+.nav-random{background:linear-gradient(135deg,var(--orange-l),var(--amber-l))!important;color:var(--amber)!important;border-radius:20px!important}
 .nav-api{font-family:var(--font-m)!important;font-size:.78rem!important;background:var(--teal-l);color:var(--teal)!important;border-radius:6px!important}
 .nav-burger{display:none;background:none;border:none;cursor:pointer;padding:.4rem}
-.nav-burger span{display:block;width:20px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px;transition:.3s}
+.nav-burger span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px;transition:.3s}
 .nav-burger.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
 .nav-burger.on span:nth-child(2){opacity:0}
 .nav-burger.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
@@ -660,11 +664,12 @@ code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;bord
 .main{width:min(var(--max-w),calc(100% - 2rem));margin:0 auto;padding:2rem 0 4rem}
 
 /* ── HERO ────────────────────────────── */
-.hero{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-md);padding:clamp(2rem,5vw,3rem);margin-bottom:1.5rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(251,191,36,.08),transparent 70%);pointer-events:none}
-.hero h1{font-family:var(--font-h);font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.2;margin-bottom:.6rem;color:var(--blue)}
-.hero p{color:var(--ink2);font-size:1rem;max-width:600px}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);margin-bottom:.6rem}
+.hero{background:linear-gradient(135deg,var(--paper) 0%,#1a2744 100%);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-md);padding:clamp(2rem,5vw,3rem);margin-bottom:1.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,107,53,.12),transparent 60%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:200px;height:200px;background:radial-gradient(circle,rgba(45,212,191,.08),transparent 60%);pointer-events:none}
+.hero h1{font-family:var(--font-h);font-size:clamp(1.7rem,4vw,2.6rem);line-height:1.2;margin-bottom:.6rem;color:var(--blue);background:linear-gradient(135deg,#fff 0%,var(--ink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--ink2);font-size:1.05rem;max-width:600px;line-height:1.8}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);margin-bottom:.6rem;background:var(--amber-l);padding:.3rem .7rem;border-radius:20px}
 .hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal)}
 
 /* ── SEARCH ──────────────────────────── */
@@ -676,40 +681,46 @@ code{font-family:var(--font-m);background:var(--blue-bg);padding:.15em .4em;bord
 
 /* ── STATS ───────────────────────────── */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:2rem}
-a.stat{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;text-align:center;box-shadow:var(--sh-sm);transition:all var(--tr);display:block;color:var(--ink);text-decoration:none}
-a.stat:hover{box-shadow:var(--sh-md);border-color:var(--blue-l);transform:translateY(-2px);color:var(--ink)}
+a.stat{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;text-align:center;box-shadow:var(--sh-sm);transition:all var(--tr);display:block;color:var(--ink);text-decoration:none;position:relative;overflow:hidden}
+a.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-grad-start),var(--blue-grad-end));opacity:0;transition:opacity var(--tr)}
+a.stat:hover{box-shadow:var(--sh-md);border-color:var(--orange-l);transform:translateY(-3px);color:var(--ink)}
+a.stat:hover::before{opacity:1}
 .stat-n{font-size:1.8rem;font-weight:700;color:var(--blue);line-height:1;font-family:var(--font-h)}
 .stat-l{font-size:.75rem;color:var(--muted);margin-top:.3rem;letter-spacing:.04em}
 .stat-icon{width:20px;height:20px;margin:0 auto .4rem;color:var(--amber)}
 
 /* ── SECTION HDR ─────────────────────── */
-.sh{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:2.5rem 0 1rem;flex-wrap:wrap}
-.sh h2{font-family:var(--font-h);font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
-.sh h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--amber)}
-.sh a{font-size:.82rem;font-weight:600;color:var(--blue-l);display:flex;align-items:center;gap:.2rem}
+.sh{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:2.5rem 0 1rem;flex-wrap:wrap;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.sh h2{font-family:var(--font-h);font-size:1.3rem;font-weight:700;display:flex;align-items:center;gap:.5rem;color:var(--ink)}
+.sh h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber)}
+.sh a{font-size:.82rem;font-weight:600;color:var(--blue-l);display:flex;align-items:center;gap:.2rem;padding:.4rem .8rem;border-radius:20px;background:var(--blue-bg);transition:all var(--tr)}
+.sh a:hover{background:var(--blue);color:#fff}
 .sh a::after{content:'→';transition:transform var(--tr)}
 .sh a:hover::after{transform:translateX(3px)}
 
 /* ── CAT NAV ─────────────────────────── */
-.cn{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem}
-.cn a{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;border-radius:999px;background:var(--paper);border:1px solid var(--border);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--tr);white-space:nowrap}
-.cn a:hover{border-color:var(--blue-l);color:var(--blue);background:var(--blue-bg)}
-.cn a.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.cn{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem;padding:.8rem;background:var(--paper);border-radius:var(--r);border:1px solid var(--border)}
+.cn a{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:20px;background:var(--bg);border:1px solid var(--border);font-size:.78rem;font-weight:500;color:var(--muted);transition:all var(--tr);white-space:nowrap}
+.cn a:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-l)}
+.cn a.on{background:var(--amber);border-color:var(--amber);color:#000;font-weight:600}
 
 /* ── CARD ────────────────────────────── */
-.card{background:var(--paper);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh-sm);padding:1.2rem;transition:all var(--tr);display:flex;flex-direction:column}
-.card:hover{box-shadow:var(--sh-md);transform:translateY(-2px);border-color:var(--blue-l)}
-.card-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:.4rem}
+.card{background:var(--paper);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh-sm);padding:1.3rem;transition:all var(--tr);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--blue-grad-start),var(--blue-grad-end));opacity:0;transition:opacity var(--tr)}
+.card:hover{box-shadow:var(--sh-md);transform:translateY(-4px);border-color:var(--amber);color:var(--ink)}
+.card:hover::before{opacity:1}
+.card-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:.4rem;padding:.2rem .5rem;background:var(--teal-l);border-radius:20px;display:inline-block;width:fit-content}
 .card h3{font-family:var(--font-h);font-size:1rem;margin-bottom:.35rem;line-height:1.35}
 .card h3 a{color:var(--ink)}
-.card h3 a:hover{color:var(--blue)}
+.card h3 a:hover{color:var(--amber)}
 .card p{color:var(--muted);font-size:.84rem;line-height:1.6;flex:1}
 .card-author{color:var(--muted);font-size:.76rem;margin-top:.5rem;display:flex;align-items:center;gap:.3rem}
 .card-author::before{content:'';width:14px;height:14px;border-radius:50%;background:var(--blue-bg);display:inline-block}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
 
 /* ── PILL ────────────────────────────── */
-.pill{display:inline-block;margin:.15rem .25rem .15rem 0;padding:.18rem .5rem;border-radius:999px;background:var(--blue-bg);color:var(--blue);font-size:.76rem;font-weight:500}
+.pill{display:inline-block;margin:.15rem .25rem .15rem 0;padding:.18rem .5rem;border-radius:999px;background:var(--blue-bg);color:var(--blue);font-size:.76rem;font-weight:500;transition:all var(--tr)}
+.pill:hover{background:var(--blue);color:#fff}
 
 /* ── CAT SECTION ─────────────────────── */
 .cs{margin-bottom:2.5rem}
@@ -717,25 +728,28 @@ a.stat:hover{box-shadow:var(--sh-md);border-color:var(--blue-l);transform:transl
 .cs-t .n{font-size:.72rem;font-weight:500;color:var(--muted);background:var(--amber-l);padding:.15rem .5rem;border-radius:999px}
 
 /* ── NOTE ────────────────────────────── */
-.note{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-md);padding:clamp(1.5rem,4vw,2.5rem);max-width:860px}
-.note h1{font-family:var(--font-h);font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.25;margin-bottom:.4rem}
-.note h2{font-family:var(--font-h);font-size:1.25rem;margin-top:2rem;margin-bottom:.6rem;color:var(--blue)}
-.note h3{font-family:var(--font-h);font-size:1.05rem;margin-top:1.5rem;margin-bottom:.4rem}
-.note-meta{color:var(--muted);font-size:.82rem;margin-bottom:1rem}
+.note{background:var(--paper);border:1px solid var(--border);border-radius:16px;box-shadow:var(--sh-md);padding:clamp(1.5rem,4vw,2.5rem);max-width:860px;position:relative}
+.note::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--blue-grad-start),var(--blue-grad-end))}
+.note h1{font-family:var(--font-h);font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.25;margin-bottom:.4rem;color:var(--ink)}
+.note h2{font-family:var(--font-h);font-size:1.25rem;margin-top:2rem;margin-bottom:.6rem;color:var(--blue);padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+.note h3{font-family:var(--font-h);font-size:1.05rem;margin-top:1.5rem;margin-bottom:.4rem;color:var(--amber)}
+.note-meta{color:var(--muted);font-size:.82rem;margin-bottom:1rem;padding:.5rem .8rem;background:var(--bg);border-radius:20px;display:inline-block}
 .note p,.note li{font-size:.97rem;line-height:1.85}
 .note ul{padding-left:1.2rem;margin:.5rem 0}
-.note blockquote{margin:1rem 0;padding:.8rem 1rem;border-left:3px solid var(--amber);background:var(--amber-l);border-radius:0 8px 8px 0}
-.note .tag-row{margin:.75rem 0 1.5rem}
+.note blockquote{margin:1rem 0;padding:1rem 1.2rem;border-left:4px solid var(--amber);background:var(--amber-l);border-radius:0 8px 8px 0;font-style:italic;color:var(--ink2)}
+.note .tag-row{margin:.75rem 0 1.5rem;display:flex;flex-wrap:wrap;gap:.3rem}
 .note pre{background:var(--ink);color:#e2e8f0;padding:1rem;border-radius:var(--r);overflow-x:auto;margin:1rem 0}
 .note pre code{background:none;padding:0;color:inherit}
-.wl{color:var(--blue-l);border-bottom:1px dashed rgba(19,61,114,.3)}
+.wl{color:var(--amber);border-bottom:1px dashed rgba(251,191,36,.4)}
 
 /* ── LIST CARD ───────────────────────── */
-.lc{background:var(--paper);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-sm);padding:clamp(1.2rem,3vw,1.8rem);margin-bottom:1.5rem;transition:all var(--tr)}
-.lc:hover{box-shadow:var(--sh-md)}
+.lc{background:var(--paper);border:1px solid var(--border);border-radius:12px;box-shadow:var(--sh-sm);padding:clamp(1.2rem,3vw,1.8rem);margin-bottom:1.5rem;transition:all var(--tr);position:relative;overflow:hidden}
+.lc::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--blue-grad-start),var(--blue-grad-end));opacity:0;transition:opacity var(--tr)}
+.lc:hover::before{opacity:1}
+.lc:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
 .lc h3{font-family:var(--font-h);font-size:1.05rem;margin-bottom:.25rem}
 .lc h3 a{color:var(--ink)}
-.lc h3 a:hover{color:var(--blue)}
+.lc h3 a:hover{color:var(--amber)}
 .lc p{color:var(--muted);font-size:.84rem}
 .lc-meta{display:flex;gap:1rem;margin-top:.5rem;font-size:.76rem;color:var(--muted)}
 .ls{margin-bottom:2rem}
@@ -896,12 +910,13 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
   </div>
 </div>
 
-<div class="agent-section" style="margin:1.5rem 0;padding:1rem;background:var(--amber-l);border-radius:var(--r);border:1px solid var(--amber)">
-  <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem">🤖 让 AI Agent 学习</div>
-  <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">复制以下链接发给 AI Agent，让它学习 uRead 的读书笔记：</p>
-  <div style="display:flex;align-items:center;gap:.5rem">
-    <code id="agentLink" style="flex:1;background:var(--ink);color:#e2e8f0;padding:.75rem;border-radius:var(--r);font-size:.8rem;word-break:break-all">https://zhubao315.github.io/uRead/api/books.json</code>
-    <button onclick="copyAgentLink()" style="padding:.5rem 1rem;background:var(--amber);color:var(--ink);border:none;border-radius:var(--r);font-weight:600;cursor:pointer">复制链接</button>
+<div class="agent-section" style="margin:1.5rem 0;padding:1.2rem;background:linear-gradient(135deg,rgba(255,107,53,.1),rgba(251,191,36,.08));border:1px solid var(--amber);border-radius:12px;position:relative;overflow:hidden">
+  <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(255,107,53,.15),transparent 70%);pointer-events:none"></div>
+  <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem">🤖 <span style="font-size:1.1rem">让 AI Agent 学习</span></div>
+  <p style="font-size:.9rem;color:var(--ink2);margin-bottom:.8rem">复制以下链接发给 AI Agent，让它学习 uRead 的读书笔记：</p>
+  <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+    <code id="agentLink" style="flex:1;min-width:200px;background:var(--paper);color:var(--ink);padding:.75rem 1rem;border-radius:8px;font-size:.8rem;word-break:break-all;border:1px solid var(--border)">https://zhubao315.github.io/uRead/api/books.json</code>
+    <button onclick="copyAgentLink()" style="padding:.6rem 1.2rem;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;box-shadow:var(--sh-sm);transition:all var(--tr)">📋 复制链接</button>
   </div>
 </div>
 <script>function copyAgentLink(){{navigator.clipboard.writeText(document.getElementById('agentLink').textContent).then(()=>alert('已复制到粘贴板'))}}</script>
@@ -1029,18 +1044,33 @@ def _details(section: str, notes) -> None:
         ch = markdown_to_html(note["body"])
         note_url = f"https://zhubao315.github.io/uRead/books/{note['slug']}/"
         api_url = "https://zhubao315.github.io/uRead/api/books.json"
+
+        # JSON-LD for Agent/SEO
+        tags_str = ", ".join([f'"{t}"' for t in m.get("tags", [])])
+        jsonld = f'''<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "{note["title"]}",
+  "author": {{"@type": "Person", "name": "{m.get("author", "Unknown")}"}},
+  "description": "{note["summary"]}",
+  "keywords": [{tags_str}],
+  "url": "{note_url}"
+}}
+</script>'''
+
         agent_h = f"""
-<div class="agent-section" style="margin-top:1.5rem;padding:1rem;background:var(--amber-l);border-radius:var(--r);border:1px solid var(--amber)">
+<div class="agent-section" style="margin-top:1.5rem;padding:1rem;background:linear-gradient(135deg,rgba(255,107,53,.1),rgba(251,191,36,.08));border:1px solid var(--amber);border-radius:12px">
   <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem">🤖 让 AI Agent 学习</div>
   <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">复制以下链接发给 AI Agent，让它学习这篇读书笔记：</p>
-  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
-    <code id="agentLink_{note["slug"]}" style="flex:1;background:var(--ink);color:#e2e8f0;padding:.75rem;border-radius:var(--r);font-size:.8rem;word-break:break-all">{note_url}</code>
-    <button onclick="copyAgentLink_{note["slug"]}()" style="padding:.5rem 1rem;background:var(--amber);color:var(--ink);border:none;border-radius:var(--r);font-weight:600;cursor:pointer">复制</button>
+  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap">
+    <code id="agentLink_{note["slug"]}" style="flex:1;min-width:200px;background:var(--paper);color:var(--ink);padding:.75rem;border-radius:8px;font-size:.8rem;word-break:break-all;border:1px solid var(--border)">{note_url}</code>
+    <button onclick="copyAgentLink_{note["slug"]}()" style="padding:.5rem 1rem;background:linear-gradient(135deg,var(--blue-grad-start),var(--blue-grad-end));color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer">📋 复制</button>
   </div>
-  <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem">或学习全部书籍：<a href="{api_url}" style="color:var(--blue)">{api_url}</a></p>
+  <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem">或学习全部 <a href="{api_url}" style="color:var(--blue)">280本读书笔记</a></p>
 </div>
 <script>function copyAgentLink_{note["slug"]}(){{navigator.clipboard.writeText('{note_url}').then(()=>alert('已复制到粘贴板'))}}</script>"""
-        body = f'<article class="note"><div class="hero-eyebrow"><span class="dot"></span>{note["type"]}</div><h1>{note["title"]}</h1><div class="note-meta">{mt}</div><p style="color:var(--ink2)">{note["summary"]}</p><div class="tag-row">{tags_h}</div>{ch}{agent_h}</article>'
+        body = f'{jsonld}<article class="note"><div class="hero-eyebrow"><span class="dot"></span>{note["type"]}</div><h1>{note["title"]}</h1><div class="note-meta">{mt}</div><p style="color:var(--ink2)">{note["summary"]}</p><div class="tag-row">{tags_h}</div>{ch}{agent_h}</article>'
         (folder / "index.html").write_text(
             site_shell(f"{note['title']} | uRead", body, note["summary"]),
             encoding="utf-8",
@@ -1053,6 +1083,16 @@ def _details(section: str, notes) -> None:
 def _api_books(books):
     return [
         {
+            "@context": "https://schema.org",
+            "@type": "Book",
+            "name": n["title"],
+            "author": {"@type": "Person", "name": n["meta"].get("author", "Unknown")},
+            "description": n["summary"],
+            "keywords": n["meta"].get("tags", []),
+            "workExample": {
+                "@type": "BookEdition",
+                "bookEdition": n["meta"].get("theme", ""),
+            },
             "title": n["title"],
             "author": n["meta"].get("author", ""),
             "slug": n["slug"],
@@ -1060,8 +1100,12 @@ def _api_books(books):
             "tags": n["meta"].get("tags", []),
             "theme": n["meta"].get("theme", ""),
             "rating": n["meta"].get("rating", 0),
-            "url": f"/uRead/books/{n['slug']}/",
+            "url": f"https://zhubao315.github.io/uRead/books/{n['slug']}/",
+            "apiUrl": "https://zhubao315.github.io/uRead/api/books.json",
             "agentsPublic": n["meta"].get("agents_public", False),
+            "year": n["meta"].get("year", ""),
+            "isbn": n["meta"].get("isbn", ""),
+            "source": n["meta"].get("source", ""),
         }
         for n in books
     ]
