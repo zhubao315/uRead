@@ -867,13 +867,28 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
         total = len(_books_cat(books, c["name"]))
         cat_h += f'<section class="cs"><div class="cs-t">{_icon(c["icon"], 18)}{c["name"]}<span class="n">{total}</span></div><div class="grid">{g}</div></section>'
 
-    # curated lists
+    # curated lists - show 3 random
+    import random
+
+    random.seed()
+    shuffled_lists = CURATED_LISTS.copy()
+    random.shuffle(shuffled_lists)
+    random_lists = shuffled_lists[:3]
     list_h = ""
-    for lst in CURATED_LISTS:
+    for lst in random_lists:
         total = sum(len(s["books"]) for s in lst["sections"])
         list_h += f'<article class="lc"><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="lc-meta"><span>{len(lst["sections"])} 个分类</span><span>{total} 本经典</span></div></article>'
 
-    cards_h = "\n".join(_card(c, "/uRead/cards") for c in cards[:6])
+    # knowledge cards - show 3 random
+    random.seed()
+    shuffled_cards = cards.copy()
+    random.shuffle(shuffled_cards)
+    random_cards = shuffled_cards[:3]
+    cards_h = ""
+    for c in random_cards:
+        author = c["meta"].get("author", "")
+        ah = f'<div class="card-author">{author}</div>' if author else ""
+        cards_h += f'<article class="card"><div class="card-cat">{c["meta"].get("theme", c["section"])}</div><h3><a href="/uRead/cards/{c["slug"]}/">{c["title"]}</a></h3><p>{c["summary"]}</p>{ah}</article>'
 
     body = f"""
 <section class="hero">
@@ -901,10 +916,10 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
 
 <div class="stats">{stats_h}</div>
 {_cat_nav()}
-<div class="sh"><h2><span class="dot"></span>精选书单</h2><a href="/uRead/lists/">查看全部</a></div>
+<div class="sh"><h2><span class="dot"></span>🎲 精选书单（随机3个）</h2><a href="/uRead/lists/">查看全部</a></div>
 {list_h}
 {cat_h}
-<div class="sh"><h2><span class="dot"></span>知识卡片</h2><a href="/uRead/cards/">查看全部</a></div>
+<div class="sh"><h2><span class="dot"></span>🎲 知识卡片（随机3个）</h2><a href="/uRead/cards/">查看全部</a></div>
 <div class="grid">{cards_h}</div>
 <script>
 function filterCards(q) {{
