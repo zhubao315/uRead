@@ -892,8 +892,12 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
 <div class="agent-section" style="margin:1.5rem 0;padding:1rem;background:var(--amber-l);border-radius:var(--r);border:1px solid var(--amber)">
   <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem">🤖 让 AI Agent 学习</div>
   <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">复制以下链接发给 AI Agent，让它学习 uRead 的读书笔记：</p>
-  <code style="display:block;background:var(--ink);color:#e2e8f0;padding:.75rem;border-radius:var(--r);font-size:.8rem;word-break:break-all">https://zhubao315.github.io/uRead/api/books.json</code>
+  <div style="display:flex;align-items:center;gap:.5rem">
+    <code id="agentLink" style="flex:1;background:var(--ink);color:#e2e8f0;padding:.75rem;border-radius:var(--r);font-size:.8rem;word-break:break-all">https://zhubao315.github.io/uRead/api/books.json</code>
+    <button onclick="copyAgentLink()" style="padding:.5rem 1rem;background:var(--amber);color:var(--ink);border:none;border-radius:var(--r);font-weight:600;cursor:pointer">复制链接</button>
+  </div>
 </div>
+<script>function copyAgentLink(){{navigator.clipboard.writeText(document.getElementById('agentLink').textContent).then(()=>alert('已复制到粘贴板'))}}</script>
 
 <div class="stats">{stats_h}</div>
 {_cat_nav()}
@@ -1000,13 +1004,18 @@ def _details(section: str, notes) -> None:
             mt += f" / {'★' * r}{'☆' * (5 - r)}"
         ch = markdown_to_html(note["body"])
         note_url = f"https://zhubao315.github.io/uRead/books/{note['slug']}/"
+        api_url = "https://zhubao315.github.io/uRead/api/books.json"
         agent_h = f"""
 <div class="agent-section" style="margin-top:1.5rem;padding:1rem;background:var(--amber-l);border-radius:var(--r);border:1px solid var(--amber)">
   <div style="font-weight:700;color:var(--amber);margin-bottom:.5rem">🤖 让 AI Agent 学习</div>
   <p style="font-size:.85rem;color:var(--muted);margin-bottom:.5rem">复制以下链接发给 AI Agent，让它学习这篇读书笔记：</p>
-  <code style="display:block;background:var(--ink);color:#e2e8f0;padding:.75rem;border-radius:var(--r);font-size:.8rem;word-break:break-all">{note_url}</code>
-  <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem">或学习全部书籍：<a href="https://zhubao315.github.io/uRead/api/books.json" style="color:var(--blue)">https://zhubao315.github.io/uRead/api/books.json</a></p>
-</div>"""
+  <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
+    <code id="agentLink_{note["slug"]}" style="flex:1;background:var(--ink);color:#e2e8f0;padding:.75rem;border-radius:var(--r);font-size:.8rem;word-break:break-all">{note_url}</code>
+    <button onclick="copyAgentLink_{note["slug"]}()" style="padding:.5rem 1rem;background:var(--amber);color:var(--ink);border:none;border-radius:var(--r);font-weight:600;cursor:pointer">复制</button>
+  </div>
+  <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem">或学习全部书籍：<a href="{api_url}" style="color:var(--blue)">{api_url}</a></p>
+</div>
+<script>function copyAgentLink_{note["slug"]}(){{navigator.clipboard.writeText('{note_url}').then(()=>alert('已复制到粘贴板'))}}</script>"""
         body = f'<article class="note"><div class="hero-eyebrow"><span class="dot"></span>{note["type"]}</div><h1>{note["title"]}</h1><div class="note-meta">{mt}</div><p style="color:var(--ink2)">{note["summary"]}</p><div class="tag-row">{tags_h}</div>{ch}{agent_h}</article>'
         (folder / "index.html").write_text(
             site_shell(f"{note['title']} | uRead", body, note["summary"]),
