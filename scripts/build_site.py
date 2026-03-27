@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import random
 from pathlib import Path
 from shared import (
     PUBLIC_DIR,
@@ -857,19 +858,22 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
         for d, v, l, href in stat_defs
     )
 
-    # category preview (max 6 per cat)
+    # category preview (6 random per cat)
     cat_h = ""
     for c in CATEGORIES:
-        cb = _books_cat(books, c["name"])[:6]
-        if not cb:
+        cb_all = _books_cat(books, c["name"])
+        if not cb_all:
             continue
+        random.seed()
+        shuffled = cb_all.copy()
+        random.shuffle(shuffled)
+        cb = shuffled[:6]
         g = "\n".join(_card(b, "/uRead/books") for b in cb)
-        total = len(_books_cat(books, c["name"]))
-        cat_h += f'<section class="cs"><div class="cs-t">{_icon(c["icon"], 18)}{c["name"]}<span class="n">{total}</span></div><div class="grid">{g}</div></section>'
+        total = len(cb_all)
+        cat_name = c["name"]
+        cat_h += f"""<section class="cs"><div class="cs-t">{_icon(c["icon"], 18)}{cat_name}<span class="n">{total}</span><a href="/uRead/books/#{cat_name}" style="margin-left:auto;font-size:.8rem;color:var(--blue)">查看全部</a></div><div class="grid">{g}</div></section>"""
 
     # curated lists - show 3 random
-    import random
-
     random.seed()
     shuffled_lists = CURATED_LISTS.copy()
     random.shuffle(shuffled_lists)
