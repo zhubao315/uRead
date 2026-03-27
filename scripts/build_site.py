@@ -873,7 +873,7 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
         cat_name = c["name"]
         cat_h += f"""<section class="cs"><div class="cs-t">{_icon(c["icon"], 18)}{cat_name}<span class="n">{total}</span><a href="/uRead/books/#{cat_name}" style="margin-left:auto;font-size:.8rem;color:var(--blue)">查看全部</a></div><div class="grid">{g}</div></section>"""
 
-    # curated lists - show 3 random
+    # curated lists - show 3 random, using card style
     random.seed()
     shuffled_lists = CURATED_LISTS.copy()
     random.shuffle(shuffled_lists)
@@ -881,7 +881,7 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
     list_h = ""
     for lst in random_lists:
         total = sum(len(s["books"]) for s in lst["sections"])
-        list_h += f'<article class="lc"><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="lc-meta"><span>{len(lst["sections"])} 个分类</span><span>{total} 本经典</span></div></article>'
+        list_h += f'<article class="card"><div class="card-cat">精选书单</div><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="card-author">{len(lst["sections"])} 个分类 · {total} 本经典</div></article>'
 
     # knowledge cards - show 3 random
     random.seed()
@@ -920,11 +920,11 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
 
 <div class="stats">{stats_h}</div>
 {_cat_nav()}
-<div class="sh"><h2><span class="dot"></span>精选书单</h2><a href="/uRead/lists/">查看全部</a></div>
-{list_h}
-{cat_h}
 <div class="sh"><h2><span class="dot"></span>知识卡片</h2><a href="/uRead/cards/">查看全部</a></div>
 <div class="grid">{cards_h}</div>
+{cat_h}
+<div class="sh"><h2><span class="dot"></span>精选书单</h2><a href="/uRead/lists/">查看全部</a></div>
+<div class="grid">{list_h}</div>
 <script>
 function filterCards(q) {{
   q = q.toLowerCase().trim();
