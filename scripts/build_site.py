@@ -615,7 +615,7 @@ STYLES = """
   --max-w:   1160px;
   --tr:      .18s ease;
   --font-h:  'Lora', Georgia, serif;
-  --font-b:  'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-b:  'MiSans', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   --font-m:  'JetBrains Mono', 'Fira Code', monospace;
 }
 @media(prefers-color-scheme:dark){
