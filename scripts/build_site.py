@@ -858,41 +858,29 @@ def build_home(notes, books, cards, enriched, tag_count) -> None:
         for d, v, l, href in stat_defs
     )
 
-    # category preview (6 random per cat)
+    # category preview - show all, JS will shuffle and display 6 per category
     cat_h = ""
     for c in CATEGORIES:
         cb_all = _books_cat(books, c["name"])
         if not cb_all:
             continue
-        random.seed()
-        shuffled = cb_all.copy()
-        random.shuffle(shuffled)
-        cb = shuffled[:6]
-        g = "\n".join(_card(b, "/uRead/books") for b in cb)
+        g = "\n".join(_card(b, "/uRead/books") for b in cb_all)
         total = len(cb_all)
         cat_name = c["name"]
         cat_h += f"""<section class="cs"><div class="cs-t">{_icon(c["icon"], 18)}{cat_name}<span class="n">{total}</span><a href="/uRead/books/#{cat_name}" style="margin-left:auto;font-size:.8rem;color:var(--blue)">查看全部</a></div><div class="grid">{g}</div></section>"""
 
-    # curated lists - show 3 random, using card style
-    random.seed()
-    shuffled_lists = CURATED_LISTS.copy()
-    random.shuffle(shuffled_lists)
-    random_lists = shuffled_lists[:3]
+    # curated lists - show all, JS will display 3 random
     list_h = ""
-    for lst in random_lists:
+    for lst in CURATED_LISTS:
         total = sum(len(s["books"]) for s in lst["sections"])
-        list_h += f'<article class="card"><div class="card-cat">精选书单</div><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="card-author">{len(lst["sections"])} 个分类 · {total} 本经典</div></article>'
+        list_h += f'<article class="card js-random-card" data-shuffle="lists"><div class="card-cat">精选书单</div><h3><a href="/uRead/lists/{lst["slug"]}/">{lst["title"]}</a></h3><p>{lst["summary"]}</p><div class="card-author">{len(lst["sections"])} 个分类 · {total} 本经典</div></article>'
 
-    # knowledge cards - show 3 random
-    random.seed()
-    shuffled_cards = cards.copy()
-    random.shuffle(shuffled_cards)
-    random_cards = shuffled_cards[:3]
+    # knowledge cards - show all in hidden state, JS will display 3 random
     cards_h = ""
-    for c in random_cards:
+    for c in cards:
         author = c["meta"].get("author", "")
         ah = f'<div class="card-author">{author}</div>' if author else ""
-        cards_h += f'<article class="card"><div class="card-cat">{c["meta"].get("theme", c["section"])}</div><h3><a href="/uRead/cards/{c["slug"]}/">{c["title"]}</a></h3><p>{c["summary"]}</p>{ah}</article>'
+        cards_h += f'<article class="card js-random-card" data-shuffle="cards"><div class="card-cat">{c["meta"].get("theme", c["section"])}</div><h3><a href="/uRead/cards/{c["slug"]}/">{c["title"]}</a></h3><p>{c["summary"]}</p>{ah}</article>'
 
     body = f"""
 <section class="hero">
@@ -937,6 +925,23 @@ function filterCards(q) {{
     s.style.display = vis.length ? '' : 'none';
   }});
 }}
+// 页面加载时随机展示
+(function() {{
+  // 知识卡片和精选书单：随机显示3个
+  ['cards', 'lists'].forEach(function(type) {{
+    var items = Array.from(document.querySelectorAll('.js-random-card[data-shuffle="' + type + '"]'));
+    items.forEach(function(el) {{ el.style.display = 'none'; }});
+    var shuffled = items.slice().sort(function() {{ return Math.random() - 0.5; }});
+    shuffled.slice(0, 3).forEach(function(el) {{ el.style.display = ''; }});
+  }});
+  // 每个分类：随机显示6个
+  document.querySelectorAll('.cs').forEach(function(section) {{
+    var cards = Array.from(section.querySelectorAll('.card'));
+    cards.forEach(function(el) {{ el.style.display = 'none'; }});
+    var shuffled = cards.slice().sort(function() {{ return Math.random() - 0.5; }});
+    shuffled.slice(0, 6).forEach(function(el) {{ el.style.display = ''; }});
+  }});
+}})();
 </script>"""
     (PUBLIC_DIR / "index.html").write_text(
         site_shell(
