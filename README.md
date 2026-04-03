@@ -113,4 +113,4 @@ uRead/
 ## 🔗 相关项目
 
 - [uWise 知识百科](https://github.com/your-org/uWise)
-- [uSkill 能力工厂](https://github.com/your-org/uSkill)
+- [uSkill 能力工厂](https://github.com/your-org/uSkill)# uRead Deployment Update
