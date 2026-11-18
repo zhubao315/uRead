@@ -49,6 +49,14 @@ const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
 
 const Navbar: React.FC = () => {
   const location = useLocation();
+  const [dark, setDark] = React.useState(() =>
+    typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark');
+  const toggleTheme = () => {
+    const next = !dark;
+    document.documentElement.dataset.theme = next ? 'dark' : 'light';
+    localStorage.setItem('uread:theme', next ? 'dark' : 'light');
+    setDark(next);
+  };
 
   const navItems: Array<{
     path: string;
@@ -117,6 +125,11 @@ const Navbar: React.FC = () => {
             key 绑定 pathname：换页时重挂载输入框，让它带上目标页面的 ?q=，
             既不会出现「留着上次的关键词」，也不用在 effect 里 setState 造成级联渲染。
           */}
+          <button type="button" onClick={toggleTheme} aria-label={dark ? '切换到日间模式' : '切换到夜间模式'}
+            title={dark ? '切换到日间模式' : '切换到夜间模式'}
+            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-slate-600">
+            {dark ? '☀' : '☾'}
+          </button>
           <NavbarSearch
             key={location.pathname}
             initialQuery={new URLSearchParams(location.search).get('q') ?? ''}
