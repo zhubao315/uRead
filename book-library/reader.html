@@ -6,13 +6,15 @@
 <title>在线阅读 · uRead 书库</title>
 <style>
   body { font-family: system-ui, -apple-system, "PingFang SC", sans-serif; margin: 0; color: #1f2937; }
-  header { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; padding: .75rem 1rem; border-bottom: 1px solid #e5e7eb; }
+  header { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .6rem .8rem; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 2; }
   header a { color: #1d4ed8; text-decoration: none; }
   h1 { font-size: 1.05rem; margin: 0 1rem 0 0; }
-  button, select { font: inherit; padding: .35rem .7rem; border: 1px solid #d1d5db; border-radius: .5rem; background: #fff; cursor: pointer; }
+  button, select { font: inherit; min-height: 44px; min-width: 44px; padding: .4rem .7rem; border: 1px solid #d1d5db; border-radius: .5rem; background: #fff; cursor: pointer; }
+  #toc { max-width: min(42vw, 14rem); }
   button:hover, select:hover { background: #f3f4f6; }
   #meta { color: #6b7280; font-size: .85rem; }
-  #stage { height: calc(100vh - 116px); }
+  #stage { height: calc(100dvh - 132px); }
+  @media (max-width: 640px) { #stage { height: calc(100dvh - 176px); } h1 { width: 100%; } #progress { margin-left: auto; } }
   foliate-view { display: block; width: 100%; height: 100%; }
   iframe { width: 100%; height: 100%; border: 0; }
   #notice { padding: 1rem; color: #b91c1c; }
@@ -68,6 +70,16 @@ try {
       await view.open(`./${book.path}`);
 
       $('prev').addEventListener('click', () => view.renderer.prev());
+      const help = document.createElement('div');
+      help.hidden = true;
+      help.textContent = '快捷键：← 上一页　→ 下一页　? 显示/隐藏帮助';
+      help.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:#1f2937;color:#fff;padding:.6rem 1rem;border-radius:.5rem;z-index:9';
+      document.body.append(help);
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') view.renderer.prev();
+        else if (event.key === 'ArrowRight') view.renderer.next();
+        else if (event.key === '?') help.hidden = !help.hidden;
+      });
       $('next').addEventListener('click', () => view.renderer.next());
 
       const flatten = (items, depth = 0) => (items || []).flatMap((item) => [
@@ -85,6 +97,18 @@ try {
       select.addEventListener('change', () => {
         const chosen = select.selectedOptions[0];
         if (chosen?.dataset.href) void view.goTo(chosen.dataset.href);
+      });
+
+      const progressKey = `uread:book:${book.id}`;
+      try {
+        const saved = JSON.parse(localStorage.getItem(progressKey) || 'null');
+        if (saved) await view.goTo(saved);
+      } catch { /* 位置格式变了就从头读，不打断阅读 */ }
+
+      view.addEventListener('relocate', () => {
+        try {
+          if (view.lastLocation) localStorage.setItem(progressKey, JSON.stringify(view.lastLocation));
+        } catch { /* 隐私模式下 localStorage 不可用，不影响阅读 */ }
       });
 
       view.addEventListener('relocate', (event) => {
