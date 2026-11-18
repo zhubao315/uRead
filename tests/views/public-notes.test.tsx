@@ -4,7 +4,7 @@
  */
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -22,7 +22,7 @@ const noteA = {
   status: '已读',
   tags: ['类型/读书笔记'],
   aliases: ['《三体》', '三体'],
-  body: '# 三体\n\n黑暗森林法则见 [[《三体》-刘慈欣|三体]]，另有 [[不存在的笔记]]。',
+  body: '# 三体\n\n## 概述\n\n黑暗森林法则见 [[《三体》-刘慈欣|三体]]，另有 [[不存在的笔记]]。',
   source_ref: { path: 'B1-文学虚构/《三体》-刘慈欣.md', sha: 'abcdef123456', url: 'https://example.invalid/note.md' },
   content_hash: 'hash-aaaa',
   audio: true,
@@ -69,6 +69,8 @@ describe('公开笔记列表', () => {
     expect(screen.getByText(/1 篇可听/)).toBeInTheDocument();
     expect(screen.getByText('刘慈欣 · B1-文学虚构 · 可听')).toBeInTheDocument();
     expect(screen.getByText('思考的快与慢')).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText('搜索标题、标签或正文'), { target: { value: '三体' } });
+    expect(document.querySelector('mark')?.textContent).toBe('三体');
   });
 });
 
@@ -87,12 +89,18 @@ describe('公开笔记详情', () => {
     const audio = document.querySelector('audio');
     expect(audio).not.toBeNull();
     expect(audio?.getAttribute('src')).toBe('/uRead/audio/hash-aaaa.wav');
+    fireEvent.click(screen.getByRole('button', { name: '1.5×' }));
+    expect(audio?.playbackRate).toBe(1.5);
+    localStorage.setItem('uread:audio:hash-aaaa', '42');
+    fireEvent.loadedMetadata(audio!);
+    expect(audio?.currentTime).toBe(42);
   });
 
   it('没有音频时明说没有，不放假播放器', async () => {
     renderDetail(noteB.slug);
     expect(await screen.findByText('思考的快与慢')).toBeInTheDocument();
     expect(screen.getByText('这篇笔记目前没有音频。')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '复制笔记链接' })).toBeInTheDocument();
     expect(document.querySelector('audio')).toBeNull();
   });
 
@@ -100,9 +108,10 @@ describe('公开笔记详情', () => {
     renderDetail(noteA.slug);
     await waitFor(() => expect(document.querySelector('article')).not.toBeNull());
     const article = document.querySelector('article');
-    const linked = [...(article?.querySelectorAll('a') ?? [])].find((a) => a.textContent === '三体');
+    const linked = [...(article?.querySelectorAll('a') ?? [])].find((a) => a.textContent === '三体' && a.getAttribute('href')?.startsWith('/read/'));
     expect(linked).toBeDefined();
     expect(linked?.getAttribute('href')).toContain(encodeURIComponent(noteA.slug));
     expect(screen.getByText('不存在的笔记').tagName).toBe('SPAN');
+    expect(screen.getByRole('navigation', { name: '本篇目录' })).toBeInTheDocument();
   });
 });
