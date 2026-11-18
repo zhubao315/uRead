@@ -1,0 +1,20 @@
+{{- if and (partialCached "compare/enabled.html" . .Site.Language.Lang .Site.BaseURL) (eq (lower (.Store.Get "tdOutputFormat" | default "html")) "html") -}}
+<meta name="oink-compare-page" content="{{ .RelPermalink }}">
+<script>
+  (function () {
+    try {
+      var frame = window.frameElement;
+      if (new URL(location.href).searchParams.get('oink_compare_pane') === '1' &&
+          frame && frame.hasAttribute('data-td-compare-frame') &&
+          frame.closest('dialog[data-td-compare][open]')) {
+        window.OinkComparePane = true;
+        document.documentElement.setAttribute('data-td-compare-pane', '');
+        // The parsed article is readable now; images and embeds may still load.
+        document.addEventListener('DOMContentLoaded', function () {
+          try { frame.dispatchEvent(new Event('td:compare-pane-ready')); } catch (_) {}
+        });
+      }
+    } catch (_) {}
+  })();
+</script>
+{{- end -}}

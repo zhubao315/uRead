@@ -2,31 +2,67 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 设置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '26'
+          cache: npm
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+      - name: 安装依赖
+        # 使用 lockfile 保证构建可复现
+        run: npm ci
 
-      - name: Build
+      - name: 类型检查
+        run: npm run typecheck
+
+      - name: 单元测试
+        run: npm test
+
+      - name: 构建（SPA）
         run: npm run build
 
-      - name: Deploy to gh-pages branch
+      - name: 安装 Hugo Extended（文档站唯一构建依赖，OINK 主题不需要 Node）
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.168.0'
+          extended: true
+
+      - name: 构建并自检文档站（Hugo + OINK）
         run: |
-          git config --global user.email "zhubao315@users.noreply.github.com"
-          git config --global user.name "zhubao315"
-          git add -f dist/
-          git commit -m "Deploy to GitHub Pages $(date)"
-          git push -f origin HEAD:gh-pages
+          npm run docs:build
+          npm run docs:check
+
+      - name: 把文档站并入 SPA 产物（发布到 /uRead/docs/）
+        # 应用与文档共用一个 Pages 产物；docs:check 断言过文档首页有回应用的路
+        run: mkdir -p dist/docs && cp -r docs-site/. dist/docs/
+
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传构建产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

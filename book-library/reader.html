@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>在线阅读 · uRead 书库</title>
+<style>
+  body { font-family: system-ui, -apple-system, "PingFang SC", sans-serif; margin: 0; color: #1f2937; }
+  header { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; padding: .75rem 1rem; border-bottom: 1px solid #e5e7eb; }
+  header a { color: #1d4ed8; text-decoration: none; }
+  h1 { font-size: 1.05rem; margin: 0 1rem 0 0; }
+  button, select { font: inherit; padding: .35rem .7rem; border: 1px solid #d1d5db; border-radius: .5rem; background: #fff; cursor: pointer; }
+  button:hover, select:hover { background: #f3f4f6; }
+  #meta { color: #6b7280; font-size: .85rem; }
+  #stage { height: calc(100vh - 116px); }
+  foliate-view { display: block; width: 100%; height: 100%; }
+  iframe { width: 100%; height: 100%; border: 0; }
+  #notice { padding: 1rem; color: #b91c1c; }
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html">← 书库</a>
+  <h1 id="title">正在打开…</h1>
+  <span id="meta"></span>
+  <button id="prev" type="button">上一页</button>
+  <button id="next" type="button">下一页</button>
+  <select id="toc" aria-label="目录"><option value="">目录</option></select>
+  <span id="progress"></span>
+</header>
+<div id="stage">
+  <div id="notice"></div>
+</div>
+
+<script type="module">
+import './vendor/foliate-js/view.js';
+
+const $ = (id) => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const id = params.get('id') || '';
+const notice = $('notice');
+
+const fail = (message) => {
+  notice.textContent = message;
+  $('title').textContent = '打不开这本书';
+};
+
+try {
+  const response = await fetch('./catalog.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error(`目录读取失败：HTTP ${response.status}`);
+  const books = await response.json();
+  const book = books.find((item) => item.id === id);
+  if (!book) {
+    fail(`没有找到 id 为 ${id} 的书。请从书库列表点进来。`);
+  } else {
+    $('title').textContent = book.title;
+    $('meta').textContent = [book.author, book.format.toUpperCase(),
+      `${(book.size_bytes / 1024 / 1024).toFixed(1)} MiB`].filter(Boolean).join(' · ');
+
+    if (book.format === 'pdf') {
+      // PDF 走浏览器自带阅读器：比 foliate-js 的实验性 PDF 适配稳定得多。
+      $('stage').innerHTML = `<iframe src="./${book.path}" title="${book.title}"></iframe>`;
+      $('prev').disabled = $('next').disabled = true;
+      $('toc').disabled = true;
+    } else {
+      const view = document.createElement('foliate-view');
+      $('stage').replaceChildren(view);
+      await view.open(`./${book.path}`);
+
+      $('prev').addEventListener('click', () => view.renderer.prev());
+      $('next').addEventListener('click', () => view.renderer.next());
+
+      const flatten = (items, depth = 0) => (items || []).flatMap((item) => [
+        { label: '　'.repeat(depth) + (item.label || ''), href: item.href },
+        ...flatten(item.subitems, depth + 1),
+      ]);
+      const select = $('toc');
+      for (const [index, item] of flatten(view.book.toc).entries()) {
+        const option = document.createElement('option');
+        option.value = String(index);
+        option.textContent = item.label;
+        select.append(option);
+        option.dataset.href = item.href || '';
+      }
+      select.addEventListener('change', () => {
+        const chosen = select.selectedOptions[0];
+        if (chosen?.dataset.href) void view.goTo(chosen.dataset.href);
+      });
+
+      view.addEventListener('relocate', (event) => {
+        const fraction = event.detail?.fraction;
+        $('progress').textContent = typeof fraction === 'number'
+          ? `${Math.round(fraction * 100)}%` : '';
+      });
+    }
+  }
+} catch (error) {
+  fail(`阅读器启动失败：${error instanceof Error ? error.message : String(error)}`);
+}
+</script>
+</body>
+</html>

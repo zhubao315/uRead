@@ -1,0 +1,11 @@
+{
+  "name": "uread-book-library",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "uRead 静态书库：扫描本机合法 EPUB/PDF，产出可部署到 Pages 子路径的只读阅读站",
+  "dependencies": {
+    "foliate-js": "1.0.1",
+    "@zip.js/zip.js": "^2.7.62"
+  }
+}

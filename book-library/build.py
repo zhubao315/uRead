@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+"""扫描本机合法 EPUB/PDF → 产出可部署到 GitHub Pages 子路径的静态书库。
+
+设计边界（不要越过）：
+  * 只扫描 `book-library/books/` 里的文件，**不下载任何书**、不联网。
+  * 只做静态产物：目录 JSON + 阅读页 + 书文件副本。没有服务端、没有账号、没有密钥。
+  * 版权由放书的人负责：README 里写明「只放你有权公开分发的书」。
+  * 大文件硬线：GitHub 单文件 >100 MiB 直接拦截、>50 MiB 告警；超线拒绝生成并点名文件。
+
+产物：uRead/dist/books/{index.html,reader.html,catalog.json,books/*,vendor/foliate-js/*}
+"""
+
+from __future__ import annotations
+
+import hashlib
+import html
+import json
+import pathlib
+import re
+import shutil
+import sys
+import zipfile
+
+ROOT = pathlib.Path(__file__).resolve().parent
+REPO = ROOT.parent
+BOOKS_IN = ROOT / "books"
+VENDOR_IN = ROOT / "vendor" / "foliate-js"
+DIST = REPO / "dist" / "books"
+WARN_MIB = 50
+HARD_MIB = 100
+
+EPUB_TITLE = re.compile(r"<dc:title[^>]*>(.*?)</dc:title>", re.S | re.I)
+EPUB_AUTHOR = re.compile(r"<dc:creator[^>]*>(.*?)</dc:creator>", re.S | re.I)
+EPUB_LANG = re.compile(r"<dc:language[^>]*>(.*?)</dc:language>", re.S | re.I)
+PDF_NAME = re.compile(r"《([^》]+)》\s*[-—_]?\s*(.*)")
+PDF_PAGE = re.compile(rb"/Type\s*/Page[^s]")
+
+
+def plain(value: str) -> str:
+    return html.unescape(re.sub(r"<[^>]+>", "", value)).strip()
+
+
+def epub_meta(path: pathlib.Path) -> dict:
+    with zipfile.ZipFile(path) as archive:
+        container = archive.read("META-INF/container.xml").decode("utf-8", "replace")
+        opf = re.search(r'full-path="([^"]+)"', container)
+        if not opf:
+            raise ValueError("META-INF/container.xml 里找不到 OPF 路径")
+        manifest = archive.read(opf.group(1)).decode("utf-8", "replace")
+    pick = lambda rx: plain(rx.search(manifest).group(1)) if rx.search(manifest) else ""
+    return {
+        "title": pick(EPUB_TITLE) or path.stem,
+        "author": pick(EPUB_AUTHOR),
+        "language": pick(EPUB_LANG),
+        "pages": None,
+    }
+
+
+def pdf_meta(path: pathlib.Path) -> dict:
+    # 58 MB 的书不整本训进内存：只看前 2 MB 找嵌入元数据，页数用流式计数。
+    head = path.open("rb").read(2_000_000)
+    title = author = ""
+    for key in (b"/Title", b"/Author"):
+        match = re.search(re.escape(key) + rb"\s*\(([^)]{0,200})\)", head)
+        if match:
+            value = match.group(1).decode("utf-8", "replace").strip()
+            if key == b"/Title":
+                title = value
+            else:
+                author = value
+    if not title:
+        named = PDF_NAME.match(path.stem)
+        title = f"《{named.group(1)}》" if named else path.stem
+        author = author or (named.group(2).strip() if named and named.group(2) else "")
+    pages = 0
+    with path.open("rb") as handle:
+        while chunk := handle.read(8 << 20):
+            pages += len(PDF_PAGE.findall(chunk))
+    return {"title": title, "author": author, "language": "", "pages": pages or None}
+
+
+def scan() -> list[dict]:
+    if not BOOKS_IN.exists():
+        return []
+    records = []
+    for path in sorted(BOOKS_IN.iterdir()):
+        if not path.is_file() or path.suffix.lower() not in (".epub", ".pdf"):
+            continue
+        size = path.stat().st_size
+        mib = size / 1024 / 1024
+        if mib > HARD_MIB:
+            raise SystemExit(f"拒绝生成：{path.name} 有 {mib:.1f} MiB，超过 GitHub 单文件 {HARD_MIB} MiB 硬线")
+        if mib > WARN_MIB:
+            print(f"  警告：{path.name} 有 {mib:.1f} MiB，GitHub 会告警；建议压缩或改用 Release 外链")
+        fmt = path.suffix.lower()[1:]
+        meta = epub_meta(path) if fmt == "epub" else pdf_meta(path)
+        book_id = hashlib.sha256(path.name.encode()).hexdigest()[:12]
+        records.append({
+            "id": book_id,
+            "title": meta["title"],
+            "author": meta["author"],
+            "language": meta["language"],
+            "format": fmt,
+            "size_bytes": size,
+            "pages_estimate": meta["pages"],
+            "path": f"books/{book_id}.{fmt}",
+            "source_filename": path.name,
+            "rights": "由放书人声明合法持有并有权公开分发；本站不承担版权责任",
+        })
+        print(f"  收录：{meta['title'][:36]}｜{fmt}｜{mib:.1f} MiB")
+    return records
+
+
+def write_outputs(records: list[dict]) -> None:
+    if DIST.exists():
+        shutil.rmtree(DIST)
+    (DIST / "books").mkdir(parents=True)
+    (DIST / "vendor").mkdir(parents=True)
+    for record in records:
+        shutil.copy2(BOOKS_IN / record["source_filename"], DIST / record["path"])
+    if VENDOR_IN.exists():
+        shutil.copytree(VENDOR_IN, DIST / "vendor" / "foliate-js",
+                        ignore=shutil.ignore_patterns("tests", "*.md", "*.json", "rollup*", "eslint*"))
+    else:
+        raise SystemExit("缺少 foliate-js vendor；先在 book-library/ 里执行 npm install")
+
+    payload = json.dumps(records, ensure_ascii=False, indent=2)
+    (DIST / "catalog.json").write_text(payload, encoding="utf-8")
+    version = hashlib.sha256(payload.encode()).hexdigest()[:16]
+    (DIST / "manifest.json").write_text(
+        json.dumps({"version": version, "count": len(records)}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    rows = "\n".join(
+        '<li><a href="reader.html?id={id}">{title}</a><span>{author} · {fmt} · {mib:.1f} MiB{pages}</span>'
+        '<a class="download" href="{path}" download>下载原文</a></li>'.format(
+            id=html.escape(r["id"]),
+            title=html.escape(r["title"]),
+            author=html.escape(r["author"] or "作者未标注"),
+            fmt=r["format"].upper(),
+            mib=r["size_bytes"] / 1024 / 1024,
+            pages=f" · 约 {r['pages_estimate']} 页（估算）" if r["pages_estimate"] else "",
+            path=html.escape(r["path"]),
+        )
+        for r in records
+    ) or "<li>书库还没有书。</li>"
+    (DIST / "index.html").write_text(INDEX_HTML.format(rows=rows, count=len(records)), encoding="utf-8")
+    shutil.copy2(ROOT / "reader.html", DIST / "reader.html")
+    print(f"书库已生成：{len(records)} 本，版本 {version}，产物 {DIST}")
+
+
+INDEX_HTML = """<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>uRead 书库</title>
+<style>
+body{{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1f2937}}
+h1{{font-size:1.8rem}} ul{{list-style:none;padding:0}} li{{border:1px solid #e5e7eb;border-radius:12px;padding:1rem;margin:.75rem 0}}
+a{{color:#1d4ed8;text-decoration:none}} a:hover{{text-decoration:underline}}
+li span{{display:block;color:#6b7280;font-size:.9rem;margin:.35rem 0}}
+.download{{font-size:.85rem}} footer{{margin-top:2rem;color:#6b7280;font-size:.8rem}}
+</style>
+</head>
+<body>
+<h1>uRead 书库</h1>
+<p>共 {count} 本。点击书名在线阅读；EPUB 在浏览器里排版，PDF 用浏览器自带阅读器。</p>
+<ul>{rows}</ul>
+<footer>只收录放书人声明有权公开分发的书。GitHub 对单文件 >50 MiB 会告警、>100 MiB 直接拦截。</footer>
+</body>
+</html>
+"""
+
+
+def main() -> int:
+    print("扫描书库：")
+    records = scan()
+    write_outputs(records)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

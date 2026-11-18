@@ -1,0 +1,12 @@
+{{- /* 首页版式覆盖：主题的 index.html 会用 data/home/*.yaml 渲染着陆页，
+       而本仓库的首页正文写在 docs/_index.md（内容只有一处事实源）。
+       不覆盖的话首页会渲染成空白着陆页——导航在、正文没了。
+       这里按主题的文档列表版式渲染：标题 + 摘要 + 正文 + 子分节卡片。 */ -}}
+{{ define "main" }}
+<div class="td-content">
+  {{ partial "page-title.html" . }}
+  {{ with .Description }}<div class="lead">{{ . | markdownify }}</div>{{ end }}
+  {{ partial "content/render.html" . }}
+  {{ partial "section-index.html" . }}
+</div>
+{{ end }}

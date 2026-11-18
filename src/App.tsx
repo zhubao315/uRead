@@ -1,21 +1,82 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Dashboard from './views/Dashboard';
-import NotesView from './views/NotesView';
 import BookListsView from './views/BookListsView';
 import CardsView from './views/CardsView';
+import Dashboard from './views/Dashboard';
+import LibraryView from './views/LibraryView';
+import NotesView from './views/NotesView';
+import PublicNoteDetailView from './views/PublicNoteDetailView';
+import PublicNotesView from './views/PublicNotesView';
+import SearchView from './views/SearchView';
+import { useLibraryStore } from './store/libraryStore';
+
+/** 兜底路由：原来未知地址只会渲染一个空白 `<main>`，用户不知道该去哪儿。 */
+const NotFound = () => (
+  <section className="bg-white border border-gray-200 rounded-xl p-10 text-center font-inter">
+    <h1 className="text-2xl font-bold text-gray-900">这个地址下没有内容</h1>
+    <p className="mt-2 text-gray-600">
+      可能是收藏夹里的旧地址。你可以回到
+      <Link to="/" className="mx-1 text-blue-600 hover:text-blue-800 underline">
+        仪表板
+      </Link>
+      ，或者
+      <Link to="/search" className="mx-1 text-blue-600 hover:text-blue-800 underline">
+        搜索全部本地数据
+      </Link>
+      。
+    </p>
+  </section>
+);
 
 function App() {
+  const load = useLibraryStore((state) => state.load);
+  const initialized = useLibraryStore((state) => state.initialized);
+  const error = useLibraryStore((state) => state.error);
+  const errorHint = useLibraryStore((state) => state.errorHint);
+
+  useEffect(() => {
+    if (!initialized) {
+      void load();
+    }
+  }, [load, initialized]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
+      {/* 读取失败时在页面顶部常驻提示：单个视图里的错误 banner 一旦切换页面就看不到了 */}
+      {error ? (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="bg-red-50 border-b border-red-200 text-red-800 font-inter text-sm"
+        >
+          <div className="container mx-auto px-4 py-2 flex flex-wrap items-center gap-3">
+            <span>
+              本地数据读取失败：{error}
+              {errorHint ? <span className="ml-2 opacity-80">{errorHint}</span> : null}
+            </span>
+            <button
+              type="button"
+              onClick={() => void load()}
+              className="underline hover:text-red-900"
+            >
+              重试
+            </button>
+          </div>
+        </div>
+      ) : null}
       <main className="container mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/library" element={<LibraryView />} />
           <Route path="/notes" element={<NotesView />} />
+          <Route path="/read" element={<PublicNotesView />} />
+          <Route path="/read/:slug" element={<PublicNoteDetailView />} />
           <Route path="/booklists" element={<BookListsView />} />
           <Route path="/cards" element={<CardsView />} />
+          <Route path="/search" element={<SearchView />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

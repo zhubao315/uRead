@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 .font-inter {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -73,11 +73,23 @@ body {
   cursor: pointer;
 }
 
-/* Focus states for accessibility */
-.focus-ring:focus {
-  outline: none;
-  ring: 2px solid #3B82F6;
-  ring-offset: 2px;
+/* Focus states for accessibility.
+   注意：这里原来是 `outline: none; ring: 2px solid …`——`ring` 不是 CSS 属性
+   （那是 Tailwind 的类名），所以浏览器默认轮廓被去掉后没有任何替代，
+   键盘用户完全看不出焦点在哪。 */
+.focus-ring:focus,
+.focus-ring:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }
 
 /* Loading skeleton animation */

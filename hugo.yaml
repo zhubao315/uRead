@@ -1,0 +1,67 @@
+# uRead 文档站 —— Hugo Extended + OINK（themes/oink，本地 vendor，无 Node/npm/CDN）。
+# 应用本身仍是 React SPA（IndexedDB 本地应用，部署在 /uRead/）；
+# 文档构建到 docs-site/，发布时由 deploy 工作流复制进 dist/docs/，
+# 与同一个 Pages 站点同路径发布（/uRead/docs/）。
+
+title: &siteTitle uRead 文档
+baseURL: https://zhubao315.github.io/uRead/docs/
+defaultContentLanguage: zh
+contentDir: docs
+publishDir: docs-site
+timeZone: Asia/Shanghai
+enableGitInfo: false
+enableRobotsTXT: false
+theme: oink
+disableKinds: [taxonomy, term]
+
+languages:
+  zh:
+    label: 简体中文
+    locale: zh-CN
+    hasCJKLanguage: true
+    title: *siteTitle
+    params:
+      description: >-
+        uRead 文档站：实施记录与审计快照。应用数据全在浏览器本地（IndexedDB），无账号、无服务端。
+
+params:
+  description: >-
+    uRead 文档站：实施记录与审计快照。应用数据全在浏览器本地（IndexedDB），无账号、无服务端。
+  copyright:
+    authors: 朱宝 ZHUBAO
+    from_year: 2026
+  ui:
+    preset: paper
+    dark_mode: true
+    section_index: cards
+    backlinks: true
+    theme_color: '#7C3AED'
+  offline_search: true
+  github_repo: https://github.com/zhubao315/uRead
+  github_branch: main
+  time_format_default: 2006-01-02
+
+# OINK 的 Markdown 组件依赖这三项 Goldmark 设置。
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+    parser:
+      attribute:
+        block: true
+      wrapStandAloneImageWithinParagraph: false
+  highlight:
+    noClasses: false
+
+outputs:
+  home: [HTML, RSS]
+  page: [HTML, markdown]
+  section: [HTML, RSS]
+
+menus:
+  main:
+    - name: 实施记录
+      identifier: implementation
+      weight: 40
+      params:
+        icon: fa-solid fa-code-branch
