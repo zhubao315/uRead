@@ -201,10 +201,14 @@ describe('界面不变量', () => {
   });
 
   it('导航栏没有装饰性的死控件（有样式无动作）', () => {
+    expect(at('src/App.tsx')).toContain('跳到主要内容');
+    expect(at('src/main.tsx')).toContain("serviceWorker.register");
+    expect(at('src/views/Dashboard.tsx')).toContain('公开内容 · 分享给别人的部分');
     const navbar = at('src/components/Navbar.tsx');
 
     expect(navbar, '导航栏必须提供真正可用的搜索').toContain('role="search"');
     expect(navbar).not.toMatch(/<div[^>]*hover:bg-gray-50[^>]*>\s*<div[^>]*>\s*<span[^>]*>U</s);
+    expect(navbar).toContain('切换到夜间模式');
     expect(navbar, '书库是 Pages 静态目录，不能用 React Router 的 Link（会被 SPA 吞成 404）')
       .toContain('href={item.staticHref}');
   });
