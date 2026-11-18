@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { SITE_BASE } from '../config';
 
 import Button, { buttonClasses } from '../components/Button';
 import Card from '../components/Card';
@@ -151,6 +152,24 @@ const Dashboard: React.FC = () => {
               写第一条笔记
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* 45 把「本地工作台」与「公开内容」明确分开：两种用途、两类读者，不混在一句话里。 */}
+      <section aria-labelledby="public-content-title">
+        <h2 id="public-content-title" className="mb-3 text-xl font-bold text-gray-900">公开内容 · 分享给别人的部分</h2>
+        <p className="mb-4 text-sm text-gray-600">下面是只读的分享页；上面这台工作台的数据只存在你自己的浏览器里。</p>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Link to="/read" className="rounded-2xl border border-blue-200 bg-blue-50 p-6 hover:border-blue-400">
+            <h3 className="text-lg font-semibold text-blue-800">📖 公开读书笔记</h3>
+            <p className="mt-2 text-sm text-gray-700">从 Obsidian 私库同步的 1634 篇笔记：按类浏览、全文检索、点开能看到原文锚点；其中 10 篇可以直接听。</p>
+            <span className="mt-3 inline-block text-sm font-medium text-blue-700">去浏览 →</span>
+          </Link>
+          <a href={`${SITE_BASE}books/`} className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 hover:border-emerald-400">
+            <h3 className="text-lg font-semibold text-emerald-800">📚 书库</h3>
+            <p className="mt-2 text-sm text-gray-700">浏览器里读 EPUB、用自带阅读器看 PDF，支持书名/作者搜索、下载原文与记住读到哪里。</p>
+            <span className="mt-3 inline-block text-sm font-medium text-emerald-700">去书库 →</span>
+          </a>
         </div>
       </section>
 
