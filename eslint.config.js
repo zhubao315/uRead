@@ -31,6 +31,12 @@ export default tseslint.config(
     },
   },
   {
+    files: ['public/**/*.js'],
+    languageOptions: {
+      globals: { self: 'readonly', caches: 'readonly', fetch: 'readonly', URL: 'readonly', URLSearchParams: 'readonly' },
+    },
+  },
+  {
     // Node 侧脚本与配置文件
     files: ['scripts/**/*.mjs', '*.config.js', '*.config.ts', 'eslint.config.js'],
     languageOptions: {
