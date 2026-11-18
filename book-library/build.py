@@ -41,18 +41,39 @@ def plain(value: str) -> str:
 
 
 def epub_meta(path: pathlib.Path) -> dict:
+    cover = None
     with zipfile.ZipFile(path) as archive:
         container = archive.read("META-INF/container.xml").decode("utf-8", "replace")
         opf = re.search(r'full-path="([^"]+)"', container)
         if not opf:
             raise ValueError("META-INF/container.xml 里找不到 OPF 路径")
         manifest = archive.read(opf.group(1)).decode("utf-8", "replace")
+        cover_id = re.search(r'<meta[^>]+name=["\']cover["\'][^>]+content=["\']([^"\']+)', manifest, re.I)
+        cover_href = None
+        if cover_id:
+            item = re.search(r'<item[^>]+id=["\']' + re.escape(cover_id.group(1)) + r'["\'][^>]+href=["\']([^"\']+)', manifest, re.I)
+            cover_href = item.group(1) if item else None
+        if not cover_href:
+            item = re.search(r'<item[^>]+href=["\']([^"\']+)["\'][^>]+properties=["\'][^"\']*cover-image', manifest, re.I)
+            cover_href = item.group(1) if item else None
+        if cover_href:
+            base = pathlib.posixpath.dirname(opf.group(1))
+            name = pathlib.posixpath.normpath(pathlib.posixpath.join(base, cover_href))
+            try:
+                data = archive.read(name)
+                ext = pathlib.Path(name).suffix.lower() or '.jpg'
+                if ext not in ('.jpg', '.jpeg', '.png', '.webp'):
+                    ext = '.jpg'
+                cover = (data, ext)
+            except KeyError:
+                cover = None
     pick = lambda rx: plain(rx.search(manifest).group(1)) if rx.search(manifest) else ""
     return {
         "title": pick(EPUB_TITLE) or path.stem,
         "author": pick(EPUB_AUTHOR),
         "language": pick(EPUB_LANG),
         "pages": None,
+        "cover": cover,
     }
 
 
@@ -79,9 +100,26 @@ def pdf_meta(path: pathlib.Path) -> dict:
     return {"title": title, "author": author, "language": "", "pages": pages or None}
 
 
+def related_notes(title: str, author: str, notes: list[dict]) -> list[dict]:
+    """按书名/作者找出相关公开笔记；匹配不到就留空，不编造关联。"""
+    def norm(value: str) -> str:
+        return re.sub(r"[^\w\u4e00-\u9fff]", "", value).lower()
+    wanted = norm(title)
+    hits = []
+    for note in notes:
+        hay = norm(note.get("title", "")) + norm(note.get("author", ""))
+        if wanted and (wanted in hay or hay in wanted) or (author and norm(author) in hay):
+            hits.append({"slug": note["slug"], "title": note["title"]})
+        if len(hits) >= 5:
+            break
+    return hits
+
+
 def scan() -> list[dict]:
     if not BOOKS_IN.exists():
         return []
+    notes_path = REPO / "public" / "notes" / "notes.json"
+    notes = json.loads(notes_path.read_text(encoding="utf-8")) if notes_path.exists() else []
     records = []
     for path in sorted(BOOKS_IN.iterdir()):
         if not path.is_file() or path.suffix.lower() not in (".epub", ".pdf"):
@@ -95,6 +133,10 @@ def scan() -> list[dict]:
         fmt = path.suffix.lower()[1:]
         meta = epub_meta(path) if fmt == "epub" else pdf_meta(path)
         book_id = hashlib.sha256(path.name.encode()).hexdigest()[:12]
+        if meta.get("cover"):
+            cover_dir = ROOT / "covers"
+            cover_dir.mkdir(exist_ok=True)
+            (cover_dir / f"{book_id}{meta['cover'][1]}").write_bytes(meta["cover"][0])
         records.append({
             "id": book_id,
             "title": meta["title"],
@@ -105,6 +147,8 @@ def scan() -> list[dict]:
             "pages_estimate": meta["pages"],
             "path": f"books/{book_id}.{fmt}",
             "source_filename": path.name,
+            "cover": f"covers/{book_id}{meta['cover'][1]}" if meta.get("cover") else "",
+            "related_notes": related_notes(meta["title"], meta["author"], notes),
             "rights": "由放书人声明合法持有并有权公开分发；本站不承担版权责任",
         })
         print(f"  收录：{meta['title'][:36]}｜{fmt}｜{mib:.1f} MiB")
@@ -116,6 +160,8 @@ def write_outputs(records: list[dict]) -> None:
         shutil.rmtree(DIST)
     (DIST / "books").mkdir(parents=True)
     (DIST / "vendor").mkdir(parents=True)
+    if (ROOT / "covers").exists():
+        shutil.copytree(ROOT / "covers", DIST / "covers", dirs_exist_ok=True)
     for record in records:
         shutil.copy2(BOOKS_IN / record["source_filename"], DIST / record["path"])
     if VENDOR_IN.exists():
@@ -132,8 +178,8 @@ def write_outputs(records: list[dict]) -> None:
         encoding="utf-8",
     )
     rows = "\n".join(
-        '<li><a href="reader.html?id={id}">{title}</a><span>{author} · {fmt} · {mib:.1f} MiB{pages}</span>'
-        '<a class="download" href="{path}" download>下载原文</a></li>'.format(
+        '<li>{cover}<a href="reader.html?id={id}">{title}</a><span>{author} · {fmt} · {mib:.1f} MiB{pages}</span>'
+        '<a class="download" href="{path}" download>下载原文</a>{related}</li>'.format(
             id=html.escape(r["id"]),
             title=html.escape(r["title"]),
             author=html.escape(r["author"] or "作者未标注"),
@@ -141,11 +187,17 @@ def write_outputs(records: list[dict]) -> None:
             mib=r["size_bytes"] / 1024 / 1024,
             pages=f" · 约 {r['pages_estimate']} 页（估算）" if r["pages_estimate"] else "",
             path=html.escape(r["path"]),
+            cover=(f'<img class="cover" src="{html.escape(r["cover"])}" alt="">'
+                   if r.get("cover") else ""),
+            related=("　相关笔记：" + "、".join(
+                f'<a href="/uRead/read/{html.escape(n["slug"])}">{html.escape(n["title"])}</a>'
+                for n in r.get("related_notes", []))) if r.get("related_notes") else "",
         )
         for r in records
     ) or "<li>书库还没有书。</li>"
     (DIST / "index.html").write_text(INDEX_HTML.format(rows=rows, count=len(records)), encoding="utf-8")
     shutil.copy2(ROOT / "reader.html", DIST / "reader.html")
+    assert 'id="book-search"' in (DIST / "index.html").read_text(encoding="utf-8"), "书库搜索框没进产物"
     print(f"书库已生成：{len(records)} 本，版本 {version}，产物 {DIST}")
 
 
@@ -160,21 +212,52 @@ body{{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:860
 h1{{font-size:1.8rem}} ul{{list-style:none;padding:0}} li{{border:1px solid #e5e7eb;border-radius:12px;padding:1rem;margin:.75rem 0}}
 a{{color:#1d4ed8;text-decoration:none}} a:hover{{text-decoration:underline}}
 li span{{display:block;color:#6b7280;font-size:.9rem;margin:.35rem 0}}
+.cover{{float:left;width:72px;height:100px;object-fit:cover;margin:0 1rem 1rem 0;border-radius:6px}}
+li:after{{content:"";display:block;clear:both}}
 .download{{font-size:.85rem}} footer{{margin-top:2rem;color:#6b7280;font-size:.8rem}}
+input[type=search]{{width:100%;max-width:24rem;padding:.55rem .8rem;border:1px solid #d1d5db;border-radius:.5rem;font:inherit;margin:.5rem 0 1rem}}
+.sr-only{{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
+@media(max-width:640px){{h1{{font-size:1.5rem}} li{{padding:.8rem}}}}
 </style>
 </head>
 <body>
 <h1>uRead 书库</h1>
 <p>共 {count} 本。点击书名在线阅读；EPUB 在浏览器里排版，PDF 用浏览器自带阅读器。</p>
-<ul>{rows}</ul>
+<label for="book-search" class="sr-only">搜索书名或作者</label>
+<input id="book-search" type="search" placeholder="搜索书名或作者" aria-label="搜索书名或作者" autocomplete="off">
+<ul id="book-list">{rows}</ul>
+<script>
+  const q = document.getElementById('book-search');
+  q.value = new URLSearchParams(location.search).get('q') || '';
+  q.dispatchEvent(new Event('input'));
+  q.addEventListener('input', () => {{
+    const word = q.value.trim().toLowerCase();
+    for (const li of document.querySelectorAll('#book-list li')) {{
+      li.hidden = !!word && !li.textContent.toLowerCase().includes(word);
+    }}
+  }});
+</script>
 <footer>只收录放书人声明有权公开分发的书。GitHub 对单文件 >50 MiB 会告警、>100 MiB 直接拦截。</footer>
 </body>
 </html>
 """
 
 
+def budget_check() -> None:
+    """ Pages 仓库预算：公开产物（笔记音频 + 书）不超过 300 MiB。 """
+    total = 0
+    for folder in (REPO / "public" / "audio", BOOKS_IN):
+        if folder.exists():
+            total += sum(p.stat().st_size for p in folder.iterdir() if p.is_file())
+    mib = total / 1024 / 1024
+    print(f"  体积预算：{mib:.1f} MiB / 300 MiB")
+    if mib > 300:
+        raise SystemExit("体积超预算：请先压缩音频或把大书改放到 GitHub Release 再外链")
+
+
 def main() -> int:
     print("扫描书库：")
+    budget_check()
     records = scan()
     write_outputs(records)
     return 0
