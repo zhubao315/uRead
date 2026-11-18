@@ -22,6 +22,11 @@ interface SafeMarkdownProps {
   links?: WikilinkMap;
 }
 
+/** 标题锚点：TOC 与正文共用同一个算法，避免「目录跳过去找不到」。 */
+export function headingId(text: string): string {
+  return text.replace(/[#*`[\]()]/g, '').trim().replace(/[^\p{L}\p{N}]+/gu, '-').slice(0, 60);
+}
+
 const SAFE_URL = /^(https?:\/\/|\/|#)/i;
 
 function externalUrl(raw: string): string | null {
@@ -122,12 +127,13 @@ const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {} }) => {
     if (heading) {
       const level = heading[1].length;
       const content = inline(heading[2], links, `h${key}`);
+      const anchorId = headingId(heading[2]);
       const cls = 'font-inter font-bold text-gray-900 mt-6 mb-2';
       blocks.push(
-        level === 1 ? <h1 key={key++} className={`${cls} text-3xl`}>{content}</h1>
-          : level === 2 ? <h2 key={key++} className={`${cls} text-2xl`}>{content}</h2>
-            : level === 3 ? <h3 key={key++} className={`${cls} text-xl`}>{content}</h3>
-              : <h4 key={key++} className={`${cls} text-lg`}>{content}</h4>,
+        level === 1 ? <h1 id={anchorId} key={key++} className={`${cls} text-3xl`}>{content}</h1>
+          : level === 2 ? <h2 id={anchorId} key={key++} className={`${cls} text-2xl`}>{content}</h2>
+            : level === 3 ? <h3 id={anchorId} key={key++} className={`${cls} text-xl`}>{content}</h3>
+              : <h4 id={anchorId} key={key++} className={`${cls} text-lg`}>{content}</h4>,
       );
       i += 1;
       continue;
