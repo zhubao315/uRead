@@ -43,6 +43,9 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-[60] focus:rounded focus:bg-blue-600 focus:px-3 focus:py-2 focus:text-white">
+        跳到主要内容
+      </a>
       <Navbar />
       {/* 读取失败时在页面顶部常驻提示：单个视图里的错误 banner 一旦切换页面就看不到了 */}
       {error ? (
@@ -66,7 +69,7 @@ function App() {
           </div>
         </div>
       ) : null}
-      <main className="container mx-auto px-4 py-8">
+      <main id="main" className="container mx-auto px-4 py-8" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/library" element={<LibraryView />} />
