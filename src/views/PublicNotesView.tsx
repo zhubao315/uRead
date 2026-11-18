@@ -1,4 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
+
+/** 把命中的词包成 <mark>：输出 React 节点，绝不拼 HTML 字符串。 */
+function highlight(text: string, words: string[]): React.ReactNode {
+  if (!words.length) return text;
+  const pattern = new RegExp(`(${words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+  return text.split(pattern).map((part, index) =>
+    words.some((w) => w.toLowerCase() === part.toLowerCase())
+      ? <mark key={index} className="rounded bg-yellow-200 px-0.5">{part}</mark>
+      : part,
+  );
+}
 import { Link } from 'react-router-dom';
 import { filterNotes, loadPublicNotes, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
 
@@ -11,6 +22,7 @@ const PublicNotesView: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
+  const [shown, setShown] = useState(60);
   const [updated, setUpdated] = useState(false);
 
   const refresh = async () => {
@@ -98,7 +110,7 @@ const PublicNotesView: React.FC = () => {
           id="public-note-search"
           type="search"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => { setQuery(event.target.value); setShown(60); }}
           placeholder="搜索标题、标签或正文"
           className="w-72 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm"
         />
@@ -110,7 +122,7 @@ const PublicNotesView: React.FC = () => {
       <div className="mb-5 flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={() => setCategory('')}
+          onClick={() => { setCategory(''); setShown(60); }}
           className={`rounded-full px-3 py-1 text-sm ${category === '' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
         >
           全部分类
@@ -119,7 +131,7 @@ const PublicNotesView: React.FC = () => {
           <button
             key={name}
             type="button"
-            onClick={() => setCategory(name)}
+            onClick={() => { setCategory(name); setShown(60); }}
             className={`rounded-full px-3 py-1 text-sm ${category === name ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
           >
             {name}（{count}）
@@ -130,11 +142,11 @@ const PublicNotesView: React.FC = () => {
       {visible.length === 0 ? (
         <p className="font-inter text-gray-700">没有匹配的笔记，换个关键词试试。</p>
       ) : (
-        <ul className="grid gap-3 md:grid-cols-2">
-          {visible.map((note) => (
+        <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {visible.slice(0, shown).map((note) => (
             <li key={note.slug} className="rounded-xl border border-gray-200 bg-white p-4 hover:border-blue-300">
               <Link to={`/read/${encodeURIComponent(note.slug)}`} className="font-inter text-lg font-semibold text-blue-700 hover:underline">
-                {note.title}
+                {highlight(note.title, query.trim().split(/\s+/).filter(Boolean))}
               </Link>
               <p className="mt-1 text-sm text-gray-600">
                 {note.author || '作者未标注'} · {note.category || '未分类'}
@@ -147,7 +159,13 @@ const PublicNotesView: React.FC = () => {
           ))}
         </ul>
       )}
-      <p className="mt-6 text-xs text-gray-500">当前显示 {visible.length} 篇（每 30 秒自动检查新版本）。</p>
+      {shown < visible.length ? (
+        <button type="button" onClick={() => setShown((value) => value + 60)}
+          className="mt-5 w-full rounded-lg border border-blue-200 bg-blue-50 py-3 text-sm font-medium text-blue-700 hover:bg-blue-100">
+          已显示 {Math.min(shown, visible.length)} / {visible.length} 篇，点此加载更多
+        </button>
+      ) : null}
+      <p className="mt-6 text-xs text-gray-500">共匹配 {visible.length} 篇，当前显示 {Math.min(shown, visible.length)} 篇（每 30 秒自动检查新版本）。</p>
     </section>
   );
 };
