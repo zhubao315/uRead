@@ -108,3 +108,13 @@ textarea:focus-visible {
     font-size: clamp(1rem, 4vw, 1.125rem);
   }
 }
+/* 42 夜间阅读模式：只覆盖关键表面，避免把整个 Tailwind 类库改一遍。 */
+html[data-theme='dark'] { color-scheme: dark; }
+html[data-theme='dark'] body { background: #0f172a !important; color: #e2e8f0 !important; }
+html[data-theme='dark'] .bg-white,
+html[data-theme='dark'] [class*='bg-white'] { background-color: #1e293b !important; }
+html[data-theme='dark'] .bg-gray-50 { background-color: #0f172a !important; }
+html[data-theme='dark'] .text-gray-900 { color: #f1f5f9 !important; }
+html[data-theme='dark'] .text-gray-700,
+html[data-theme='dark'] .text-gray-600 { color: #cbd5e1 !important; }
+html[data-theme='dark'] .border-gray-200 { border-color: #334155 !important; }
