@@ -37,9 +37,10 @@ export const bookProgressKey = (id: string) => `uread:book:${id}`;
 export async function loadReaderHub(): Promise<ReaderHubResult> {
   const [notesResult, booksResponse] = await Promise.all([
     loadPublicNotes(),
-    fetch(`${SITE_BASE}books/catalog.json`, { cache: 'no-store' }).catch(() => null),
+    fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
   ]);
-  const books: ReaderBook[] = booksResponse?.ok ? await booksResponse.json() : [];
+  const aggregate = booksResponse?.ok ? await booksResponse.json() : null;
+  const books: ReaderBook[] = aggregate?.books ?? [];
   const noteSources: ReaderSource[] = notesResult.notes
     .filter((note) => note.audio)
     .map((note) => ({
@@ -55,7 +56,7 @@ export async function loadReaderHub(): Promise<ReaderHubResult> {
     id: book.id,
     title: book.title,
     subtitle: `${book.author || '作者未标注'} · ${book.format.toUpperCase()}`,
-    href: `${SITE_BASE}books/reader.html?id=${encodeURIComponent(book.id)}`,
+    href: `${SITE_BASE}books/${book.id}/`,
     progressKey: bookProgressKey(book.id),
   }));
   return {
