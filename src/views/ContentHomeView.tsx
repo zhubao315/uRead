@@ -28,9 +28,10 @@ const ContentHomeView: React.FC = () => {
     void Promise.all([
       loadPublicNotes(),
       loadPublicLists(),
-      fetch(`${SITE_BASE}books/catalog.json`, { cache: 'no-store' }).catch(() => null),
+      fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
     ]).then(async ([notes, lists, booksResponse]) => {
-      const books: HomeBook[] = booksResponse?.ok ? await booksResponse.json() : [];
+      const aggregate = booksResponse?.ok ? await booksResponse.json() : null;
+      const books: HomeBook[] = aggregate?.books ?? [];
       if (!alive) return;
       setState({
         ready: true,
@@ -169,13 +170,13 @@ const ContentHomeView: React.FC = () => {
         <h2 id="books-title" className="font-editorial text-2xl text-navy">推荐书籍</h2>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {state.books.map((book) => (
-            <a key={book.id} href={`${SITE_BASE}books/reader.html?id=${encodeURIComponent(book.id)}`}
+            <a key={book.id} href={`${SITE_BASE}books/${book.id}/`}
               className="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-card hover:border-brand">
               {book.cover ? <img src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-24 w-16 rounded object-cover" /> : <BookOpenIcon size="lg" className="shrink-0 text-brand" />}
               <div>
                 <h3 className="font-editorial text-base text-navy">{book.title}</h3>
                 <p className="mt-1 text-sm text-muted">{book.author || '作者未标注'}</p>
-                <p className="mt-2 text-xs text-brand">在线阅读 →</p>
+                <p className="mt-2 text-xs text-brand">查看书籍档案 →</p>
               </div>
             </a>
           ))}
