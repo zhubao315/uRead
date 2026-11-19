@@ -185,7 +185,7 @@ const Dashboard: React.FC = () => {
             <span className="mt-3 inline-block text-sm font-medium text-violet-700">看主题 →</span>
           </Link>
           <Link to="/lists" className="rounded-2xl border border-amber-200 bg-amber-50 p-6 hover:border-amber-400">
-            <h3 className="text-lg font-semibold text-amber-800">📋 书单推荐</h3>
+            <h3 className="text-lg font-semibold text-navy">📋 书单推荐</h3>
             <p className="mt-2 text-sm text-gray-700">39 份可照着读的清单：年度计划、领域路径、身份书单；支持书名/作者搜索与书目跳笔记。</p>
             <span className="mt-3 inline-block text-sm font-medium text-amber-700">看书单 →</span>
           </Link>
@@ -231,7 +231,7 @@ const Dashboard: React.FC = () => {
             {recentNotes.length === 0 ? (
               <p className="font-inter text-sm text-gray-600">
                 还没有笔记。到
-                <Link to="/notes" className="mx-1 text-blue-600 hover:text-blue-800 underline">
+                <Link to="/notes" className="mx-1 text-blue-600 hover:text-navy underline">
                   读书笔记
                 </Link>
                 记录第一条阅读心得。
