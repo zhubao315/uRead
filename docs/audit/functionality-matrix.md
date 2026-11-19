@@ -9,6 +9,10 @@ menus:
 description: "本文件是 Stage 0 的审计快照：上面各表记录的是 2026-11-16 审计当时读到的代码，"
 ---
 
+> **历史时点快照（2026-11-16）**：本文件记录的是审计当天的代码状态，其中部分问题已修复。
+> 当前状态以 `docs/PROJECT-STATUS.md` 与 `docs/audit/current-state.md` 为准；不要把这里当成待办清单。
+
+
 > 审计日期：2026-11-16
 > 审计方式：静态代码审计 + 实际构建验证（源码逐文件阅读；`npm install --legacy-peer-deps` + `npm run build` 实测；GitHub API 复核提交历史）
 > 未验证项：真实浏览器交互、线上部署页面的路由刷新行为、GitHub Actions 实际运行结果、后端服务真实启动（依赖缺失，未安装后端依赖）。
