@@ -24,19 +24,19 @@ const BooklistsHubView: React.FC = () => {
   }), [items, kind, query]);
 
   if (items === null) {
-    return <p className="mx-auto max-w-5xl px-4 py-12 font-inter text-[#263244]">正在读取书单…</p>;
+    return <p className="mx-auto max-w-5xl px-4 py-12 font-inter text-body">正在读取书单…</p>;
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-5 py-8 font-inter text-[#263244]">
+    <section className="mx-auto max-w-6xl px-5 py-8 font-inter text-body">
       <p className="text-sm text-slate-500">公开内容 / 书单</p>
-      <h1 className="mt-1 text-3xl font-semibold text-[#172033]">主题书单</h1>
+      <h1 className="mt-1 text-3xl font-semibold text-ink">主题书单</h1>
       <p className="mt-2 text-sm text-slate-600">
         主题阅读与具体书单保留各自类型与原始说明；共 {items.length} 份内容。
       </p>
       <p className="mt-1 text-xs text-slate-500">
-        旧入口 <Link to="/themes" className="text-[#2457A6] hover:underline">/themes</Link>
-        {' / '}<Link to="/lists" className="text-[#2457A6] hover:underline">/lists</Link> 继续有效。
+        旧入口 <Link to="/themes" className="text-brand hover:underline">/themes</Link>
+        {' / '}<Link to="/lists" className="text-brand hover:underline">/lists</Link> 继续有效。
       </p>
 
       <div className="mt-6 flex flex-wrap gap-3">
@@ -46,7 +46,7 @@ const BooklistsHubView: React.FC = () => {
           className="w-full max-w-sm rounded border border-slate-300 bg-white px-3 py-2 text-sm" />
         {(['all', 'theme', 'booklist'] as const).map((value) => (
           <button key={value} type="button" onClick={() => setKind(value)} aria-pressed={kind === value}
-            className={`rounded border px-3 py-2 text-sm ${kind === value ? 'border-[#2457A6] bg-[#2457A6] text-white' : 'border-slate-300 bg-white'}`}>
+            className={`rounded border px-3 py-2 text-sm ${kind === value ? 'border-brand bg-brand text-white' : 'border-slate-300 bg-white'}`}>
             {value === 'all' ? '全部' : value === 'theme' ? '主题阅读' : '书单'}
           </button>
         ))}
@@ -54,10 +54,10 @@ const BooklistsHubView: React.FC = () => {
 
       <ul className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {visible.map((item) => (
-          <li key={item.id} className="rounded border border-slate-200 bg-white p-5 hover:border-[#2457A6]">
-            <p className="text-xs text-[#C58B42]">{item.kind === 'theme' ? '主题阅读' : '书单'}</p>
+          <li key={item.id} className="rounded border border-slate-200 bg-white p-5 hover:border-brand">
+            <p className="text-xs text-accent">{item.kind === 'theme' ? '主题阅读' : '书单'}</p>
             <Link to={item.kind === 'theme' ? `/themes/${item.id}` : `/lists/${item.id}`}
-              className="mt-1 block text-lg font-medium text-[#172033] hover:underline">{item.title}</Link>
+              className="mt-1 block text-lg font-medium text-ink hover:underline">{item.title}</Link>
             <p className="mt-2 line-clamp-3 text-sm text-slate-600">{item.description || '（无摘要）'}</p>
             <p className="mt-3 text-xs text-slate-500">{item.book_count} 本书 · {item.linked_notes} 本有笔记</p>
           </li>
@@ -84,7 +84,7 @@ export const BooklistDetailRedirect: React.FC = () => {
   }, [id]);
 
   if (target === null) {
-    return <p className="mx-auto max-w-5xl px-4 py-12 font-inter text-[#263244]">正在定位书单…</p>;
+    return <p className="mx-auto max-w-5xl px-4 py-12 font-inter text-body">正在定位书单…</p>;
   }
   return <Navigate to={target} replace />;
 };
