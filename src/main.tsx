@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
+import './styles/tokens.css';
 import { BASE_NAME, SITE_BASE } from './config';
 
 // 离线外壳：只缓存壳与目录 JSON，音频和书不走 Cache Storage。
