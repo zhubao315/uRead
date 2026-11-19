@@ -59,11 +59,7 @@ body {
 }
 
 /* Glassmorphism cards */
-.card-glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-}
+.card-glass { background: var(--surface); border: var(--border-hairline); box-shadow: var(--shadow-card); }
 
 /* Smooth transitions */
 .transition-all-200 {
