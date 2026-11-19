@@ -18,6 +18,13 @@
   --surface-white: #FFFFFF;
   --text-primary: #1E293B;
   --text-secondary: #64748B;
+  /* Content Edition tokens（与 tailwind.config.js 一致） */
+  --brand: #2457A6;
+  --ink: #172033;
+  --body: #263244;
+  --accent: #C58B42;
+  --page: #F5F7FA;
+  --line: #DDE3EA;
 }
 
 body {
@@ -122,10 +129,10 @@ html[data-theme='dark'] .border-gray-200 { border-color: #334155 !important; }
 /* Phase 3 阅读排版：按原文标题分区，原文摘录与个人理解视觉区分，不改变语义。 */
 .note-article { max-width: 46rem; }
 .note-section { margin: 1.8rem 0; }
-.note-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; margin-bottom: .6rem; font-size: 1.15rem; font-weight: 600; color: #172033; }
-.note-section-label { font-size: .7rem; font-weight: 500; letter-spacing: .08em; color: #2457A6; border: 1px solid #cbd5e1; border-radius: 3px; padding: .1rem .4rem; }
-.note-section-excerpt { border-left: 3px solid #C58B42; background: #fffdf7; padding: .8rem 1.1rem; }
-.note-section-excerpt .note-section-label { color: #9a6a2e; border-color: #e6d3b3; }
+.note-section-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem; margin-bottom: .6rem; font-size: 1.15rem; font-weight: 600; color: var(--ink); }
+.note-section-label { font-size: .7rem; font-weight: 500; letter-spacing: .08em; color: var(--brand); border: 1px solid #cbd5e1; border-radius: 3px; padding: .1rem .4rem; }
+.note-section-excerpt { border-left: 3px solid var(--accent); background: #fffdf7; padding: .8rem 1.1rem; }
+.note-section-excerpt .note-section-label { color: var(--accent); border-color: #e6d3b3; }
 .note-section-understanding { border-left: 3px solid #5B8DEF; padding-left: 1.1rem; }
 .note-section-extension { border-left: 3px solid #10B981; padding-left: 1.1rem; }
 .note-section-meta { color: #64748b; font-size: .9rem; }
