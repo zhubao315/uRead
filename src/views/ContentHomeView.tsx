@@ -101,7 +101,7 @@ const ContentHomeView: React.FC = () => {
         <div className="hidden lg:grid grid-cols-2 gap-3" aria-hidden="true">
           {state.books.slice(0, 4).map((book) => (
             <div key={book.id} className="aspect-[2/3] rounded-lg border border-border bg-white p-3 shadow-card">
-              {book.cover ? <img src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-full w-full rounded object-cover" /> : (
+              {book.cover ? <img loading="lazy" decoding="async" src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-full w-full rounded object-cover" /> : (
                 <div className="flex h-full flex-col justify-between">
                   <span className="text-[10px] font-semibold tracking-widest text-gold">uREAD ARCHIVE</span>
                   <span className="font-editorial text-sm leading-snug text-navy">{book.title}</span>
@@ -179,7 +179,7 @@ const ContentHomeView: React.FC = () => {
           {state.books.map((book) => (
             <a key={book.id} href={`${SITE_BASE}books/${book.id}/`}
               className="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-card hover:border-brand">
-              {book.cover ? <img src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-24 w-16 rounded object-cover" /> : <BookOpenIcon size="lg" className="shrink-0 text-brand" />}
+              {book.cover ? <img loading="lazy" decoding="async" src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-24 w-16 rounded object-cover" /> : <BookOpenIcon size="lg" className="shrink-0 text-brand" />}
               <div>
                 <h3 className="font-editorial text-base text-navy">{book.title}</h3>
                 <p className="mt-1 text-sm text-muted">{book.author || '作者未标注'}</p>
@@ -193,7 +193,7 @@ const ContentHomeView: React.FC = () => {
       {/* Footer */}
       <footer className="mt-16 border-t border-border pt-8 text-sm text-muted">
         <div className="flex flex-wrap items-center gap-3">
-          <img src={`${SITE_BASE}brand/logo-symbol.svg`} alt="" className="h-8 w-8" />
+          <img loading="lazy" decoding="async" src={`${SITE_BASE}brand/logo-symbol.svg`} alt="" className="h-8 w-8" />
           <span className="font-semibold text-navy">uRead</span>
           <span className="text-xs tracking-[0.16em]">READ · REFLECT · REVISIT</span>
         </div>
