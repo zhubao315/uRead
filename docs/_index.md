@@ -11,6 +11,7 @@ uRead 是一个**数据全在本机浏览器里**的阅读知识库应用（Inde
 - **[内容盘点]({{< ref "/migration/content-inventory.md" >}})：迁移前真实数量与逐项哈希**
 - **[路由地图]({{< ref "/migration/route-map.md" >}})：兼容路径与静态目录边界**
 - **[数据保全]({{< ref "/migration/data-preservation-plan.md" >}})：什么不能动、如何对账**
+- **[发版对账]({{< ref "/migration/reconciliation.md" >}})：数量、哈希、路由与书籍索引最终核对
 - [现状审计]({{< ref "/audit/current-state.md" >}}) / [功能矩阵]({{< ref "/audit/feature-matrix.md" >}})：按真实命令与代码判定
 - [审计报告]({{< ref "/audit" >}})：Stage 0 审计的时点快照（问题有些已修复，现状见仓库 README）。
 - [实施记录 · Stage 3]({{< ref "/IMPLEMENTATION_STAGE3.md" >}})：数据层重建做了什么、验证到哪一步。
