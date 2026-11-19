@@ -18,6 +18,11 @@ const TYPE_LABEL: Record<CardType, string> = {
   fact: '事实',
   quote: '引用',
   idea: '想法',
+  insight: '洞察',
+  principle: '原则',
+  method: '方法',
+  evidence: '证据',
+  question: '问题',
 };
 
 const CardsView: React.FC = () => {
