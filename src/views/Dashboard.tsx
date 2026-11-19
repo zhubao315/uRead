@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_BASE } from '../config';
+import { NotebookPenIcon, BookOpenIcon, TagsIcon } from '../components/icons';
+import { ClockIcon, LightBulbIcon, StarIcon } from '../components/Icon';
 
 import Button, { buttonClasses } from '../components/Button';
 import Card from '../components/Card';
 import ConfirmAction from '../components/ConfirmAction';
 import FeedbackBanner from '../components/FeedbackBanner';
-import { BookOpenIcon, ClockIcon, LightBulbIcon, StarIcon } from '../components/Icon';
 import StateBlock from '../components/StateBlock';
 import { useActionRunner } from '../hooks/useActionRunner';
 import { computeStats, useLibraryStore } from '../store/libraryStore';
@@ -169,17 +170,17 @@ const Dashboard: React.FC = () => {
         <p className="mb-4 text-sm text-gray-600">下面是只读的分享页；上面这台工作台的数据只存在你自己的浏览器里。</p>
         <div className="grid gap-4 md:grid-cols-2">
           <Link to="/read" className="rounded-2xl border border-blue-200 bg-blue-50 p-6 hover:border-blue-400">
-            <h3 className="text-lg font-semibold text-blue-800">📖 公开读书笔记</h3>
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-navy"><NotebookPenIcon size="md" />公开读书笔记</h3>
             <p className="mt-2 text-sm text-gray-700">从 Obsidian 私库同步的 1634 篇笔记：按类浏览、全文检索、点开能看到原文锚点；其中 10 篇可以直接听。</p>
             <span className="mt-3 inline-block text-sm font-medium text-blue-700">去浏览 →</span>
           </Link>
           <a href={`${SITE_BASE}books/`} className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 hover:border-emerald-400">
-            <h3 className="text-lg font-semibold text-emerald-800">📚 书库</h3>
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-navy"><BookOpenIcon size="md" />书库</h3>
             <p className="mt-2 text-sm text-gray-700">浏览器里读 EPUB、用自带阅读器看 PDF，支持书名/作者搜索、下载原文与记住读到哪里。</p>
             <span className="mt-3 inline-block text-sm font-medium text-emerald-700">去书库 →</span>
           </a>
           <Link to="/themes" className="rounded-2xl border border-violet-200 bg-violet-50 p-6 hover:border-violet-400">
-            <h3 className="text-lg font-semibold text-violet-800">🧭 主题阅读</h3>
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-navy"><TagsIcon size="md" />主题阅读</h3>
             <p className="mt-2 text-sm text-gray-700">按主题组织的 10 条阅读路径，例如人生哲学、古典文学、跑步健身；每本书尽量连到对应的公开笔记。</p>
             <span className="mt-3 inline-block text-sm font-medium text-violet-700">看主题 →</span>
           </Link>
