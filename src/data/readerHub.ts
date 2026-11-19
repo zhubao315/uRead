@@ -69,7 +69,7 @@ export async function loadReaderHub(): Promise<ReaderHubResult> {
 
 /** 继续阅读排在最前：有本机进度且不是 0 的优先，其余保持原顺序。 */
 export function withProgress(sources: ReaderSource[], read: (key: string) => number): ReaderSource[] {
-  return [...sources].sort((a, b) => {
+  return sources.toSorted((a, b) => {
     const pa = read(a.progressKey);
     const pb = read(b.progressKey);
     return (pb > 0 ? pb : 0) - (pa > 0 ? pa : 0);
