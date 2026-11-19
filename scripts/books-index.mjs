@@ -164,7 +164,7 @@ export function renderBookDetail(book) {
       <p>${esc(note.excerpt)}</p>
     </li>`).join('') || '<li class="card small">这本书还没有关联笔记。</li>';
   const lists = book.lists.map((entry) => `
-    <li><a href="..${entry.href}/">${esc(entry.title)}</a>${entry.recommendation ? `<span class="small"> — ${esc(entry.recommendation.slice(0, 160))}</span>` : ''}</li>`).join('') || '<li class="small">未收录在公开书单里。</li>';
+    <li><a href="..${entry.href}/">${esc(entry.title)}</a>${entry.recommendation ? `<span class="small"> — ${esc(entry.recommendation)}</span>` : ''}</li>`).join('') || '<li class="small">未收录在公开书单里。</li>';
   const aliases = book.aliases.length ? `<p class="small">原始 wikilink：${book.aliases.map(esc).join(' / ')}</p>` : '';
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(book.original_title)} · uRead</title>
