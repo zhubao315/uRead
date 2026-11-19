@@ -166,6 +166,7 @@ export function renderBookDetail(book) {
   const lists = book.lists.map((entry) => `
     <li><a href="..${entry.href}/">${esc(entry.title)}</a>${entry.recommendation ? `<span class="small"> — ${esc(entry.recommendation)}</span>` : ''}</li>`).join('') || '<li class="small">未收录在公开书单里。</li>';
   const aliases = book.aliases.length ? `<p class="small">原始 wikilink：${book.aliases.map(esc).join(' / ')}</p>` : '';
+  const reader = book.format ? `<p><a href="./reader.html?id=${encodeURIComponent(book.id)}">在线阅读原文 →</a></p>` : '';
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(book.original_title)} · uRead</title>
 <style>${STYLE}</style></head><body>
@@ -174,6 +175,7 @@ ${book.cover ? `<img class="cover" src="../${esc(book.cover)}" alt="">` : ''}
 <h1>${esc(book.original_title)}</h1>
 <p class="small">作者：${esc(book.author || '未标注')} · ${book.notes.length} 篇笔记 · ${book.lists.length} 份书单${book.format ? ` · ${esc(book.format.toUpperCase())}` : ''}</p>
 ${aliases}
+${reader}
 <h2>关联笔记</h2><ul>${notes}</ul>
 <h2>所属书单</h2><ul>${lists}</ul>
 </body></html>`;
