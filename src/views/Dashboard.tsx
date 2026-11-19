@@ -170,6 +170,16 @@ const Dashboard: React.FC = () => {
             <p className="mt-2 text-sm text-gray-700">浏览器里读 EPUB、用自带阅读器看 PDF，支持书名/作者搜索、下载原文与记住读到哪里。</p>
             <span className="mt-3 inline-block text-sm font-medium text-emerald-700">去书库 →</span>
           </a>
+          <Link to="/themes" className="rounded-2xl border border-violet-200 bg-violet-50 p-6 hover:border-violet-400">
+            <h3 className="text-lg font-semibold text-violet-800">🧭 主题阅读</h3>
+            <p className="mt-2 text-sm text-gray-700">按主题组织的 10 条阅读路径，例如人生哲学、古典文学、跑步健身；每本书尽量连到对应的公开笔记。</p>
+            <span className="mt-3 inline-block text-sm font-medium text-violet-700">看主题 →</span>
+          </Link>
+          <Link to="/lists" className="rounded-2xl border border-amber-200 bg-amber-50 p-6 hover:border-amber-400">
+            <h3 className="text-lg font-semibold text-amber-800">📋 书单推荐</h3>
+            <p className="mt-2 text-sm text-gray-700">39 份可照着读的清单：年度计划、领域路径、身份书单；支持书名/作者搜索与书目跳笔记。</p>
+            <span className="mt-3 inline-block text-sm font-medium text-amber-700">看书单 →</span>
+          </Link>
         </div>
       </section>
 
