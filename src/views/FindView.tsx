@@ -4,7 +4,7 @@ import { SITE_BASE } from '../config';
 import { loadPublicNotes, type PublicNote } from '../data/publicNotes';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
 
-interface FindBook { id: string; title: string; author: string; format: string; }
+interface FindBook { id: string; title: string; author: string; note_count?: number; }
 interface Pool {
   notes: PublicNote[];
   lists: PublicList[];
@@ -22,9 +22,9 @@ const FindView: React.FC = () => {
     void Promise.all([
       loadPublicNotes(),
       loadPublicLists(),
-      fetch(`${SITE_BASE}books/catalog.json`, { cache: 'no-store' }).catch(() => null),
+      fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
     ]).then(async ([notes, lists, response]) => {
-      const books: FindBook[] = response?.ok ? await response.json() : [];
+      const books: FindBook[] = response?.ok ? (await response.json()).books ?? [] : [];
       if (alive) setPool({ notes: notes.notes, lists: [...lists.themes, ...lists.booklists], books });
     });
     return () => { alive = false; };
@@ -59,8 +59,8 @@ const FindView: React.FC = () => {
 
       {[
         ['书籍', groups.books, (item: FindBook) => (
-          <a key={item.id} href={`${SITE_BASE}books/reader.html?id=${encodeURIComponent(item.id)}`} className="text-[#2457A6] hover:underline">
-            {item.title}<span className="ml-2 text-slate-500">{item.author}</span>
+          <a key={item.id} href={`${SITE_BASE}books/${item.id}/`} className="text-[#2457A6] hover:underline">
+            {item.title}<span className="ml-2 text-slate-500">{item.author} · {item.note_count ?? 0} 篇笔记</span>
           </a>)],
         ['读书笔记', groups.notes, (item: PublicNote) => (
           <Link key={item.slug} to={`/read/${encodeURIComponent(item.slug)}`} className="text-[#2457A6] hover:underline">{item.title}</Link>)],
