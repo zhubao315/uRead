@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import SafeMarkdown, { headingId, type WikilinkMap } from '../components/SafeMarkdown';
 import { SITE_BASE } from '../config';
 import { loadPublicNotes, type PublicNote, type PublicNotesResult } from '../data/publicNotes';
+import { SECTION_LABEL, splitNoteSections } from '../domain/note-sections';
+import { relatedNotes } from '../domain/note-relations';
 
 /** 公开笔记详情：正文只读渲染，音频只在确实生成过时显示播放器。 */
 const PublicNoteDetailView: React.FC = () => {
@@ -39,6 +41,14 @@ const PublicNoteDetailView: React.FC = () => {
       text: match[1].replace(/[*`]/g, '').trim(),
       id: headingId(match[1]),
     })), [note]);
+
+  const sections = useMemo(() => (note ? splitNoteSections(note.body) : []), [note]);
+  const related = useMemo(() => note
+    ? relatedNotes(
+        { slug: note.slug, title: note.title, category: note.category, tags: note.tags },
+        (result?.notes ?? []).map((item) => ({ slug: item.slug, title: item.title, category: item.category, tags: item.tags })),
+      )
+    : [], [note, result]);
 
   const links = useMemo<WikilinkMap>(() => {
     const map: WikilinkMap = {};
@@ -148,9 +158,35 @@ const PublicNoteDetailView: React.FC = () => {
         </nav>
       ) : null}
 
-      <div className="mt-6 border-t border-gray-200 pt-4">
-        <SafeMarkdown source={note.body} links={links} />
+      <div className="note-article mt-6 border-t border-gray-200 pt-4">
+        {sections.map((section, index) => (
+          <section key={`${section.heading}-${index}`} className={`note-section note-section-${section.kind}`}>
+            {section.heading ? (
+              <h3 className="note-section-heading">
+                <span className="note-section-label">{SECTION_LABEL[section.kind]}</span>
+                {section.heading}
+              </h3>
+            ) : null}
+            <SafeMarkdown source={section.body} links={links} />
+          </section>
+        ))}
       </div>
+
+      <section className="mt-10" aria-labelledby="related-title">
+        <h2 id="related-title" className="text-lg font-semibold text-gray-900">相关阅读</h2>
+        {related.length ? (
+          <ul className="mt-3 space-y-2">
+            {related.map((item) => (
+              <li key={item.slug}>
+                <Link to={`/read/${encodeURIComponent(item.slug)}`} className="text-blue-700 hover:underline">{item.title}</Link>
+                <span className="ml-2 text-xs text-gray-500">{item.reason}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-3 text-sm text-gray-600">没有可可靠关联的同主题笔记，这里不编造推荐。</p>
+        )}
+      </section>
 
       <footer className="mt-10 border-t border-gray-200 pt-4 text-xs text-gray-500">
         来源：Obsidian 私有仓库 · 目录 <code>{note.source_ref.path}</code> · 内容版本 {note.source_ref.sha.slice(0, 12)}
