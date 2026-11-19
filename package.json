@@ -1,6 +1,6 @@
 {
   "name": "uread",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "uRead · AI 阅读与知识萃取工作台（本地优先）",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run books:build && npm run build:fallbacks",
+    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run books:build && npm run books:index && npm run build:fallbacks",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -26,7 +26,8 @@
     "lists:sync:dry": "node scripts/sync-lists.mjs --dry-run",
     "publish:check": "node scripts/publish-check.mjs",
     "publish:report": "node scripts/publish-check.mjs --write",
-    "content:inventory": "node scripts/content-inventory.mjs"
+    "content:inventory": "node scripts/content-inventory.mjs",
+    "books:index": "node scripts/build-books-index.mjs"
   },
   "keywords": [
     "reading",
