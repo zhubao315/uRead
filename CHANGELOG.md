@@ -2,6 +2,14 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.23.0] - 2026-11-19
+
+### 新增
+- 安装 GoogleChrome/modern-web-guidance 为全局 OpenCode skill（212 文件，遥测关闭），`docs/modern-web-scan.md` 记录安装与处置。
+- 按指南改造：`scrollbar-color`/`scrollbar-width` + `@supports not` 回退；`<meta color-scheme>` 三态主题 + `light-dark()`；`toSorted()`；标题 `text-wrap: balance` / 正文 `text-wrap: pretty`。
+- 自有代码扫描命中 8 → 0；剩余 12 处均为 vendored Oink 与 `_archive`，按 Keep/Drop 规则丢弃。
+- 测试 208 → 211（28 文件）；变异 91 → 92（26 套件）。
+
 ## [0.22.0] - 2026-11-19
 
 ### 新增
