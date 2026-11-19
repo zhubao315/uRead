@@ -19,17 +19,27 @@ const DIST = path.join(ROOT, 'dist');
 const INDEX = path.join(DIST, 'index.html');
 const NOTES = path.join(ROOT, 'public', 'notes', 'notes.json');
 
-const STATIC_ROUTES = ['library', 'notes', 'booklists', 'cards', 'search', 'read'];
+const STATIC_ROUTES = ['library', 'notes', 'booklists', 'cards', 'search', 'read', 'themes', 'lists'];
 
 await readFile(INDEX);
 const notes = JSON.parse(await readFile(NOTES, 'utf8'));
+const readJson = async (name) => {
+  try {
+    return JSON.parse(await readFile(path.join(ROOT, 'public', 'lists', name), 'utf8'));
+  } catch {
+    return [];
+  }
+};
+const [themes, booklists] = await Promise.all([readJson('themes.json'), readJson('booklists.json')]);
 const targets = [
   ...STATIC_ROUTES,
   ...notes.map((note) => `read/${note.slug}`),
+  ...themes.map((item) => `themes/${item.id}`),
+  ...booklists.map((item) => `lists/${item.id}`),
 ];
 for (const route of targets) {
   const dir = path.join(DIST, route);
   await mkdir(dir, { recursive: true });
   await copyFile(INDEX, path.join(dir, 'index.html'));
 }
-console.log(`深链回退已生成：${targets.length} 条路由（6 个页面 + ${notes.length} 篇笔记）`);
+console.log(`深链回退已生成：${targets.length} 条路由（${STATIC_ROUTES.length} 个页面 + ${notes.length} 篇笔记 + ${themes.length + booklists.length} 份栏目）`);
