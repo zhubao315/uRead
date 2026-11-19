@@ -99,7 +99,7 @@ const PublicNoteDetailView: React.FC = () => {
         <span className="mx-2">/</span>
         {note.category || '未分类'}
       </p>
-      <h1 className="mt-3 text-3xl font-bold text-gray-900">{note.title}</h1>
+      <h1 className="font-editorial mt-3 text-3xl font-semibold text-navy">{note.title}</h1>
       <p className="mt-2 text-sm text-gray-600">
         {note.author ? `作者：${note.author} · ` : ''}
         {note.updated ? `更新：${note.updated} · ` : ''}
@@ -173,7 +173,7 @@ const PublicNoteDetailView: React.FC = () => {
       </div>
 
       <section className="mt-10" aria-labelledby="related-title">
-        <h2 id="related-title" className="text-lg font-semibold text-gray-900">相关阅读</h2>
+        <h2 id="related-title" className="font-editorial text-lg font-semibold text-navy">相关阅读</h2>
         {related.length ? (
           <ul className="mt-3 space-y-2">
             {related.map((item) => (
