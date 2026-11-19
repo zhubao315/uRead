@@ -4,6 +4,9 @@ import Navbar from './components/Navbar';
 import BookListsView from './views/BookListsView';
 import CardsView from './views/CardsView';
 import Dashboard from './views/Dashboard';
+import ContentHomeView from './views/ContentHomeView';
+import BooklistsHubView, { BooklistDetailRedirect } from './views/BooklistsHubView';
+import FindView from './views/FindView';
 import LibraryView from './views/LibraryView';
 import NotesView from './views/NotesView';
 import PublicNoteDetailView from './views/PublicNoteDetailView';
@@ -74,17 +77,21 @@ function App() {
       ) : null}
       <main id="main" className="container mx-auto px-4 py-8" tabIndex={-1}>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<ContentHomeView />} />
+          <Route path="/workspace" element={<Dashboard />} />
           <Route path="/library" element={<LibraryView />} />
           <Route path="/notes" element={<NotesView />} />
           <Route path="/reader" element={<ReaderHubView />} />
+          <Route path="/find" element={<FindView />} />
           <Route path="/read" element={<PublicNotesView />} />
           <Route path="/read/:slug" element={<PublicNoteDetailView />} />
           <Route path="/themes" element={<PublicListView kind="theme" />} />
           <Route path="/themes/:id" element={<PublicListDetailView kind="theme" />} />
           <Route path="/lists" element={<PublicListView kind="booklist" />} />
           <Route path="/lists/:id" element={<PublicListDetailView kind="booklist" />} />
-          <Route path="/booklists" element={<BookListsView />} />
+          <Route path="/booklists" element={<BooklistsHubView />} />
+          <Route path="/booklists/:id" element={<BooklistDetailRedirect />} />
+          <Route path="/workspace/booklists" element={<BookListsView />} />
           <Route path="/cards" element={<CardsView />} />
           <Route path="/search" element={<SearchView />} />
           <Route path="*" element={<NotFound />} />
