@@ -39,6 +39,11 @@ const PublicListDetailView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }
 
   return (
     <article className="mx-auto max-w-5xl rounded-xl border border-gray-200 bg-white p-6 md:p-10 font-inter">
+      <button type="button" onClick={() => { void navigator.clipboard?.writeText(window.location.href); }}
+        className="mb-3 rounded border border-border bg-surface px-3 py-1.5 text-xs text-muted hover:border-brand">
+        复制这份书单链接
+      </button>
+
       <p className="text-sm text-gray-500">
         <Link to={base} className="hover:text-blue-700 hover:underline">{kind === 'theme' ? '主题阅读' : '书单推荐'}</Link>
         <span className="mx-2">/</span>{item.title}
