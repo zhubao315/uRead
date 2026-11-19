@@ -23,7 +23,7 @@ uRead 是**本地优先的阅读与知识工作台**：个人数据只进浏览�
 | --- | --- | --- |
 | 版本 | 0.23.0 | `node -p "require('./package.json').version"` |
 | 单元测试 | 212 passed / 1 skipped / 213（29 文件） | `npm test` |
-| 全量门禁 | PASS=37 FAIL=0 | `cd .. && ROUND=73 bash scripts/quality_round.sh` |
+| 全量门禁 | PASS=37 FAIL=0 | `cd .. && ROUND=74 bash scripts/quality_round.sh` |
 | 发布检查 | 35/35 | `cd .. && python3 scripts/release_check.py` |
 | 变异 | 92 处 / 26 套件 | `cd .. && python3 scripts/mutation_check.py` |
 | 公开笔记 | 1634 篇 / 10 篇音频 | `cat public/notes/manifest.json` |
