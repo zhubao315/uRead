@@ -2,6 +2,14 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.15.0] - 2026-11-19
+
+### 新增
+- `src/domain/anchors.ts`：统一 SourceRef/Anchor 定位契约，支持 EPUB CFI / PDF 页码 / 文本偏移 / 行范围 / URL 片段；
+  引文必须在声明的行或偏移里找到才算通过，EPUB/PDF 无原始文件核验时如实返回 `needs-source`。
+- 6 条锚点测试；新增 `uread-anchor` 变异套件 2 处（引文不校验 / 无法核验判绿），2/2 命中。
+- 测试 181 → 187（21 文件）；变异 83 → 85（20 套件）。
+
 ## [0.14.0] - 2026-11-19
 
 ### 新增
