@@ -16,6 +16,7 @@ const FindView: React.FC = () => {
   const [params, setParams] = useSearchParams();
   const query = params.get('q') ?? '';
   const [pool, setPool] = useState<Pool | null>(null);
+  const [type, setType] = useState<'all' | 'book' | 'note' | 'list' | 'theme'>('all');
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -66,7 +67,16 @@ const FindView: React.FC = () => {
         <button type="submit" className="rounded bg-brand px-4 py-2 text-white">搜索</button>
       </form>
       {pool === null ? <p className="mt-6 text-slate-600">正在载入内容索引…</p> : null}
-      {query && pool ? <p className="mt-4 text-sm text-slate-600">「{query}」命中 {total} 条内容，按类型分组。</p> : null}
+      {query && pool ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {(['all', 'book', 'note', 'list', 'theme'] as const).map((value) => (
+            <button key={value} type="button" onClick={() => setType(value)} aria-pressed={type === value}
+              className={`rounded border px-3 py-1.5 text-xs ${type === value ? 'border-brand bg-brand text-white' : 'border-border bg-surface text-muted'}`}>
+              {{ all: '全部', book: '书籍', note: '笔记', list: '书单', theme: '主题' }[value]}
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       {[
         ['书籍', groups.books, (item: FindBook) => (
@@ -81,6 +91,8 @@ const FindView: React.FC = () => {
           <Link key={item.id} to={`/themes/${item.id}`} className="text-brand hover:underline">{item.title}</Link>)],
       ].map(([label, items, render]) => {
         const typed = items as Array<FindBook | PublicNote | PublicList>;
+        const typeKey = label === '书籍' ? 'book' : label === '读书笔记' ? 'note' : label === '书单' ? 'list' : 'theme';
+        if (type !== 'all' && type !== typeKey) return null;
         if (!typed.length) return null;
         return (
           <section key={label as string} className="mt-8" aria-label={label as string}>
