@@ -89,6 +89,17 @@ const ReaderHubView: React.FC = () => {
                 <a href={item.href} className="mt-1 block text-base font-semibold text-blue-700 hover:underline">{item.title}</a>
               )}
               <p className="mt-2 text-sm text-gray-600">{item.subtitle}</p>
+              {(() => {
+                const raw = localStorage.getItem(item.progressKey);
+                if (!raw) return null;
+                try {
+                  const parsed = JSON.parse(raw);
+                  const value = typeof parsed === 'number' ? parsed : parsed?.fraction;
+                  return typeof value === 'number' && value > 0
+                    ? <p className="mt-1 text-xs text-brand">已读 {Math.round(Math.min(value, 1) * 100)}%</p>
+                    : null;
+                } catch { return null; }
+              })()}
             </li>
           ))}
         </ul>
