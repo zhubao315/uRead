@@ -152,12 +152,21 @@ export interface Note extends BaseAsset {
   color?: string;
 }
 
-export type CardType = 'concept' | 'fact' | 'quote' | 'idea';
+export type CardType = 'concept' | 'fact' | 'quote' | 'idea'
+  | 'insight' | 'principle' | 'method' | 'evidence' | 'question';
+
+/** 六类知识卡片与人工核验（0.17.0 起）；旧卡片没有这些字段，全部可选，备份格式不变。 */
+export type KnowledgeType = 'fact' | 'insight' | 'principle' | 'method' | 'evidence' | 'question';
+export type KnowledgeReviewStatus = 'suggestion' | 'reviewed' | 'rejected';
 
 export interface KnowledgeCard extends BaseAsset {
   type: 'knowledge_card';
   book_id?: string;
   card_type: CardType;
+  knowledge_type?: KnowledgeType;
+  review_status?: KnowledgeReviewStatus;
+  evidence_refs?: string[];
+  confidence?: number;
   definition?: string;
   importance?: 'low' | 'medium' | 'high';
   reviewed: boolean;
