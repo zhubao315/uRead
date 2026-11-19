@@ -35,23 +35,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Modern scrollbars: standard properties first, legacy WebKit fallback behind @supports. */
+:root {
+  --scrollbar-thumb: #64748b;
+  --scrollbar-track: #f1f5f9;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f5f9;
+@supports (color: light-dark(#000, #fff)) {
+  :root {
+    --scrollbar-thumb: light-dark(#64748b, #94a3b8);
+    --scrollbar-track: light-dark(#f1f5f9, #0f172a);
+  }
 }
 
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+@supports not (scrollbar-color: auto) {
+  :root { scrollbar-width: auto; }
+  :root::-webkit-scrollbar { width: 8px; height: 8px; }
+  :root::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+  :root::-webkit-scrollbar-track { background: var(--scrollbar-track); }
 }
 
 /* Glassmorphism cards */
@@ -116,15 +119,27 @@ textarea:focus-visible {
   }
 }
 /* 42 夜间阅读模式：只覆盖关键表面，避免把整个 Tailwind 类库改一遍。 */
-html[data-theme='dark'] { color-scheme: dark; }
-html[data-theme='dark'] body { background: #0f172a !important; color: #e2e8f0 !important; }
-html[data-theme='dark'] .bg-white,
-html[data-theme='dark'] [class*='bg-white'] { background-color: #1e293b !important; }
-html[data-theme='dark'] .bg-gray-50 { background-color: #0f172a !important; }
-html[data-theme='dark'] .text-gray-900 { color: #f1f5f9 !important; }
-html[data-theme='dark'] .text-gray-700,
-html[data-theme='dark'] .text-gray-600 { color: #cbd5e1 !important; }
-html[data-theme='dark'] .border-gray-200 { border-color: #334155 !important; }
+/* 主题唯一真相是 <meta name="color-scheme">；CSS 映射它，JS 不写 class/data 属性。 */
+:root { color-scheme: light dark; }
+:root:has(> head > meta[name="color-scheme"][content="dark"]) { color-scheme: dark; }
+:root:has(> head > meta[name="color-scheme"][content="light"]) { color-scheme: light; }
+
+:root {
+  --theme-page: light-dark(#f8fafc, #0f172a);
+  --theme-surface: light-dark(#ffffff, #1e293b);
+  --theme-text: light-dark(#e2e8f0, #e2e8f0);
+  --theme-strong: light-dark(#172033, #f1f5f9);
+  --theme-muted: light-dark(#64748b, #cbd5e1);
+  --theme-line: light-dark(#e5e7eb, #334155);
+}
+body { background-color: var(--theme-page) !important; color: var(--theme-text) !important; }
+.bg-white,
+[class*='bg-white'] { background-color: var(--theme-surface) !important; }
+.bg-gray-50 { background-color: var(--theme-page) !important; }
+.text-gray-900 { color: var(--theme-strong) !important; }
+.text-gray-700,
+.text-gray-600 { color: var(--theme-muted) !important; }
+.border-gray-200 { border-color: var(--theme-line) !important; }
 
 /* Phase 3 阅读排版：按原文标题分区，原文摘录与个人理解视觉区分，不改变语义。 */
 .note-article { max-width: 46rem; }
@@ -144,3 +159,7 @@ html[data-theme='dark'] .border-gray-200 { border-color: #334155 !important; }
   .note-section { margin: 1.4rem 0; }
   .note-section-excerpt, .note-section-understanding, .note-section-extension, .note-section-other { padding-left: .8rem; }
 }
+
+/* Modern text layout: short headings balanced, long copy pretty. */
+.note-section-heading, .note-article h1, .note-article h2, .note-article h3 { text-wrap: balance; }
+.note-article p, .note-article blockquote, .note-article li { text-wrap: pretty; }
