@@ -196,6 +196,8 @@ const ContentHomeView: React.FC = () => {
           <Link to="/booklists" className="ml-4 text-brand hover:underline">全部书单</Link>
           <Link to="/workspace" className="ml-4 text-brand hover:underline">管理工作台</Link>
           <a href={`${SITE_BASE}books/`} className="ml-4 text-brand hover:underline">书库</a>
+          <Link to="/find" className="ml-4 text-brand hover:underline">搜索</Link>
+          <a href={`${SITE_BASE}docs/`} className="ml-4 text-brand hover:underline">文档</a>
         </p>
       </footer>
     </div>
