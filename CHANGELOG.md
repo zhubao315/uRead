@@ -2,6 +2,14 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.22.0] - 2026-11-19
+
+### 新增
+- Phase 4 Design Tokens：Tailwind 与 CSS 变量统一品牌色 / 文字色 / 页面背景，新页面不再散落十六进制颜色。
+- 设计文档更新：`design-system.md`、`ui-ux-design-system.md` 以当前真实组件与交互为准，删除失效原型示例。
+- `npm run verify:release`：发版前对账内容基线、manifest、深链回退、书籍索引，并生成 `docs/migration/reconciliation.md`；当前对账全部一致。
+- 未新增测试；测试 208、变异 91 保持不变。
+
 ## [0.21.0] - 2026-11-19
 
 ### 新增
