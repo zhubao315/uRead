@@ -8,7 +8,7 @@ uRead 是一个**本地优先**的阅读与知识沉淀工具：导入资料 →
 
 ## 现状（真实能力）
 
-> 当前版本：**0.13.0**（变更记录见 `CHANGELOG.md`）。
+> 当前版本：**0.14.0**（变更记录见 `CHANGELOG.md`）。
 
 > 本表只列**已实现且可复核**的能力。「复核方式」列出的命令都能在本仓库直接运行；
 > 未实现的能力一并列出，避免把规划当成功能。
@@ -46,7 +46,7 @@ uRead 是一个**本地优先**的阅读与知识沉淀工具：导入资料 →
 | 检索 / RAG / 向量库 | ⛔ 本仓库不做（检索由工作区 SAG + uAI Core 承担） | — |
 | 撤销 / 回收站 | ⛔ 未实现（删除是永久性的，因此必须两步确认） | — |
 
-单元测试：**npm test 报 176 passed / 1 跳过，共 177 个用例**（19 个测试文件）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **165 passed / 12 跳过，共 177 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
+单元测试：**npm test 报 180 passed / 1 跳过，共 181 个用例**（20 个测试文件）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **169 passed / 12 跳过，共 181 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
 空库时的演示数据见下一节。
 
 ## 公开笔记：从私有仓库到只读页面（0.11.0）
@@ -102,6 +102,24 @@ npm run build
 
 **来源链接不放假**：私有仓库的 blob URL 对访客是 404，详情页只显示目录与 git sha 供核对，
 不做成对外链接。`[[wikilink]]` 只有在目标确实也在公开集合里时才可点，否则只显示文字。
+
+---
+
+## 发布治理（先检查，不自动下线）
+
+```sh
+npm run publish:check                 # 默认 dry-run：只打印结论
+npm run publish:report                # 写本地报告 publishing/report.json（不进 Pages）
+npm run publish:check -- --strict     # 有未授权/敏感/孤儿音频时退出码 1
+```
+
+策略在 `publishing/policy.json`：白名单 `allow`、黑名单 `deny`、分类授权 `category_allow`、
+标签排除 `tag_deny`、敏感规则 `sensitive_patterns`。`allowlist` 模式下**默认拒绝**；
+`deny` 永远优先；敏感报告只回规则名与 slug，**不写正文**。
+
+> 当前线上仍沿用 `allow_all_legacy`（全量公开），这是你已确认的临时状态：
+> 治理工具先就位，**检查脚本绝不会删除或修改 public/ 下任何文件**。
+> 要切换到默认拒绝，只需把策略 `mode` 改为 `allowlist` 并填授权名单，先跑 `--strict` 看清单再发布。
 
 ---
 
