@@ -18,6 +18,17 @@ const FindView: React.FC = () => {
   const [pool, setPool] = useState<Pool | null>(null);
 
   useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === '/' && !(event.target instanceof HTMLInputElement)) {
+        event.preventDefault();
+        document.getElementById('find-q')?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
     let alive = true;
     void Promise.all([
       loadPublicNotes(),
