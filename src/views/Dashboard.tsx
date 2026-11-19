@@ -156,6 +156,14 @@ const Dashboard: React.FC = () => {
       </section>
 
       {/* 45 把「本地工作台」与「公开内容」明确分开：两种用途、两类读者，不混在一句话里。 */}
+      <section className="rounded-2xl border border-blue-200 bg-blue-50 p-6" aria-labelledby="continue-title">
+        <h2 id="continue-title" className="text-xl font-bold text-gray-900">继续阅读</h2>
+        <p className="mt-1 text-sm text-gray-700">可听的公开笔记与书库里的书在同一个入口，有本机进度的排在最前。</p>
+        <Link to="/reader" className="mt-3 inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+          打开阅读入口 →
+        </Link>
+      </section>
+
       <section aria-labelledby="public-content-title">
         <h2 id="public-content-title" className="mb-3 text-xl font-bold text-gray-900">公开内容 · 分享给别人的部分</h2>
         <p className="mb-4 text-sm text-gray-600">下面是只读的分享页；上面这台工作台的数据只存在你自己的浏览器里。</p>
