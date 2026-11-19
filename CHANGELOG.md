@@ -2,6 +2,16 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.14.0] - 2026-11-19
+
+### 新增
+- 发布治理工具（默认 dry-run）：`publishing/policy.json` + `publish-policy.mjs` + `publish-check.mjs`，
+  支持白名单/黑名单、分类与标签授权、敏感信息扫描、发布预览、孤儿音频检查与严格模式。
+- 临时策略保持线上现状（全量公开），**默认拒绝逻辑已实现并测试，待用户确认后切换**，不会因检查而下线内容。
+- 文档基线：`docs/PROJECT-STATUS.md`、`docs/audit/current-state.md`、`docs/audit/feature-matrix.md`；
+  历史审计统一标注时点快照。
+- 测试 177 → 181（20 文件）；变异 81 → 83（19 套件）。
+
 ## [0.13.0] - 2026-11-19
 
 ### 新增
