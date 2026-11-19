@@ -32,7 +32,7 @@ async function seed(title: string, bookTitles: string[]) {
 
 function renderLists() {
   return render(
-    <MemoryRouter initialEntries={['/booklists']}>
+    <MemoryRouter initialEntries={['/workspace/booklists']}>
       <App />
     </MemoryRouter>,
   );
