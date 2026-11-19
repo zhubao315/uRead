@@ -135,6 +135,7 @@ const ContentHomeView: React.FC = () => {
           <h2 id="latest-notes" className="font-editorial text-2xl text-navy">最新读书笔记</h2>
           <Link to="/read" className="inline-flex items-center gap-1 text-sm text-brand hover:underline">全部笔记 <ArrowRightIcon size="sm" /></Link>
         </div>
+        {latest.length === 0 ? <p className="mt-4 text-sm text-muted">还没有可展示的公开笔记。</p> : null}
         <ul className="mt-5 divide-y divide-border border-y border-border">
           {latest.map((note) => (
             <li key={note.slug} className="py-4">
