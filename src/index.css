@@ -181,3 +181,12 @@ body { background-color: var(--theme-page) !important; color: var(--theme-text) 
 
 /* 品牌化文本选区 */
 ::selection { background: var(--mist); color: var(--navy); }
+
+/* 尊重系统减少动态偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
