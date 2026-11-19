@@ -28,9 +28,10 @@ const NotFound = () => (
         仪表板
       </Link>
       ，或者
-      <Link to="/search" className="mx-1 text-blue-600 hover:text-blue-800 underline">
-        搜索全部本地数据
+      <Link to="/find" className="mx-1 text-brand hover:underline">
+        搜索公开内容
       </Link>
+      <Link to="/workspace" className="ml-2 text-brand hover:underline">管理工作台</Link>
       。
     </p>
   </section>
