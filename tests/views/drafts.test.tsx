@@ -72,7 +72,7 @@ describe('未提交的内容不该被吃掉', () => {
     });
     // 桌面导航栏与移动端底部导航各渲染一条同名链接，两条都指向资料库，
     // 所以必须取全部再点第一条（getByRole 会因为「找到多个」直接失败）。
-    const [libraryLink] = screen.getAllByRole('link', { name: /资料库/ });
+    const [libraryLink] = screen.getAllByRole('link', { name: /工作台/ });
     fireEvent.click(libraryLink);
     // 确认真的换了路由：笔记表单已经不在这一屏了
     await waitFor(() =>
@@ -101,11 +101,11 @@ describe('未提交的内容不该被吃掉', () => {
   });
 
   it('「丢弃草稿」能真的丢掉（不是只把提示关掉）', async () => {
-    const first = renderAt('/booklists?new=1');
+    const first = renderAt('/workspace/booklists?new=1');
     fireEvent.change(await screen.findByLabelText(/名称/), { target: { value: '不想留的草稿' } });
     first.unmount();
 
-    renderAt('/booklists?new=1');
+    renderAt('/workspace/booklists?new=1');
     fireEvent.click(await screen.findByRole('button', { name: /丢弃草稿/ }));
 
     await waitFor(() => expect(screen.getByLabelText(/名称/)).toHaveValue(''));
