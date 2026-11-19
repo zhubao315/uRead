@@ -8,7 +8,7 @@ menus:
 description: "uRead 当前状态的唯一基线：版本、真实能力、复核命令与已知限制。历史审计仅作时点快照。"
 ---
 
-> 状态基准：**2026-11-19** · 版本 **0.16.0**
+> 状态基准：**2026-11-19** · 版本 **0.17.0**
 > 本文件是「现在是什么样」的唯一入口。历史审计（`docs/audit/*`）只代表审计当天的代码，
 > 不得作为当前待办清单使用——已有多次 AI 智能体读到旧文档后重做已完成功能的风险。
 
@@ -22,10 +22,10 @@ uRead 是**本地优先的阅读与知识工作台**：个人数据只进浏览�
 | 口径 | 真实值 | 复核命令 |
 | --- | --- | --- |
 | 版本 | 0.13.0 | `node -p "require('./package.json').version"` |
-| 单元测试 | 188 passed / 1 skipped / 189（22 文件） | `npm test` |
-| 全量门禁 | PASS=37 FAIL=0 | `cd .. && ROUND=63 bash scripts/quality_round.sh` |
+| 单元测试 | 193 passed / 1 skipped / 194（23 文件） | `npm test` |
+| 全量门禁 | PASS=37 FAIL=0 | `cd .. && ROUND=64 bash scripts/quality_round.sh` |
 | 发布检查 | 35/35 | `cd .. && python3 scripts/release_check.py` |
-| 变异 | 86 处 / 21 套件 | `cd .. && python3 scripts/mutation_check.py` |
+| 变异 | 88 处 / 22 套件 | `cd .. && python3 scripts/mutation_check.py` |
 | 公开笔记 | 1634 篇 / 10 篇音频 | `cat public/notes/manifest.json` |
 | 公开栏目 | 10 主题 / 39 书单 | `cat public/lists/manifest.json` |
 | 书库 | 2 本（EPUB + PDF） | `cat dist/books/catalog.json` |
