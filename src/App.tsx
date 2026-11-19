@@ -8,6 +8,8 @@ import LibraryView from './views/LibraryView';
 import NotesView from './views/NotesView';
 import PublicNoteDetailView from './views/PublicNoteDetailView';
 import PublicNotesView from './views/PublicNotesView';
+import PublicListView from './views/PublicListView';
+import PublicListDetailView from './views/PublicListDetailView';
 import SearchView from './views/SearchView';
 import { useLibraryStore } from './store/libraryStore';
 
@@ -76,6 +78,10 @@ function App() {
           <Route path="/notes" element={<NotesView />} />
           <Route path="/read" element={<PublicNotesView />} />
           <Route path="/read/:slug" element={<PublicNoteDetailView />} />
+          <Route path="/themes" element={<PublicListView kind="theme" />} />
+          <Route path="/themes/:id" element={<PublicListDetailView kind="theme" />} />
+          <Route path="/lists" element={<PublicListView kind="booklist" />} />
+          <Route path="/lists/:id" element={<PublicListDetailView kind="booklist" />} />
           <Route path="/booklists" element={<BookListsView />} />
           <Route path="/cards" element={<CardsView />} />
           <Route path="/search" element={<SearchView />} />
