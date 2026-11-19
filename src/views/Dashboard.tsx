@@ -118,7 +118,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-8 font-inter">
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-700 rounded-2xl text-white">
+      <section className="relative overflow-hidden rounded-lg bg-navy text-white">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="relative px-8 py-16 text-center">
           <h1 className="text-4xl md:text-5xl font-inter font-bold mb-6 leading-tight">
