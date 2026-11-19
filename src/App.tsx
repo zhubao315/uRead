@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileBottomNav from './components/MobileBottomNav';
@@ -40,6 +40,12 @@ const NotFound = () => (
 function App() {
   const location = useLocation();
   const isWorkspace = location.pathname.startsWith('/workspace');
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 600);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   const load = useLibraryStore((state) => state.load);
   const initialized = useLibraryStore((state) => state.initialized);
   const error = useLibraryStore((state) => state.error);
@@ -101,6 +107,13 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      {showTop ? (
+        <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="回到顶部"
+          className="fixed bottom-20 right-4 z-40 rounded-md border border-border bg-surface px-3 py-2 text-sm text-navy shadow-raised md:bottom-6">
+          ↑
+        </button>
+      ) : null}
       <MobileBottomNav />
     </div>
   );
