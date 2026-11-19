@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
 
 /** 统一「主题书单」入口：保留 THEME / BOOKLIST 两种类型，不合并丢失说明。 */
 const BooklistsHubView: React.FC = () => {
   const [items, setItems] = useState<PublicList[] | null>(null);
   const [kind, setKind] = useState<'all' | 'theme' | 'booklist'>('all');
-  const [query, setQuery] = useState('');
+  const [params, setParams] = useSearchParams();
+  const query = params.get('q') ?? '';
+  const setQuery = (value: string) => setParams(value ? { q: value } : {}, { replace: true });
 
   useEffect(() => {
     let alive = true;
