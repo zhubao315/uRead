@@ -27,7 +27,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // 目录与书单：先给缓存，后台再更新；体积小的 JSON 才值得缓存。
-  if (url.pathname.startsWith('/uRead/notes/') || url.pathname.startsWith('/uRead/books/catalog.json')) {
+  if (url.pathname.startsWith('/uRead/notes/') || url.pathname.startsWith('/uRead/books/aggregate.json')) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         const network = fetch(event.request).then((response) => {
