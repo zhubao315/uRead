@@ -43,7 +43,7 @@ const PublicListDetailView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }
         <Link to={base} className="hover:text-blue-700 hover:underline">{kind === 'theme' ? '主题阅读' : '书单推荐'}</Link>
         <span className="mx-2">/</span>{item.title}
       </p>
-      <h1 className="mt-3 text-3xl font-bold text-gray-900">{item.title}</h1>
+      <h1 className="font-editorial mt-3 text-3xl font-semibold text-navy">{item.title}</h1>
       {item.description ? <p className="mt-3 text-gray-700">{item.description}</p> : null}
       <p className="mt-2 text-sm text-gray-500">
         {item.book_count} 本书 · {item.linked_notes} 本已有笔记{item.updated ? ` · 更新 ${item.updated}` : ''}
