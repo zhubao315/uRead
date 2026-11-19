@@ -19,7 +19,9 @@ const MobileBottomNav: React.FC = () => {
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <ul className="grid grid-cols-4">
         {items.map((item) => {
-          const active = location.pathname === item.path;
+          const active = item.path === '/books'
+            ? location.pathname.startsWith('/books')
+            : location.pathname === item.path;
           const content = (
             <>
               <span className={active ? 'text-brand' : 'text-muted'}>{item.icon}</span>
