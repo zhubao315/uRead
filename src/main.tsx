@@ -5,11 +5,6 @@ import App from './App';
 import './index.css';
 import { BASE_NAME, SITE_BASE } from './config';
 
-// 夜间模式在首屏前恢复，避免先白后黑闪一下。
-if (localStorage.getItem('uread:theme') === 'dark') {
-  document.documentElement.dataset.theme = 'dark';
-}
-
 // 离线外壳：只缓存壳与目录 JSON，音频和书不走 Cache Storage。
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
