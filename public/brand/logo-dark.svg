@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="uRead on dark">
+  <title>uRead symbol for dark backgrounds</title>
+  <path fill="#FFFFFF" d="M9 10.5c0-1.4 1.1-2.5 2.5-2.5h16c1.7 0 2.7 1 2.7 2.6v38.8c0 1.6-1 2.3-2.4 1.8L12.7 47c-2.3-.9-3.7-2.4-3.7-4.8V10.5Z"/>
+  <path fill="#FFFFFF" d="M33.8 10.6c0-1.6 1-2.6 2.7-2.6h16c1.4 0 2.5 1.1 2.5 2.5v31.7c0 2.4-1.4 3.9-3.7 4.8l-15.1 4.2c-1.4.5-2.4-.2-2.4-1.8V10.6Z"/>
+  <path fill="#C58B42" d="M43.5 7.5h9.2v22.8l-4.6-4.1-4.6 4.1V7.5Z"/>
+</svg>
