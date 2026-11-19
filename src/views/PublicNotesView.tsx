@@ -11,6 +11,7 @@ function highlight(text: string, words: string[]): React.ReactNode {
   );
 }
 import { Link } from 'react-router-dom';
+import { SITE_BASE } from '../config';
 import { filterNotes, loadPublicNotes, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
 
 /**
@@ -103,6 +104,12 @@ const PublicNotesView: React.FC = () => {
           <button type="button" onClick={() => setUpdated(false)} className="ml-3 underline">知道了</button>
         </div>
       ) : null}
+
+      <p className="mb-5 text-sm">
+        <Link to="/themes" className="mr-4 text-violet-700 hover:underline">🧭 主题阅读 →</Link>
+        <Link to="/lists" className="mr-4 text-amber-700 hover:underline">📋 书单推荐 →</Link>
+        <a href={`${SITE_BASE}books/`} className="text-emerald-700 hover:underline">📚 书库 →</a>
+      </p>
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
         <label htmlFor="public-note-search" className="sr-only">搜索公开笔记</label>
