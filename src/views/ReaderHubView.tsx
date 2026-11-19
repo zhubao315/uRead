@@ -74,7 +74,10 @@ const ReaderHubView: React.FC = () => {
       </div>
 
       {sources.length === 0 ? (
-        <p className="text-gray-700">没有匹配的内容。</p>
+        <div className="rounded-md border border-border bg-surface p-5 text-sm text-muted">
+          {result.sources.length === 0 ? '还没有可阅读的公开笔记或书籍。' : '没有匹配的内容，换个关键词试试。'}
+          <Link to="/booklists" className="ml-3 text-brand hover:underline">去看书单</Link>
+        </div>
       ) : (
         <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {sources.map((item) => (
