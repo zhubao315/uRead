@@ -178,3 +178,6 @@ body { background-color: var(--theme-page) !important; color: var(--theme-text) 
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+
+/* 品牌化文本选区 */
+::selection { background: var(--mist); color: var(--navy); }
