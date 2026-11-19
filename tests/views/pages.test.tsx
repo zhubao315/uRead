@@ -66,7 +66,7 @@ describe('搜索结果跳转必须带着查询词落地', () => {
   });
 
   it('书单页同样认 ?q=', async () => {
-    renderAt('/booklists?q=系统');
+    renderAt('/workspace/booklists?q=系统');
 
     await waitFor(() => expect(screen.getByText('待读系统书')).toBeInTheDocument());
   });
@@ -90,7 +90,7 @@ describe('承诺「新建」的入口必须给出可提交的表单', () => {
   });
 
   it('仪表板的「写第一条笔记」点下去，落地页的表单已经是打开的', async () => {
-    const { container } = renderAt('/');
+    const { container } = renderAt('/workspace');
 
     const cta = await screen.findByRole('link', { name: '写第一条笔记' });
 
@@ -103,7 +103,7 @@ describe('承诺「新建」的入口必须给出可提交的表单', () => {
   });
 
   it('仪表板的「导入资料」同理落到可提交的资料表单', async () => {
-    const { container } = renderAt('/');
+    const { container } = renderAt('/workspace');
 
     const cta = await screen.findByRole('link', { name: '导入资料' });
     fireEvent.click(cta);
@@ -116,7 +116,7 @@ describe('承诺「新建」的入口必须给出可提交的表单', () => {
 
 describe('书单不是死胡同', () => {
   it('可以把资料库里的资料加进书单，卡片上的数量随之变化', async () => {
-    renderAt('/booklists');
+    renderAt('/workspace/booklists');
 
     await waitFor(() => expect(screen.getByText('待读系统书')).toBeInTheDocument());
     expect(screen.getByText(/0 本书/)).toBeInTheDocument();
@@ -133,7 +133,7 @@ describe('书单不是死胡同', () => {
     const { book } = await seed();
     await repo.updateBookList((await repo.listBookLists())[0].id, { book_ids: [book.id] });
     await useLibraryStore.getState().load();
-    renderAt('/booklists');
+    renderAt('/workspace/booklists');
 
     await waitFor(() => expect(screen.getByText('待读系统书')).toBeInTheDocument());
     fireEvent.click(screen.getByRole('button', { name: '管理书目' }));
@@ -148,7 +148,7 @@ describe('书单不是死胡同', () => {
     await repo.resetLibrary();
     await repo.createBookList({ title: '空库书单' });
     await useLibraryStore.getState().load();
-    renderAt('/booklists');
+    renderAt('/workspace/booklists');
 
     await waitFor(() => expect(screen.getByText('空库书单')).toBeInTheDocument());
     fireEvent.click(screen.getByRole('button', { name: '管理书目' }));
@@ -169,7 +169,7 @@ describe('表单的拒绝理由要看得见', () => {
   });
 
   it('四个表单页都有内联校验（role="alert"），不再出现「按钮灰了却不知道为什么」', async () => {
-    for (const path of ['/library?new=1', '/notes?new=1', '/cards?new=1', '/booklists?new=1']) {
+    for (const path of ['/library?new=1', '/notes?new=1', '/cards?new=1', '/workspace/booklists?new=1']) {
       const { unmount } = renderAt(path);
 
       await waitFor(() => expect(screen.getAllByRole('alert').length).toBeGreaterThan(0));
