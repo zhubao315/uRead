@@ -1,0 +1,69 @@
+/**
+ * uRead 设计令牌 —— Editorial Reading Library
+ * 所有页面只使用这里的变量；组件不得再写独立颜色值。
+ * 该文件在 index.css 之后引入，用于统一覆盖旧令牌。
+ */
+
+:root {
+  /* 品牌色 */
+  --navy: #17243A;
+  --brand: #2457A6;
+  --brand-active: #477FE8;
+  --mist: #DCE8F8;
+  --gold: #C58B42;
+
+  /* 中性色 */
+  --page: #F3F6FA;
+  --surface: #FFFFFF;
+  --text-primary: #17243A;
+  --text-secondary: #64748B;
+  --border: #E2E8F0;
+
+  /* 兼容旧变量名，避免历史组件失效 */
+  --ink: var(--navy);
+  --body: var(--text-primary);
+  --accent: var(--gold);
+  --line: var(--border);
+  --background-light: var(--page);
+  --surface-white: var(--surface);
+
+  /* 字体 */
+  --font-serif: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 间距（4px 基准 / 8px 主网格） */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* 圆角 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  /* 阴影与边界 */
+  --shadow-card: 0 1px 2px rgba(23, 36, 58, 0.06);
+  --shadow-raised: 0 4px 12px rgba(23, 36, 58, 0.08);
+  --border-hairline: 1px solid var(--border);
+
+  /* 阅读布局 */
+  --content-width: 720px;
+  --reading-leading: 1.8;
+
+  /* 动效 */
+  --transition-fast: 150ms ease;
+  --transition-base: 180ms ease;
+  --transition-page: 280ms ease;
+
+  /* 层级 */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-nav: 50;
+  --z-overlay: 60;
+}
