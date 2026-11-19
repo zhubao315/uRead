@@ -50,3 +50,7 @@ htmlcov/
 .notes-cache/
 # 栏目同步缓存（私有 Obsidian 正文）
 .lists-cache/
+
+# 发布治理报告（本地产物，不发布）
+publishing/report.json
+publishing/PREVIEW.md
