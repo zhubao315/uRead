@@ -19,7 +19,7 @@ const DIST = path.join(ROOT, 'dist');
 const INDEX = path.join(DIST, 'index.html');
 const NOTES = path.join(ROOT, 'public', 'notes', 'notes.json');
 
-const STATIC_ROUTES = ['library', 'notes', 'booklists', 'cards', 'search', 'read', 'themes', 'lists'];
+const STATIC_ROUTES = ['library', 'notes', 'booklists', 'cards', 'search', 'read', 'reader', 'themes', 'lists'];
 
 await readFile(INDEX);
 const notes = JSON.parse(await readFile(NOTES, 'utf8'));
