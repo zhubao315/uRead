@@ -1,6 +1,6 @@
 {
   "name": "uread",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "uRead · AI 阅读与知识萃取工作台（本地优先）",
   "private": true,
   "type": "module",
@@ -23,7 +23,9 @@
     "books:build": "python3 book-library/build.py",
     "build:fallbacks": "node scripts/make-fallback-pages.mjs",
     "lists:sync": "node scripts/sync-lists.mjs",
-    "lists:sync:dry": "node scripts/sync-lists.mjs --dry-run"
+    "lists:sync:dry": "node scripts/sync-lists.mjs --dry-run",
+    "publish:check": "node scripts/publish-check.mjs",
+    "publish:report": "node scripts/publish-check.mjs --write"
   },
   "keywords": [
     "reading",
