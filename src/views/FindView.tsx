@@ -80,7 +80,16 @@ const FindView: React.FC = () => {
           </section>
         );
       })}
-      {query && pool && total === 0 ? <p className="mt-8 text-slate-600">没有匹配的内容，换个关键词试试。</p> : null}
+      {query && pool && total === 0 ? (
+        <div className="mt-8 rounded-md border border-border bg-surface p-5 text-sm text-muted">
+          <p>没有匹配的内容。你可以换个关键词，或从这些真实内容入口开始：</p>
+          <p className="mt-2">
+            <Link to="/booklists" className="text-brand hover:underline">浏览全部书单</Link>
+            <Link to="/read" className="ml-4 text-brand hover:underline">浏览全部笔记</Link>
+            <Link to="/themes" className="ml-4 text-brand hover:underline">按主题探索</Link>
+          </p>
+        </div>
+      ) : null}
     </section>
   );
 };
