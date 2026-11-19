@@ -54,3 +54,7 @@ htmlcov/
 # 发布治理报告（本地产物，不发布）
 publishing/report.json
 publishing/PREVIEW.md
+
+# Playwright 产物
+test-results/
+playwright-report/
