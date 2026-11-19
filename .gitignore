@@ -48,3 +48,5 @@ htmlcov/
 # 公开笔记同步的本地缓存：里面是**私有仓库的笔记正文**。
 # 只用于增量同步，绝不能随 uRead 仓库 push 出去。
 .notes-cache/
+# 栏目同步缓存（私有 Obsidian 正文）
+.lists-cache/
