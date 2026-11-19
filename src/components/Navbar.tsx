@@ -13,7 +13,7 @@ const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
       onSubmit={(event) => {
         event.preventDefault();
         const trimmed = value.trim();
-        navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search');
+        navigate(trimmed ? `/find?q=${encodeURIComponent(trimmed)}` : '/find');
       }}
       className="flex items-center gap-2"
     >
@@ -66,13 +66,11 @@ const Navbar: React.FC = () => {
     /** Pages 上的静态目录不是 React 路由：必须用普通 <a>，否则会被 SPA 接管成 404。 */
     staticHref?: string;
   }> = [
-    { path: '/', label: '仪表板', icon: <BookOpenIcon size="md" />, description: '学习概览' },
-    { path: '/library', label: '资料库', icon: <BookOpenIcon size="md" />, description: '导入资料' },
-    { path: '/notes', label: '读书笔记', icon: <DocumentIcon size="md" />, description: '记录心得' },
-    { path: '/read', label: '公开笔记', icon: <DocumentIcon size="md" />, description: '同步在读' },
-    { path: '/books', label: '书库', icon: <BookOpenIcon size="md" />, description: '在线读书', staticHref: `${SITE_BASE}books/` },
-    { path: '/booklists', label: '精选书单', icon: <StarIcon size="md" />, description: '阅读计划' },
-    { path: '/cards', label: '知识卡片', icon: <LightBulbIcon size="md" />, description: '提炼精华' }
+    { path: '/', label: '首页', icon: <BookOpenIcon size="md" />, description: '读书内容门户' },
+    { path: '/read', label: '笔记', icon: <DocumentIcon size="md" />, description: '读书笔记' },
+    { path: '/booklists', label: '书单', icon: <StarIcon size="md" />, description: '主题与书单' },
+    { path: '/books', label: '书籍', icon: <BookOpenIcon size="md" />, description: '书库', staticHref: `${SITE_BASE}books/` },
+    { path: '/workspace', label: '工作台', icon: <LightBulbIcon size="md" />, description: '本地管理' }
   ];
 
   return (
@@ -139,7 +137,7 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Navigation */}
       <div className="md:hidden border-t border-gray-200 bg-white">
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-1 p-2">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-1 p-2">
           {navItems.map((item) => {
             const className = `flex flex-col items-center space-y-1 p-3 rounded-lg text-xs font-inter transition-all duration-200 cursor-pointer-custom ${
               location.pathname === item.path
