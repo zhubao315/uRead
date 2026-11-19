@@ -1,6 +1,6 @@
 {
   "name": "uread",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "description": "uRead · AI 阅读与知识萃取工作台（本地优先）",
   "private": true,
   "type": "module",
@@ -28,7 +28,8 @@
     "publish:report": "node scripts/publish-check.mjs --write",
     "content:inventory": "node scripts/content-inventory.mjs",
     "books:index": "node scripts/build-books-index.mjs",
-    "verify:release": "node scripts/reconcile-release.mjs"
+    "verify:release": "node scripts/reconcile-release.mjs",
+    "test:e2e": "playwright test"
   },
   "keywords": [
     "reading",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
+    "@playwright/test": "^1.65.1",
     "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/react": "^16.3.0",
     "@types/node": "^26.6.6",
