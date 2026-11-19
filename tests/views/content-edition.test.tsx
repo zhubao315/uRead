@@ -27,7 +27,7 @@ const book = { id: 'b1', title: '朱光潜作品集', author: '朱光潜', forma
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn(async (input: string) => {
     const url = String(input);
-    const body = url.includes('books/catalog.json') ? [book]
+    const body = url.includes('books/aggregate.json') ? { books: [book] }
       : url.includes('lists/manifest.json') ? listsManifest
         : url.includes('lists/themes.json') ? [theme]
           : url.includes('lists/booklists.json') ? [booklist]
