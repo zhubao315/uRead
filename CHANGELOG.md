@@ -2,6 +2,14 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.24.0] - 2026-11-19
+
+### 新增
+- 品牌视觉系统（阶段 1–3）：`docs/design/*` 审计与规范；原创 SVG Logo 六种形态与 PNG 图标；`src/styles/tokens.css` 统一品牌色板；Lucide 风格图标组件。
+- 首页改为 Editorial Reading Library 杂志式布局：真实精选书单、最新笔记、主题、推荐书籍与品牌页脚；Emoji 全部替换为统一图标。
+- Navbar 使用品牌 Logo，favicon 改为品牌 SVG；公开站与工作台视觉语言开始分离。
+- 未改任何内容数据与公开范围；测试与门禁保持通过。
+
 ## [0.23.0] - 2026-11-19
 
 ### 新增
