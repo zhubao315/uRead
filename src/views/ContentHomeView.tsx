@@ -47,6 +47,7 @@ const ContentHomeView: React.FC = () => {
   }, []);
 
   const featured = useMemo(() => state.booklists.slice(0, 6), [state.booklists]);
+  const featuredBooks = useMemo(() => state.books.slice(0, 6), [state.books]);
   const latest = useMemo(() =>
     [...state.notes]
       .sort((a, b) => (b.updated || '').localeCompare(a.updated || ''))
@@ -76,18 +77,22 @@ const ContentHomeView: React.FC = () => {
             <input id="home-search" type="search" aria-label="搜索书名、作者、笔记或主题" value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="搜索书名、作者、笔记或主题……"
-              className="w-full rounded-md border border-border bg-surface px-4 py-3 text-base" />
-            <button type="submit" className="rounded-md bg-brand px-5 py-3 text-sm font-semibold text-white hover:bg-brandActive">搜索</button>
+              className="w-full min-w-0 rounded-md border border-border bg-surface px-4 py-3 text-base" />
+            <button type="submit" className="shrink-0 rounded-md bg-brand px-5 py-3 text-sm font-semibold text-white hover:bg-brandActive">搜索</button>
           </form>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link to="/booklists" className="inline-flex items-center gap-2 rounded-md bg-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand">
               开始探索 <ArrowRightIcon size="sm" />
             </Link>
             {state.booklists.length ? (
-              <Link to={`/booklists/${state.booklists[Math.floor(Math.random() * state.booklists.length)].id}`}
+              <button type="button"
+                onClick={() => {
+                  const pick = state.booklists[Math.floor(Math.random() * state.booklists.length)];
+                  window.location.href = `/uRead/booklists/${pick.id}`;
+                }}
                 className="inline-flex items-center gap-2 rounded-md border border-mist bg-mist/40 px-5 py-2.5 text-sm font-medium text-navy hover:border-brand">
                 随手翻一份书单
-              </Link>
+              </button>
             ) : null}
             <Link to="/read" className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-medium text-navy hover:border-brand">
               浏览读书笔记
@@ -175,8 +180,9 @@ const ContentHomeView: React.FC = () => {
       {/* 推荐书籍 */}
       <section className="mt-14" aria-labelledby="books-title">
         <h2 id="books-title" className="font-editorial text-2xl text-navy">推荐书籍</h2>
+        <a href={`${SITE_BASE}books/`} className="float-right text-sm text-brand hover:underline">全部书籍 →</a>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {state.books.map((book) => (
+          {featuredBooks.map((book) => (
             <a key={book.id} href={`${SITE_BASE}books/${book.id}/`}
               className="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-card hover:border-brand">
               {book.cover ? <img loading="lazy" decoding="async" src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-24 w-16 rounded object-cover" /> : <BookOpenIcon size="lg" className="shrink-0 text-brand" />}
