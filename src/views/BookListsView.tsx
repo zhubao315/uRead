@@ -65,8 +65,7 @@ const BookListsView: React.FC = () => {
   // 书单卡片的勾选列表按书名排：资料一多，插入顺序就没有可读性可言
   const libraryBooks = useMemo(
     () =>
-      [...books]
-        .sort((left, right) => left.title.localeCompare(right.title, 'zh-Hans-CN'))
+      books.toSorted((left, right) => left.title.localeCompare(right.title, 'zh-Hans-CN'))
         .map((book) => ({ id: book.id, title: book.title })),
     [books],
   );
