@@ -2,6 +2,15 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.18.0] - 2026-11-19
+
+### 新增
+- Content Edition Phase 0 内容保全：真实扫描生成 `docs/migration/content-inventory.{json,md}`、
+  `route-map.md`、`data-preservation-plan.md`、`docs/product/PRD.md`，以及 `publishing/content-baseline.json`。
+- `npm run content:inventory` 每次重新扫描真实产物，不写死 1634/39/10；
+  逐篇/逐份/逐音频 sha256 与计数进入 `uread-content` 门禁，数量或哈希变化即红。
+- 测试 194 → 197（24 文件）；变异 88 → 89（23 套件）。
+
 ## [0.17.0] - 2026-11-19
 
 ### 新增
