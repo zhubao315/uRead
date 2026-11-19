@@ -10,7 +10,7 @@ function highlight(text: string, words: string[]): React.ReactNode {
       : part,
   );
 }
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { TagsIcon, ListIcon, BookOpenIcon } from '../components/icons';
 import { SITE_BASE } from '../config';
 import { filterNotes, loadPublicNotes, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
@@ -22,7 +22,9 @@ import { filterNotes, loadPublicNotes, watchPublicNotes, type PublicNotesResult 
 const PublicNotesView: React.FC = () => {
   const [result, setResult] = useState<PublicNotesResult | null>(null);
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState('');
+  const [params, setParams] = useSearchParams();
+  const query = params.get('q') ?? '';
+  const setQuery = (value: string) => setParams(value ? { q: value } : {}, { replace: true });
   const [category, setCategory] = useState('');
   const [shown, setShown] = useState(60);
   const [updated, setUpdated] = useState(false);
