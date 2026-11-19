@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { HeadphonesIcon, BookOpenIcon } from '../components/icons';
 import { loadReaderHub, withProgress, type ReaderHubResult } from '../data/readerHub';
 
 /** 统一 Reader 工作区：把「听笔记」与「电子书」放在同一入口，继续阅读优先。 */
@@ -78,7 +79,7 @@ const ReaderHubView: React.FC = () => {
         <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {sources.map((item) => (
             <li key={`${item.kind}-${item.id}`} className="rounded-xl border border-gray-200 bg-white p-5 hover:border-blue-300">
-              <p className="text-xs text-gray-500">{item.kind === 'note' ? '🎧 听笔记' : '📖 电子书'}</p>
+              <p className="text-xs text-gray-500">{item.kind === 'note' ? <><HeadphonesIcon size="sm" className="mr-1 inline" />听笔记</> : <><BookOpenIcon size="sm" className="mr-1 inline" />电子书</>}</p>
               {item.kind === 'note' ? (
                 <Link to={item.href} className="mt-1 block text-base font-semibold text-blue-700 hover:underline">{item.title}</Link>
               ) : (
