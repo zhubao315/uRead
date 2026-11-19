@@ -163,3 +163,9 @@ body { background-color: var(--theme-page) !important; color: var(--theme-text) 
 /* Modern text layout: short headings balanced, long copy pretty. */
 .note-section-heading, .note-article h1, .note-article h2, .note-article h3 { text-wrap: balance; }
 .note-article p, .note-article blockquote, .note-article li { text-wrap: pretty; }
+
+/* 编辑式标题字体：中文宋体层级，仅用于标题与品牌语 */
+.font-editorial {
+  font-family: var(--font-serif);
+  letter-spacing: 0.01em;
+}
