@@ -50,7 +50,7 @@ const FindView: React.FC = () => {
       <form onSubmit={(event) => { event.preventDefault(); setParams(query ? { q: query } : {}); }} className="mt-4 flex gap-2">
         <label htmlFor="find-q" className="sr-only">搜索</label>
         <input id="find-q" type="search" aria-label="搜索" value={query}
-          onChange={(event) => setParams(event.target.value ? { q: event.target.value } : {})}
+          onChange={(event) => setParams(event.target.value ? { q: event.target.value } : {}, { replace: true })}
           placeholder="搜索书名、作者、笔记或主题" className="w-full rounded border border-slate-300 bg-white px-3 py-2" />
         <button type="submit" className="rounded bg-brand px-4 py-2 text-white">搜索</button>
       </form>
