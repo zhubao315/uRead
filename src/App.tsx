@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import MobileBottomNav from './components/MobileBottomNav';
 import BookListsView from './views/BookListsView';
 import CardsView from './views/CardsView';
 import Dashboard from './views/Dashboard';
@@ -36,6 +37,8 @@ const NotFound = () => (
 );
 
 function App() {
+  const location = useLocation();
+  const isWorkspace = location.pathname.startsWith('/workspace');
   const load = useLibraryStore((state) => state.load);
   const initialized = useLibraryStore((state) => state.initialized);
   const error = useLibraryStore((state) => state.error);
@@ -48,7 +51,7 @@ function App() {
   }, [load, initialized]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${isWorkspace ? 'workspace-shell bg-page' : 'bg-page'}`}>
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-[60] focus:rounded focus:bg-blue-600 focus:px-3 focus:py-2 focus:text-white">
         跳到主要内容
       </a>
@@ -75,7 +78,7 @@ function App() {
           </div>
         </div>
       ) : null}
-      <main id="main" className="container mx-auto px-4 py-8" tabIndex={-1}>
+      <main id="main" className="container mx-auto px-4 pb-20 pt-8 md:pb-8" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<ContentHomeView />} />
           <Route path="/workspace" element={<Dashboard />} />
@@ -97,6 +100,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <MobileBottomNav />
     </div>
   );
 }
