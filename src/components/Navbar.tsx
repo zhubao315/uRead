@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SITE_BASE } from '../config';
 import { nextPreference, readPreference, resolveScheme, type SchemePreference } from '../domain/color-scheme';
-import { BookOpenIcon, DocumentIcon, LightBulbIcon, StarIcon } from './Icon';
+import { HomeIcon, BookOpenIcon, NotebookPenIcon, ListIcon, BriefcaseIcon, SearchIcon } from './icons';
 
 const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
   const navigate = useNavigate();
@@ -35,14 +35,7 @@ const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
         aria-label="提交搜索"
         className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-150"
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
+<SearchIcon size="md" />
       </button>
     </form>
   );
@@ -86,25 +79,23 @@ const Navbar: React.FC = () => {
     /** Pages 上的静态目录不是 React 路由：必须用普通 <a>，否则会被 SPA 接管成 404。 */
     staticHref?: string;
   }> = [
-    { path: '/', label: '首页', icon: <BookOpenIcon size="md" />, description: '读书内容门户' },
-    { path: '/read', label: '笔记', icon: <DocumentIcon size="md" />, description: '读书笔记' },
-    { path: '/booklists', label: '书单', icon: <StarIcon size="md" />, description: '主题与书单' },
+    { path: '/', label: '首页', icon: <HomeIcon size="md" />, description: '读书内容门户' },
+    { path: '/read', label: '笔记', icon: <NotebookPenIcon size="md" />, description: '读书笔记' },
+    { path: '/booklists', label: '书单', icon: <ListIcon size="md" />, description: '主题与书单' },
     { path: '/books', label: '书籍', icon: <BookOpenIcon size="md" />, description: '书库', staticHref: `${SITE_BASE}books/` },
-    { path: '/workspace', label: '工作台', icon: <LightBulbIcon size="md" />, description: '本地管理' }
+    { path: '/workspace', label: '工作台', icon: <BriefcaseIcon size="md" />, description: '本地管理' }
   ];
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group cursor-pointer-custom">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center transform transition-transform group-hover:scale-110">
-              <BookOpenIcon size="lg" className="text-white" />
-            </div>
+          {/* Logo：统一品牌资产，不再用渐变方块 */}
+          <Link to="/" className="flex items-center space-x-3 group cursor-pointer-custom" aria-label="uRead 首页">
+            <img src={`${SITE_BASE}brand/logo-symbol.svg`} alt="" className="w-9 h-9 shrink-0" />
             <div>
-              <span className="text-xl font-inter font-bold text-gray-900">uRead</span>
-              <p className="text-xs font-inter text-gray-500 -mt-1">认知沉淀工具</p>
+              <span className="text-xl font-semibold tracking-tight text-navy">uRead</span>
+              <p className="text-[11px] font-medium tracking-[0.12em] text-muted -mt-0.5">READ · REFLECT · REVISIT</p>
             </div>
           </Link>
 
