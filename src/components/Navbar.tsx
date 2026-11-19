@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SITE_BASE } from '../config';
+import { nextPreference, readPreference, resolveScheme, type SchemePreference } from '../domain/color-scheme';
 import { BookOpenIcon, DocumentIcon, LightBulbIcon, StarIcon } from './Icon';
 
 const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
@@ -49,14 +50,33 @@ const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
 
 const Navbar: React.FC = () => {
   const location = useLocation();
-  const [dark, setDark] = React.useState(() =>
-    typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark');
-  const toggleTheme = () => {
-    const next = !dark;
-    document.documentElement.dataset.theme = next ? 'dark' : 'light';
-    localStorage.setItem('uread:theme', next ? 'dark' : 'light');
-    setDark(next);
-  };
+  const [preference, setPreference] = React.useState<SchemePreference>(() =>
+    readPreference(typeof document !== 'undefined'
+      ? document.querySelector('meta[name="color-scheme"]')?.getAttribute('content') ?? null
+      : null));
+  const systemScheme = (): 'light' | 'dark' =>
+    typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const [dark, setDark] = React.useState(() => resolveScheme(preference, systemScheme()) === 'dark');
+
+  const applyPreference = React.useCallback((next: SchemePreference) => {
+    setPreference(next);
+    setDark(resolveScheme(next, systemScheme()) === 'dark');
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) meta.setAttribute('content', next);
+    try {
+      if (next === 'light dark') localStorage.removeItem('color-scheme');
+      else localStorage.setItem('color-scheme', next);
+    } catch { /* 存储被禁用时主题仍生效，只是不持久化 */ }
+  }, []);
+  const toggleTheme = () => applyPreference(nextPreference(preference, systemScheme()));
+
+  React.useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === 'color-scheme') applyPreference(readPreference(event.newValue));
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, [applyPreference]);
 
   const navItems: Array<{
     path: string;
