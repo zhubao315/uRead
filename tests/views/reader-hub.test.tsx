@@ -36,7 +36,7 @@ describe('统一阅读入口', () => {
     expect(screen.getByText('思考，快与慢').closest('a')?.getAttribute('href'))
       .toContain(encodeURIComponent(note.slug));
     expect(screen.getByText('朱光潜作品集').closest('a')?.getAttribute('href'))
-      .toContain('reader.html?id=book1');
+      .toContain('/books/book1/');
   });
 
   it('本机进度会改变排序：书读过就排到笔记前面；筛选只留书', async () => {
