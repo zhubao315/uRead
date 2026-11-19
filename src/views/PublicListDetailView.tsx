@@ -65,7 +65,7 @@ const PublicListDetailView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }
                   ) : book.name}
                 </span>
                 {book.author ? <span className="text-sm text-gray-600">{book.author}</span> : null}
-                {book.detail ? <span className="w-full pl-10 text-sm text-gray-500">{book.detail.replace(/[*`|]/g, '').slice(0, 160)}</span> : null}
+                {book.detail ? <span className="w-full pl-10 text-sm text-gray-500">{book.detail.replace(/[*`|]/g, '')}</span> : null}
                 {book.note_slug ? <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-700">有笔记</span> : null}
               </li>
             ))}
