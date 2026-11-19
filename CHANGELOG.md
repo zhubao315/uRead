@@ -2,6 +2,13 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.26.0] - 2026-11-19
+
+### 新增
+- 阶段 9 验收：新增 Playwright E2E（desktop + mobile），21 passed / 1 skipped；生成 10 张真实浏览器截图到 `screenshots/`。
+- 修复 Vite config 的 import 扩展警告；E2E 相对路径适配 `/uRead/` basename。
+- `docs/design/visual-regression-report.md` 填入真实结果与截图清单。
+
 ## [0.25.0] - 2026-11-19
 
 ### 新增
