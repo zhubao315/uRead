@@ -83,6 +83,12 @@ const ContentHomeView: React.FC = () => {
             <Link to="/booklists" className="inline-flex items-center gap-2 rounded-md bg-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand">
               开始探索 <ArrowRightIcon size="sm" />
             </Link>
+            {state.booklists.length ? (
+              <Link to={`/booklists/${state.booklists[Math.floor(Math.random() * state.booklists.length)].id}`}
+                className="inline-flex items-center gap-2 rounded-md border border-mist bg-mist/40 px-5 py-2.5 text-sm font-medium text-navy hover:border-brand">
+                随手翻一份书单
+              </Link>
+            ) : null}
             <Link to="/read" className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-medium text-navy hover:border-brand">
               浏览读书笔记
             </Link>
