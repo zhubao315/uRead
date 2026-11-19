@@ -9,6 +9,10 @@ menus:
 description: "src/index.ts:10 仅 dotenv.config()，无启动配置校验。"
 ---
 
+> **历史时点快照（2026-11-16）**：本文件记录的是审计当天的代码状态，其中部分问题已修复。
+> 当前状态以 `docs/PROJECT-STATUS.md` 与 `docs/audit/current-state.md` 为准；不要把这里当成待办清单。
+
+
 > 审计日期：2026-11-16
 > 审计方式：静态代码审计 + 实际构建验证（逐文件阅读源码/配置/workflow；`npm install --legacy-peer-deps` + `npm run build` 实测）
 > 未验证项：线上站点实际响应头/CSP、GitHub Actions 权限实际生效情况、后端服务真实启动与渗透测试。
