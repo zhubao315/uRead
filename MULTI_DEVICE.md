@@ -11,6 +11,9 @@ uRead 是纯静态站，没有服务端。多端问题几乎都出在**视口、
 | `/uRead/read/B1-文学虚构__《三体》-刘慈欣` | 200，直接显示《三体》笔记 | 404 |
 | `/uRead/books/reader.html?id=5a6e6a83b4b2` | 200，EPUB 阅读器打开朱光潜作品集 | 目录报错或空页 |
 | `/uRead/docs/` | 200，文档站首页正文渲染 | 只有导航壳 |
+| `/uRead/themes/` | 200，10 个主题卡片 | 404 或空白 |
+| `/uRead/lists/` | 200，39 份书单卡片 | 404 或空白 |
+| `/uRead/themes/<id>/` | 200，主题详情与书目表 | 404 |
 
 深链靠 `scripts/make-fallback-pages.mjs` 生成 1640 个 `index.html`；
 **删掉这一步**线上立刻回到 404。
