@@ -8,6 +8,7 @@ import LibraryView from './views/LibraryView';
 import NotesView from './views/NotesView';
 import PublicNoteDetailView from './views/PublicNoteDetailView';
 import PublicNotesView from './views/PublicNotesView';
+import ReaderHubView from './views/ReaderHubView';
 import PublicListView from './views/PublicListView';
 import PublicListDetailView from './views/PublicListDetailView';
 import SearchView from './views/SearchView';
@@ -76,6 +77,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/library" element={<LibraryView />} />
           <Route path="/notes" element={<NotesView />} />
+          <Route path="/reader" element={<ReaderHubView />} />
           <Route path="/read" element={<PublicNotesView />} />
           <Route path="/read/:slug" element={<PublicNoteDetailView />} />
           <Route path="/themes" element={<PublicListView kind="theme" />} />
