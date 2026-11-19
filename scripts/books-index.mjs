@@ -142,6 +142,7 @@ export function renderBookIndex(books) {
 <p class="small" id="empty" hidden>没有匹配的书。</p>
 <script>
   const q = document.getElementById('q');
+  q.value = new URLSearchParams(location.search).get('q') || '';
   q.addEventListener('input', () => {
     const word = q.value.trim().toLowerCase();
     let shown = 0;
