@@ -31,9 +31,9 @@ const MobileBottomNav: React.FC = () => {
           return (
             <li key={item.path}>
               {'href' in item && item.href ? (
-                <a href={item.href} className="flex min-h-[56px] flex-col items-center justify-center gap-0.5">{content}</a>
+                <a href={item.href} aria-current={active ? 'page' : undefined} className="flex min-h-[56px] flex-col items-center justify-center gap-0.5">{content}</a>
               ) : (
-                <Link to={item.path} className="flex min-h-[56px] flex-col items-center justify-center gap-0.5">{content}</Link>
+                <Link to={item.path} aria-current={active ? 'page' : undefined} className="flex min-h-[56px] flex-col items-center justify-center gap-0.5">{content}</Link>
               )}
             </li>
           );
