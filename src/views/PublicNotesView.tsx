@@ -11,6 +11,7 @@ function highlight(text: string, words: string[]): React.ReactNode {
   );
 }
 import { Link } from 'react-router-dom';
+import { TagsIcon, ListIcon, BookOpenIcon } from '../components/icons';
 import { SITE_BASE } from '../config';
 import { filterNotes, loadPublicNotes, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
 
@@ -106,9 +107,9 @@ const PublicNotesView: React.FC = () => {
       ) : null}
 
       <p className="mb-5 text-sm">
-        <Link to="/themes" className="mr-4 text-violet-700 hover:underline">🧭 主题阅读 →</Link>
-        <Link to="/lists" className="mr-4 text-amber-700 hover:underline">📋 书单推荐 →</Link>
-        <a href={`${SITE_BASE}books/`} className="text-emerald-700 hover:underline">📚 书库 →</a>
+        <Link to="/themes" className="mr-4 text-violet-700 hover:underline"><TagsIcon size="sm" className="mr-1 inline" />主题阅读 →</Link>
+        <Link to="/lists" className="mr-4 text-amber-700 hover:underline"><ListIcon size="sm" className="mr-1 inline" />书单推荐 →</Link>
+        <a href={`${SITE_BASE}books/`} className="text-emerald-700 hover:underline"><BookOpenIcon size="sm" className="mr-1 inline" />书库 →</a>
       </p>
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
