@@ -9,7 +9,7 @@ import NoteCard from '../components/NoteCard';
 import { matchesQuery, SearchBox, useDebouncedValue } from '../components/Search';
 import StateBlock, { resolveState } from '../components/StateBlock';
 import { ORPHAN_BOOK_LABEL } from '../data/labels';
-import type { Note, NoteKind } from '../data/types';
+import type { Book, Note, NoteKind } from '../data/types';
 import { useActionRunner } from '../hooks/useActionRunner';
 import { useDraft } from '../hooks/useDraft';
 import { useCreateFlag, useQueryFilter } from '../hooks/useUrlSync';
@@ -102,8 +102,7 @@ const NotesView: React.FC = () => {
   // 改挂的候选按书名排序：资料一多，插入顺序就没有可读性
   const libraryBooks = useMemo(
     () =>
-      [...books]
-        .sort((left, right) => left.title.localeCompare(right.title, 'zh-Hans-CN'))
+      books.toSorted((left: Book, right: Book) => left.title.localeCompare(right.title, 'zh-Hans-CN'))
         .map((book) => ({ id: book.id, title: book.title })),
     [books],
   );
