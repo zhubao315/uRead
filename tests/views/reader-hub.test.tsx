@@ -21,7 +21,7 @@ beforeEach(() => {
   localStorage.clear();
   vi.stubGlobal('fetch', vi.fn(async (input: string) => {
     const url = String(input);
-    const body = url.includes('books/catalog.json') ? books
+    const body = url.includes('books/aggregate.json') ? { books }
       : url.includes('manifest.json') ? manifest : [note];
     return { ok: true, status: 200, json: async () => body } as Response;
   }));
