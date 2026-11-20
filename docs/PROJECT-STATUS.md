@@ -26,7 +26,7 @@ uRead 是**本地优先的阅读与知识工作台**：个人数据只进浏览�
 | 全量门禁 | PASS=37 FAIL=0 | `cd .. && ROUND=74 bash scripts/quality_round.sh` |
 | 发布检查 | 35/35 | `cd .. && python3 scripts/release_check.py` |
 | 变异 | 92 处 / 26 套件 | `cd .. && python3 scripts/mutation_check.py` |
-| 公开笔记 | 1634 篇 / 10 篇音频 | `cat public/notes/manifest.json` |
+| 公开笔记 | 1595 篇 / 2 篇匹配音频（8 个孤儿音频待 TTS 恢复后再生） | `cat public/notes/manifest.json` |
 | 公开栏目 | 10 主题 / 39 书单 | `cat public/lists/manifest.json` |
 | 书库 | 2 本（EPUB + PDF） | `cat dist/books/catalog.json` |
 | 深链回退 | 1691 条路由 | `npm run build:fallbacks` 输出 |
