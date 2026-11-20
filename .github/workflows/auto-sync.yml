@@ -1,0 +1,85 @@
+name: Sync Reading Notes
+
+on:
+  schedule:
+    # 每天 UTC 02:00（北京时间 10:00）检查上游私库更新
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: notes-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出 uRead
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: npm
+
+      - name: 安装依赖
+        run: npm ci
+
+      - name: 同步 Obsidian 笔记与栏目
+        env:
+          # 只读 PAT，需在仓库 Settings → Secrets → Actions 中配置 OBSIDIAN_TOKEN
+          GITHUB_TOKEN: ${{ secrets.OBSIDIAN_TOKEN }}
+        run: |
+          npm run notes:sync -- --no-audio
+          npm run lists:sync
+
+      - name: 重建内容基线与书籍索引
+        run: |
+          npm run content:inventory
+          npm run books:index
+          npm run verify:release
+
+      - name: 质量门禁
+        run: |
+          npm run typecheck
+          npm run lint
+          npm test
+          npm run build
+          npm run docs:build
+          npm run docs:check
+
+      - name: 提交生成产物
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            public/notes \
+            public/lists \
+            publishing/content-baseline.json \
+            docs/migration 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "没有内容变化，无需提交"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore(auto-sync): sync reading assets $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: 触发 Pages 部署
+        # GITHUB_TOKEN 的 push 不会触发其他 workflow，必须显式派发 deploy.yml
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -sS -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches" \
+            -d '{"ref":"main"}'
