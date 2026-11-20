@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileBottomNav from './components/MobileBottomNav';
+import WorkspaceMobileNav from './components/WorkspaceMobileNav';
 import BookListsView from './views/BookListsView';
 import CardsView from './views/CardsView';
 import Dashboard from './views/Dashboard';
@@ -17,6 +18,12 @@ import PublicListView from './views/PublicListView';
 import PublicListDetailView from './views/PublicListDetailView';
 import SearchView from './views/SearchView';
 import { useLibraryStore } from './store/libraryStore';
+
+/** 旧路由兼容：保留查询参数，迁移到 /workspace/* 命名空间。 */
+const LegacyRedirect: React.FC<{ to: string }> = ({ to }) => {
+  const location = useLocation();
+  return <Navigate to={{ pathname: to, search: location.search }} replace />;
+};
 
 /** 兜底路由：原来未知地址只会渲染一个空白 `<main>`，用户不知道该去哪儿。 */
 const NotFound = () => (
@@ -89,8 +96,10 @@ function App() {
         <Routes>
           <Route path="/" element={<ContentHomeView />} />
           <Route path="/workspace" element={<Dashboard />} />
-          <Route path="/library" element={<LibraryView />} />
-          <Route path="/notes" element={<NotesView />} />
+          <Route path="/workspace/library" element={<LibraryView />} />
+          <Route path="/library" element={<LegacyRedirect to="/workspace/library" />} />
+          <Route path="/workspace/notes" element={<NotesView />} />
+          <Route path="/notes" element={<LegacyRedirect to="/workspace/notes" />} />
           <Route path="/reader" element={<ReaderHubView />} />
           <Route path="/find" element={<FindView />} />
           <Route path="/read" element={<PublicNotesView />} />
@@ -102,8 +111,10 @@ function App() {
           <Route path="/booklists" element={<BooklistsHubView />} />
           <Route path="/booklists/:id" element={<BooklistDetailRedirect />} />
           <Route path="/workspace/booklists" element={<BookListsView />} />
-          <Route path="/cards" element={<CardsView />} />
-          <Route path="/search" element={<SearchView />} />
+          <Route path="/workspace/cards" element={<CardsView />} />
+          <Route path="/cards" element={<LegacyRedirect to="/workspace/cards" />} />
+          <Route path="/workspace/search" element={<SearchView />} />
+          <Route path="/search" element={<LegacyRedirect to="/workspace/search" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
@@ -114,7 +125,7 @@ function App() {
           ↑
         </button>
       ) : null}
-      <MobileBottomNav />
+      {isWorkspace ? <WorkspaceMobileNav /> : <MobileBottomNav />}
     </div>
   );
 }

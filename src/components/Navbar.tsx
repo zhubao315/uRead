@@ -44,6 +44,7 @@ const NavbarSearch: React.FC<{ initialQuery: string }> = ({ initialQuery }) => {
 const Navbar: React.FC = () => {
   const location = useLocation();
   const { dark, toggle: toggleTheme } = useColorScheme();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems: Array<{
     path: string;
@@ -120,38 +121,35 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div className="md:hidden border-t border-gray-200 bg-white">
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-1 p-2">
-          {navItems.map((item) => {
-            const className = `flex flex-col items-center space-y-1 p-3 rounded-lg text-xs font-inter transition-all duration-200 cursor-pointer-custom ${
-              location.pathname === item.path
-                ? 'text-blue-600 bg-blue-50'
-                : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
-            }`;
-            const content = (
-              <>
-                <span className={`${location.pathname === item.path ? 'scale-110' : ''}`}>
-                  {React.cloneElement(
-                    item.icon as React.ReactElement<{ size?: 'sm' | 'md' | 'lg' }>,
-                    { size: 'sm' },
-                  )}
-                </span>
-                <span className="font-medium">{item.label}</span>
-              </>
-            );
-            return item.staticHref ? (
-              <a key={item.path} href={item.staticHref} className={className}>{content}</a>
-            ) : (
-              <Link key={item.path} to={item.path} className={className}>{content}</Link>
-            );
-          })}
-          <button type="button" onClick={toggleTheme} aria-label={dark ? '切换到日间模式' : '切换到夜间模式'}
-            className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-lg text-xs text-muted">
-            <span className="text-base">{dark ? '☀' : '☾'}</span>
-            <span>{dark ? '日间' : '夜间'}</span>
-          </button>
+      {/* 移动端只保留品牌栏 + 菜单，内容导航交给底部 MobileBottomNav */}
+      <div className="md:hidden border-t border-border bg-surface">
+        <div className="container mx-auto flex items-center justify-between px-4 py-2">
+          <span className="text-[10px] tracking-[0.16em] text-muted">READ · REFLECT · REVISIT</span>
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={toggleTheme} aria-label={dark ? '切换到日间模式' : '切换到夜间模式'}
+              className="min-h-[44px] min-w-[44px] rounded border border-border px-3 text-sm">
+              {dark ? '☀' : '☾'}
+            </button>
+            <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen}
+              aria-label="打开导航菜单"
+              className="min-h-[44px] min-w-[44px] rounded border border-border px-3 text-sm">
+              菜单
+            </button>
+          </div>
         </div>
+        {menuOpen ? (
+          <ul className="border-t border-border px-4 py-2">
+            {navItems.map((item) => (
+              <li key={item.path}>
+                {item.staticHref ? (
+                  <a href={item.staticHref} className="block py-2 text-sm text-navy" onClick={() => setMenuOpen(false)}>{item.label}</a>
+                ) : (
+                  <Link to={item.path} className="block py-2 text-sm text-navy" onClick={() => setMenuOpen(false)}>{item.label}</Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
     </nav>
   );
