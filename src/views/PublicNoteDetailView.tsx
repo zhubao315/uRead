@@ -5,6 +5,8 @@ import { SITE_BASE } from '../config';
 import { loadPublicNotes, type PublicNote, type PublicNotesResult } from '../data/publicNotes';
 import { SECTION_LABEL, splitNoteSections } from '../domain/note-sections';
 import { relatedNotes } from '../domain/note-relations';
+import { useSpeechPlayer } from '../hooks/useSpeechPlayer';
+import { HeadphonesIcon } from '../components/icons';
 
 /** 公开笔记详情：正文只读渲染，音频只在确实生成过时显示播放器。 */
 const PublicNoteDetailView: React.FC = () => {
@@ -34,6 +36,7 @@ const PublicNoteDetailView: React.FC = () => {
   );
 
   const progressKey = note ? `uread:audio:${note.content_hash}` : '';
+  const player = useSpeechPlayer(note?.body ?? '', note?.slug ?? '');
   // 续播点只在用户真正听过之后才写：没听过的笔记不该被记成 0 秒。
 
   const headings = useMemo(() =>
@@ -139,11 +142,49 @@ const PublicNoteDetailView: React.FC = () => {
             当前浏览器不支持音频播放。
           </audio>
         </div>
-      ) : (
-        <p className="my-6 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
-          这篇笔记目前没有音频。
-        </p>
-      )}
+      ) : null}
+
+      <section className="my-6 rounded-lg border border-border bg-surface p-4" aria-label="听这篇笔记">
+        <div className="flex flex-wrap items-center gap-2">
+          <HeadphonesIcon size="md" className="text-brand" />
+          <span className="text-sm font-semibold text-navy">听这篇笔记</span>
+          {player.state === 'playing' ? (
+            <button type="button" onClick={player.pause} className="rounded border border-border px-3 py-1.5 text-xs">暂停</button>
+          ) : player.state === 'paused' ? (
+            <button type="button" onClick={player.resume} className="rounded border border-border px-3 py-1.5 text-xs">继续</button>
+          ) : (
+            <button type="button" onClick={() => player.play(0)} className="rounded bg-brand px-3 py-1.5 text-xs text-white">用设备语音朗读</button>
+          )}
+          <button type="button" onClick={player.previous} disabled={!player.segment} className="rounded border border-border px-2 py-1.5 text-xs">上一段</button>
+          <button type="button" onClick={player.next} disabled={!player.segment} className="rounded border border-border px-2 py-1.5 text-xs">下一段</button>
+          <button type="button" onClick={player.stop} disabled={player.state === 'idle'} className="rounded border border-border px-2 py-1.5 text-xs">停止</button>
+          <label className="text-xs text-muted">语速
+            <select value={player.settings.rate} onChange={(event) => player.setSettings({ ...player.settings, rate: Number(event.target.value) })}
+              className="ml-1 rounded border border-border px-2 py-1">
+              {[0.75, 1, 1.25, 1.5, 2].map((rate) => <option key={rate} value={rate}>{rate}×</option>)}
+            </select>
+          </label>
+          {player.capabilities.chineseVoices.length ? (
+            <label className="text-xs text-muted">音色
+              <select value={player.settings.voice} onChange={(event) => player.setSettings({ ...player.settings, voice: event.target.value })}
+                className="ml-1 rounded border border-border px-2 py-1">
+                <option value="">默认</option>
+                {player.capabilities.chineseVoices.map((voice) => <option key={voice} value={voice}>{voice}</option>)}
+              </select>
+            </label>
+          ) : null}
+        </div>
+        {player.segment ? (
+          <p className="mt-3 text-sm text-muted">
+            第 {player.segment.index + 1} / {player.segments.length} 段 · {player.segment.heading || '正文'}
+            <span className="mt-1 block rounded bg-page p-2 text-body">{player.segment.text.slice(0, 160)}</span>
+          </p>
+        ) : null}
+        {player.error ? <p role="alert" className="mt-2 text-xs text-error">{player.error}</p> : null}
+        {!player.capabilities.supported ? (
+          <p className="mt-2 text-xs text-muted">当前浏览器不支持设备语音朗读，建议使用 Chrome / Edge / Safari。</p>
+        ) : null}
+      </section>
 
       {headings.length > 1 ? (
         <nav aria-label="本篇目录" className="my-6 rounded-lg border border-gray-200 bg-gray-50 p-4">

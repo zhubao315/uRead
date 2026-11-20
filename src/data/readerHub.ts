@@ -42,12 +42,11 @@ export async function loadReaderHub(): Promise<ReaderHubResult> {
   const aggregate = booksResponse?.ok ? await booksResponse.json() : null;
   const books: ReaderBook[] = aggregate?.books ?? [];
   const noteSources: ReaderSource[] = notesResult.notes
-    .filter((note) => note.audio)
     .map((note) => ({
       kind: 'note',
       id: note.slug,
       title: note.title,
-      subtitle: `${note.category || '未分类'} · 可听`,
+      subtitle: `${note.category || '未分类'} · ${note.audio ? '有录音' : '设备语音可听'}`,
       href: `/read/${encodeURIComponent(note.slug)}`,
       progressKey: noteAudioKey(note),
     }));

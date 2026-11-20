@@ -11,7 +11,7 @@ test('首页展示真实内容并可进入搜索与笔记', async ({ page }) => 
   await expect(page.getByRole('heading', { name: /搜索读书内容/ })).toBeVisible();
 });
 
-test('公开笔记详情有来源与分区，音频缺失时不放假播放器', async ({ page }) => {
+test('公开笔记详情有来源与分区，无 WAV 也能朗读', async ({ page }) => {
   await page.goto('read');
   const first = page.locator('a[href*="/read/"]').first();
   await expect(first).toBeVisible();
@@ -19,8 +19,8 @@ test('公开笔记详情有来源与分区，音频缺失时不放假播放器',
   await expect(page.locator('article')).toBeVisible();
   await expect(page.getByRole('heading', { name: '相关阅读' })).toBeVisible();
   const audioCount = await page.locator('audio').count();
-  const noAudio = await page.getByText('这篇笔记目前没有音频。').count();
-  expect(audioCount > 0 || noAudio > 0).toBeTruthy();
+  const listenButton = await page.getByRole('button', { name: '用设备语音朗读' }).count();
+  expect(audioCount > 0 || listenButton > 0).toBeTruthy();
 });
 
 test('书单详情保留书目表与原始说明', async ({ page }) => {

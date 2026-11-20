@@ -96,10 +96,10 @@ describe('公开笔记详情', () => {
     expect(audio?.currentTime).toBe(42);
   });
 
-  it('没有音频时明说没有，不放假播放器', async () => {
+  it('没有 WAV 时也提供设备语音朗读，不放假播放器', async () => {
     renderDetail(noteB.slug);
     expect(await screen.findByText('思考的快与慢')).toBeInTheDocument();
-    expect(screen.getByText('这篇笔记目前没有音频。')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '用设备语音朗读' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '复制笔记链接' })).toBeInTheDocument();
     expect(document.querySelector('audio')).toBeNull();
   });
