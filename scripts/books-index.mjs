@@ -30,6 +30,7 @@ export function buildBookCatalog(notes, lists, libraryBooks = []) {
         source,
         cover: '',
         format: '',
+        library_book_id: '',
         notes: [],
         lists: [],
       });
@@ -86,12 +87,24 @@ export function buildBookCatalog(notes, lists, libraryBooks = []) {
     }
   }
 
-  // 3) 封面只取「原始书名完全相等」的本地书库条目；不做模糊匹配。
+  // 3) 只在「规范化书名 + 作者」都吻合且唯一时，才关联真实电子书。
+  //    不做模糊合并；library_book_id 只允许来自 catalog.json 的真实 ID。
+  const normAuthor = (value) => String(value ?? '').replace(/[\s（）()·、,，]/g, '').toLowerCase();
   for (const book of books.values()) {
-    const exact = libraryBooks.find((item) => norm(item.title) === norm(book.original_title));
-    if (exact) {
+    const candidates = libraryBooks.filter((item) => {
+      const titleA = norm(item.title);
+      const titleB = norm(book.original_title);
+      const titleOk = titleA === titleB || titleB.startsWith(titleA) || titleA.startsWith(titleB);
+      const authorA = normAuthor(item.author);
+      const authorB = normAuthor(book.author);
+      const authorOk = !authorA || !authorB || authorA.includes(authorB) || authorB.includes(authorA);
+      return titleOk && authorOk;
+    });
+    if (candidates.length === 1) {
+      const exact = candidates[0];
       book.cover = exact.cover || '';
       book.format = exact.format || '';
+      book.library_book_id = exact.id;
     }
   }
 
@@ -123,7 +136,7 @@ input{width:100%;max-width:32rem;padding:.6rem .8rem;border:1px solid #cbd5e1;bo
 .cover{width:64px;height:92px;object-fit:cover;float:left;margin:0 1rem 1rem 0;border-radius:4px}
 @media(max-width:640px){body{margin:1rem auto}.cover{width:48px;height:70px}}`;
 
-export function renderBookIndex(books) {
+export function renderBookIndex(books, libraryBooks = []) {
   const rows = books.map((book) => `
     <article class="card" data-search="${esc(`${book.original_title} ${book.author} ${book.aliases.join(' ')}`.toLowerCase())}">
       ${book.cover ? `<img class="cover" src="./${esc(book.cover)}" alt="">` : ''}
@@ -140,6 +153,15 @@ export function renderBookIndex(books) {
 <input id="q" type="search" placeholder="搜索书名或作者" aria-label="搜索书名或作者">
 <div id="list">${rows}</div>
 <p class="small" id="empty" hidden>没有匹配的书。</p>
+<section class="mt-8" aria-labelledby="library-books">
+  <h2 id="library-books">可在线阅读的电子书</h2>
+  <p class="small">来自本地 EPUB/PDF 书库，共 ${libraryBooks.length} 本。完整目录见 <a href="./library.html">电子书库</a>。</p>
+  <ul>${libraryBooks.map((item) => `
+    <li class="card">
+      <a href="./reader.html?id=${encodeURIComponent(item.id)}">${esc(item.title)}</a>
+      <span class="small">${esc(item.author || '作者未标注')} · ${esc(item.format || '').toUpperCase()}</span>
+    </li>`).join('')}</ul>
+</section>
 <script>
   const q = document.getElementById('q');
   q.value = new URLSearchParams(location.search).get('q') || '';
@@ -167,7 +189,7 @@ export function renderBookDetail(book) {
   const lists = book.lists.map((entry) => `
     <li><a href="..${entry.href}/">${esc(entry.title)}</a>${entry.recommendation ? `<span class="small"> — ${esc(entry.recommendation)}</span>` : ''}</li>`).join('') || '<li class="small">未收录在公开书单里。</li>';
   const aliases = book.aliases.length ? `<p class="small">原始 wikilink：${book.aliases.map(esc).join(' / ')}</p>` : '';
-  const reader = book.format ? `<p><a href="./reader.html?id=${encodeURIComponent(book.id)}">在线阅读原文 →</a></p>` : '';
+  const reader = book.library_book_id ? `<p><a href="./reader.html?id=${encodeURIComponent(book.library_book_id)}">在线阅读原文 →</a></p>` : '';
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(book.original_title)} · uRead</title>
 <style>${STYLE}</style></head><body>
