@@ -37,17 +37,19 @@ const PublicNotesView: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
+    let stop = () => {};
     void loadPublicNotes().then((next) => {
-      if (alive) {
-        setResult(next);
-        setLoading(false);
-      }
-    });
-    const stop = watchPublicNotes('', (next) => {
-      if (alive) {
-        setResult(next);
-        setUpdated(true);
-      }
+      if (!alive) return;
+      setResult(next);
+      setLoading(false);
+      // 必须用首次成功加载到的真实版本启动监听；传空字符串会让第一次
+      // 定时检查把「现存版本」误判成「有新内容」。
+      stop = watchPublicNotes(next.manifest?.version ?? '', (updatedResult) => {
+        if (alive) {
+          setResult(updatedResult);
+          setUpdated(true);
+        }
+      });
     });
     return () => {
       alive = false;
