@@ -30,6 +30,12 @@ jobs:
       - name: 安装依赖
         run: npm ci
 
+      - name: 安装 Hugo Extended
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.168.0'
+          extended: true
+
       - name: 同步 Obsidian 笔记与栏目
         env:
           # 只读 PAT，需在仓库 Settings → Secrets → Actions 中配置 OBSIDIAN_TOKEN
