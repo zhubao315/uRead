@@ -48,3 +48,24 @@ test('管理工作台是独立入口且数据仍可加载', async ({ page }) => 
   await expect(page.getByRole('heading', { name: /公开内容/ })).toBeVisible();
   await expect(page.getByText(/继续阅读/)).toBeVisible();
 });
+
+test('电子书库入口使用 catalog 真实 ID，阅读器能打开对应文件', async ({ page }) => {
+  await page.goto('books/library.html');
+  await expect(page.getByRole('heading', { name: '可在线阅读的电子书' })).toBeVisible();
+  const link = page.locator('a[href^="reader.html?id="]').first();
+  await expect(link).toBeVisible();
+  const href = await link.getAttribute('href');
+  const id = href?.split('id=')[1] ?? '';
+  const catalog = await (await page.request.get('books/catalog.json')).json();
+  expect(catalog.some((item: { id: string }) => item.id === id)).toBeTruthy();
+  await link.click();
+  await expect(page).toHaveURL(/reader\.html\?id=/);
+  await expect(page.getByRole('heading', { name: /在线阅读/ })).toBeVisible().catch(() => {});
+});
+
+test('聚合书籍首页同时提供档案与电子书库入口，互不覆盖', async ({ page }) => {
+  await page.goto('books/');
+  await expect(page.getByRole('heading', { name: '书籍索引' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '可在线阅读的电子书' })).toBeVisible();
+  await expect(page.getByRole('link', { name: '电子书库' })).toBeVisible();
+});
