@@ -1,6 +1,6 @@
 {
   "name": "uread",
-  "version": "0.33.0",
+  "version": "0.33.1",
   "description": "uRead · AI 阅读与知识萃取工作台（本地优先）",
   "private": true,
   "type": "module",
