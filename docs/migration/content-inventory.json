@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T10:08:47.865Z",
+  "generated_at": "2026-11-20T02:00:46.290Z",
   "source": "real public artifacts + local caches, never hardcoded",
   "counts": {
     "notes": 1595,
@@ -8,17 +8,17 @@
     "themes": 10,
     "booklists": 39,
     "lists_total": 49,
-    "booklist_items": 809,
-    "resolved_book_links": 709,
-    "unresolved_book_links": 100,
-    "raw_book_entries": 692,
-    "duplicate_book_candidates": 58,
+    "booklist_items": 814,
+    "resolved_book_links": 705,
+    "unresolved_book_links": 109,
+    "raw_book_entries": 725,
+    "duplicate_book_candidates": 62,
     "library_books": 2,
     "audio_files": 10
   },
   "manifests": {
     "notes": "7fa6206b4c1325a0",
-    "lists": "0da7d992435a2bb6"
+    "lists": "6edbe6c0e5e96b73"
   },
   "hashes": {
     "notes": [
@@ -8002,295 +8002,295 @@
       {
         "id": "11c853041286",
         "kind": "theme",
-        "hash": "1f2d4705988382bb",
+        "hash": "8230e26a99385b4f",
         "path": "∑ 主题-古典文学.md"
       },
       {
         "id": "a204468defe7",
         "kind": "theme",
-        "hash": "852f25075cab79c2",
+        "hash": "bf3a997e8a81ba3c",
         "path": "∑ 主题-旅行游记.md"
       },
       {
         "id": "b2bc8cf0f183",
         "kind": "theme",
-        "hash": "1e1779edccdc966a",
+        "hash": "d4d967087489e9ae",
         "path": "∑ 主题-冥想灵性.md"
       },
       {
         "id": "cb9edbb77fcb",
         "kind": "theme",
-        "hash": "3e0598fc6d6cca0f",
+        "hash": "8539801111ad1868",
         "path": "∑ 主题-跑步健身.md"
       },
       {
         "id": "4938b067c405",
         "kind": "theme",
-        "hash": "55705161df3f3a95",
+        "hash": "5128a38bfe72cb54",
         "path": "∑ 主题-人生哲学.md"
       },
       {
         "id": "206bdffae9b8",
         "kind": "theme",
-        "hash": "930748b0cfdb284b",
+        "hash": "8685935ea841e905",
         "path": "∑ 主题-易经学习.md"
       },
       {
         "id": "d6ae3078c237",
         "kind": "theme",
-        "hash": "307f79e5d02700d9",
+        "hash": "0d4e0097a4750e63",
         "path": "∑ 主题-饮食酒类.md"
       },
       {
         "id": "fa283fc41e79",
         "kind": "theme",
-        "hash": "3a84ae62e5ecfdd0",
+        "hash": "7b3e869fcad5a093",
         "path": "主题-成长与智慧.md"
       },
       {
         "id": "9a19df90e5fb",
         "kind": "theme",
-        "hash": "b043f296d833b0c1",
+        "hash": "9c9c6afee1eb29ee",
         "path": "主题-跑步与运动科学.md"
       },
       {
         "id": "3a6f6d5f089d",
         "kind": "theme",
-        "hash": "b37d308ed4c2bc1a",
+        "hash": "c5f1877fa8f2b07d",
         "path": "主题-投资与人生.md"
       },
       {
         "id": "72ea28d70ac7",
         "kind": "booklist",
-        "hash": "a03e2df5f32d3531",
+        "hash": "d8049d1e1b6ec87d",
         "path": "∑ 书单-领域索引.md"
       },
       {
         "id": "b7c61632855c",
         "kind": "booklist",
-        "hash": "68e00fc03f12fad6",
+        "hash": "63066ca8078db2f4",
         "path": "书单-2026年度.md"
       },
       {
         "id": "1789d1068c78",
         "kind": "booklist",
-        "hash": "d39b7c928d8c5b5e",
+        "hash": "95fbfa34f86388db",
         "path": "书单-64型MBTI衍生测评溯源与对照阅读.md"
       },
       {
         "id": "392eb891eb74",
         "kind": "booklist",
-        "hash": "ce1244da74b90621",
+        "hash": "15c87a7daf569a5b",
         "path": "书单-北京文脉与京郊徒步.md"
       },
       {
         "id": "847f1a40d87b",
         "kind": "booklist",
-        "hash": "658374a6bc6db087",
+        "hash": "5bcb820959304630",
         "path": "书单-北欧神话.md"
       },
       {
         "id": "e5034b910d65",
         "kind": "booklist",
-        "hash": "ff2445c6ef3c4cc7",
+        "hash": "2d4af1c1b529189c",
         "path": "书单-道教养生与国学养生.md"
       },
       {
         "id": "996b13bbfc5b",
         "kind": "booklist",
-        "hash": "26fe695d1319ebe7",
+        "hash": "25a76b5fb8812878",
         "path": "书单-架构师-产品经理.md"
       },
       {
         "id": "40b9910211f0",
         "kind": "booklist",
-        "hash": "45630acf67552774",
+        "hash": "b79027e0f406a4f8",
         "path": "书单-架构师-开源发烧友.md"
       },
       {
         "id": "34042e903f25",
         "kind": "booklist",
-        "hash": "a99640182dae9a03",
+        "hash": "51c7846369f5a490",
         "path": "书单-架构师-全栈工程师.md"
       },
       {
         "id": "61768356b0c5",
         "kind": "booklist",
-        "hash": "a6649249fd14d3ff",
+        "hash": "4010028ff1dc15ab",
         "path": "书单-架构师-人工智能专家.md"
       },
       {
         "id": "70a4bc91a16a",
         "kind": "booklist",
-        "hash": "073983f9d3496fcf",
+        "hash": "7ed339b1939078fb",
         "path": "书单-架构师-云计算与云原生.md"
       },
       {
         "id": "76cde6528f7d",
         "kind": "booklist",
-        "hash": "c282e5097083cc08",
+        "hash": "2148de5efa93c308",
         "path": "书单-架构师-知识产权顾问.md"
       },
       {
         "id": "d0048b17e2e1",
         "kind": "booklist",
-        "hash": "ffba14c3b1b97afd",
+        "hash": "d36b9d7c46706f16",
         "path": "书单-架构师.md"
       },
       {
         "id": "a0873266ae35",
         "kind": "booklist",
-        "hash": "018c97a65e4ed1f8",
+        "hash": "f01b0f0b3ad4478c",
         "path": "书单-九个维度的人生.md"
       },
       {
         "id": "1ea2125f09a2",
         "kind": "booklist",
-        "hash": "02d2c13d7a5510e9",
+        "hash": "3043ac947028ac43",
         "path": "书单-人生回报率30本.md"
       },
       {
         "id": "69a2a7e842fb",
         "kind": "booklist",
-        "hash": "c60da17f47f0ed8a",
+        "hash": "6baff26b1a44c831",
         "path": "书单-人生算法.md"
       },
       {
         "id": "4fdf8d60a4be",
         "kind": "booklist",
-        "hash": "12ee1fb4c4997722",
+        "hash": "926f0cbb34db2e70",
         "path": "书单-深度阅读精选8本.md"
       },
       {
         "id": "864c8fc932f1",
         "kind": "booklist",
-        "hash": "c1082f494f81bed2",
+        "hash": "7678a74fff7f54d9",
         "path": "书单-生活艺术家-户外大神.md"
       },
       {
         "id": "942c6bef588e",
         "kind": "booklist",
-        "hash": "35722c8679f4f65b",
+        "hash": "9cc2252abd5015d8",
         "path": "书单-生活艺术家-健身跑者.md"
       },
       {
         "id": "2dc6feb04f30",
         "kind": "booklist",
-        "hash": "faffa407dd460b0b",
+        "hash": "afb5f8348237aed0",
         "path": "书单-生活艺术家-葡萄酒大师.md"
       },
       {
         "id": "d564a5e16229",
         "kind": "booklist",
-        "hash": "92794f8ba2e323da",
+        "hash": "d4035d9b8a11c0e4",
         "path": "书单-生活艺术家-摄影家.md"
       },
       {
         "id": "7ce5e583fd13",
         "kind": "booklist",
-        "hash": "f488e0bb4b31b200",
+        "hash": "89ec301f80e76b7a",
         "path": "书单-生活艺术家-数字人生.md"
       },
       {
         "id": "20a09789f6fa",
         "kind": "booklist",
-        "hash": "550a1ffe8a21e43e",
+        "hash": "f0398c98c66e3596",
         "path": "书单-生活艺术家-游戏王者.md"
       },
       {
         "id": "6f1ee2958bb7",
         "kind": "booklist",
-        "hash": "6be3382c5067da33",
+        "hash": "b0bedda6c2b144a8",
         "path": "书单-生活艺术家.md"
       },
       {
         "id": "fbc651219823",
         "kind": "booklist",
-        "hash": "8314921cf0e8d520",
+        "hash": "93162726a428ac46",
         "path": "书单-十一假期.md"
       },
       {
         "id": "8f2bbd572d84",
         "kind": "booklist",
-        "hash": "1536eb60d73044c6",
+        "hash": "ab779965677756f9",
         "path": "书单-送髋跑.md"
       },
       {
         "id": "2a8501dfb99a",
         "kind": "booklist",
-        "hash": "97857921ec62d9fb",
+        "hash": "9001770b8f797560",
         "path": "书单-投资人-技术投资.md"
       },
       {
         "id": "6ee84773f7cd",
         "kind": "booklist",
-        "hash": "e68dd177e2fa368f",
+        "hash": "d9a6609240306443",
         "path": "书单-投资人-金融市场.md"
       },
       {
         "id": "3f2e491231c9",
         "kind": "booklist",
-        "hash": "b5405a779d9770f7",
+        "hash": "78f25bb4eee70710",
         "path": "书单-投资人-商品交易.md"
       },
       {
         "id": "d4766572f9fc",
         "kind": "booklist",
-        "hash": "aa8db6d11b005348",
+        "hash": "7dffebbfee717833",
         "path": "书单-投资人.md"
       },
       {
         "id": "f45c7a185a5c",
         "kind": "booklist",
-        "hash": "e5c257b6ec7f56af",
+        "hash": "1e2ba9276765a337",
         "path": "书单-有趣的人.md"
       },
       {
         "id": "996aa22e71a4",
         "kind": "booklist",
-        "hash": "c470ce7b6d5f8b24",
+        "hash": "e4fbd50a2b59a7a0",
         "path": "书单-长寿科学与抗衰.md"
       },
       {
         "id": "3a77c81acc63",
         "kind": "booklist",
-        "hash": "06211d3523e76a71",
+        "hash": "2052854663d65230",
         "path": "书单-终身学习者-北京文化使者.md"
       },
       {
         "id": "b9d4c2e07e7f",
         "kind": "booklist",
-        "hash": "093c3c55e53d702e",
+        "hash": "bda40d2c9f04a97f",
         "path": "书单-终身学习者-国学大师.md"
       },
       {
         "id": "5793d89b8141",
         "kind": "booklist",
-        "hash": "9514085b4169adf6",
+        "hash": "a4c40d02fc736204",
         "path": "书单-终身学习者-心理学专家.md"
       },
       {
         "id": "ac014155bad1",
         "kind": "booklist",
-        "hash": "9442a8155f2d48cf",
+        "hash": "900cda033c17184d",
         "path": "书单-终身学习者.md"
       },
       {
         "id": "d95020c16c8f",
         "kind": "booklist",
-        "hash": "a0a5c92f959c0945",
+        "hash": "c6dc0c30af8d4a3e",
         "path": "书单-AI时代底层能力.md"
       },
       {
         "id": "971a5a20e8f2",
         "kind": "booklist",
-        "hash": "5c34a29e8aa2ec90",
+        "hash": "00f05fc34db6db84",
         "path": "uRead-8月选品清单.md"
       },
       {
         "id": "3d687fb90179",
         "kind": "booklist",
-        "hash": "6874643dab8c4070",
+        "hash": "dfd2e62eaed67e7a",
         "path": "uRead-9月选品清单.md"
       }
     ],
@@ -8395,17 +8395,10 @@
       ]
     },
     {
-      "normalized": "姿势跑法-尼古拉斯·罗曼诺夫约翰·罗伯逊",
+      "normalized": "姿势跑法",
       "count": 2,
       "names": [
-        "《姿势跑法》-尼古拉斯·罗曼诺夫 约翰·罗伯逊"
-      ]
-    },
-    {
-      "normalized": "运动生理学-封飞虎凌波",
-      "count": 2,
-      "names": [
-        "《运动生理学》-封飞虎 凌波"
+        "姿势跑法"
       ]
     },
     {
@@ -8416,17 +8409,10 @@
       ]
     },
     {
-      "normalized": "富爸爸穷爸爸-罗伯特·清崎",
+      "normalized": "高效能人士的七个习惯",
       "count": 2,
       "names": [
-        "《富爸爸穷爸爸》-罗伯特·清崎"
-      ]
-    },
-    {
-      "normalized": "高效能人士的七个习惯-史蒂芬·柯维",
-      "count": 2,
-      "names": [
-        "《高效能人士的七个习惯》-史蒂芬·柯维"
+        "高效能人士的七个习惯"
       ]
     },
     {
@@ -8445,7 +8431,7 @@
     },
     {
       "normalized": "原则-瑞·达利欧",
-      "count": 4,
+      "count": 2,
       "names": [
         "《原则》-瑞·达利欧"
       ]
@@ -8458,24 +8444,10 @@
       ]
     },
     {
-      "normalized": "聪明的投资者-本杰明·格雷厄姆",
-      "count": 3,
-      "names": [
-        "《聪明的投资者》-本杰明·格雷厄姆"
-      ]
-    },
-    {
       "normalized": "置身事内：中国政府与经济发展-兰小欢",
       "count": 2,
       "names": [
         "《置身事内：中国政府与经济发展》-兰小欢"
-      ]
-    },
-    {
-      "normalized": "随机漫步的傻瓜-纳西姆·尼古拉斯·塔勒布",
-      "count": 2,
-      "names": [
-        "《随机漫步的傻瓜》-纳西姆·尼古拉斯·塔勒布"
       ]
     },
     {
@@ -8487,7 +8459,7 @@
     },
     {
       "normalized": "金钱心理学-摩根·豪泽尔",
-      "count": 4,
+      "count": 3,
       "names": [
         "《金钱心理学》-摩根·豪泽尔"
       ]
@@ -8514,24 +8486,10 @@
       ]
     },
     {
-      "normalized": "刻意练习-安德斯·艾利克森",
-      "count": 2,
-      "names": [
-        "《刻意练习》-安德斯·艾利克森"
-      ]
-    },
-    {
       "normalized": "心流-米哈里·契克森米哈赖",
       "count": 2,
       "names": [
         "《心流》-米哈里·契克森米哈赖"
-      ]
-    },
-    {
-      "normalized": "枪炮、病菌与钢铁-贾雷德·戴蒙德",
-      "count": 2,
-      "names": [
-        "《枪炮、病菌与钢铁》-贾雷德·戴蒙德"
       ]
     },
     {
@@ -8577,6 +8535,27 @@
       ]
     },
     {
+      "normalized": "投资最重要的事",
+      "count": 2,
+      "names": [
+        "投资最重要的事"
+      ]
+    },
+    {
+      "normalized": "原则",
+      "count": 2,
+      "names": [
+        "原则"
+      ]
+    },
+    {
+      "normalized": "深度学习",
+      "count": 2,
+      "names": [
+        "深度学习"
+      ]
+    },
+    {
       "normalized": "思考，快与慢",
       "count": 2,
       "names": [
@@ -8588,6 +8567,20 @@
       "count": 2,
       "names": [
         "活出生命的意义"
+      ]
+    },
+    {
+      "normalized": "庄子",
+      "count": 2,
+      "names": [
+        "庄子"
+      ]
+    },
+    {
+      "normalized": "庄子-庄周",
+      "count": 2,
+      "names": [
+        "《庄子》-庄周"
       ]
     },
     {
@@ -8605,10 +8598,10 @@
       ]
     },
     {
-      "normalized": "庄子-庄周",
-      "count": 3,
+      "normalized": "原子习惯-詹姆斯·克利尔",
+      "count": 2,
       "names": [
-        "《庄子》-庄周"
+        "《原子习惯》-詹姆斯·克利尔"
       ]
     },
     {
@@ -8633,52 +8626,24 @@
       ]
     },
     {
-      "normalized": "清洁架构-robertc.martin",
+      "normalized": "深度工作",
       "count": 2,
       "names": [
-        "《清洁架构》-Robert C. Martin"
+        "深度工作"
       ]
     },
     {
-      "normalized": "微服务架构设计模式-chrisrichardson",
+      "normalized": "聪明的投资者",
       "count": 2,
       "names": [
-        "《微服务架构设计模式》-Chris Richardson"
+        "聪明的投资者"
       ]
     },
     {
-      "normalized": "非暴力沟通-马歇尔·卢森堡",
-      "count": 3,
-      "names": [
-        "《非暴力沟通》-马歇尔·卢森堡"
-      ]
-    },
-    {
-      "normalized": "亲密关系-罗兰·米勒",
-      "count": 3,
-      "names": [
-        "《亲密关系》-罗兰·米勒"
-      ]
-    },
-    {
-      "normalized": "深度工作-卡尔·纽波特",
+      "normalized": "富爸爸穷爸爸-罗伯特·清崎",
       "count": 2,
       "names": [
-        "《深度工作》-卡尔·纽波特"
-      ]
-    },
-    {
-      "normalized": "人类简史-尤瓦尔·赫拉利",
-      "count": 2,
-      "names": [
-        "《人类简史》-尤瓦尔·赫拉利"
-      ]
-    },
-    {
-      "normalized": "黑天鹅-纳西姆·尼古拉斯·塔勒布",
-      "count": 2,
-      "names": [
-        "《黑天鹅》-纳西姆·尼古拉斯·塔勒布"
+        "《富爸爸穷爸爸》-罗伯特·清崎"
       ]
     },
     {
@@ -8686,6 +8651,13 @@
       "count": 2,
       "names": [
         "《关键对话：如何高效能沟通》-科里·帕特森 约瑟夫·格雷尼 罗恩·麦克米兰 艾尔·史威茨勒"
+      ]
+    },
+    {
+      "normalized": "非暴力沟通-马歇尔·卢森堡",
+      "count": 3,
+      "names": [
+        "《非暴力沟通》-马歇尔·卢森堡"
       ]
     },
     {
@@ -8703,24 +8675,24 @@
       ]
     },
     {
+      "normalized": "人类简史-尤瓦尔·赫拉利",
+      "count": 2,
+      "names": [
+        "《人类简史》-尤瓦尔·赫拉利"
+      ]
+    },
+    {
+      "normalized": "社会学的想象力",
+      "count": 2,
+      "names": [
+        "社会学的想象力"
+      ]
+    },
+    {
       "normalized": "事实-汉斯·罗斯林",
       "count": 2,
       "names": [
         "《事实》-汉斯·罗斯林"
-      ]
-    },
-    {
-      "normalized": "掌控习惯-詹姆斯·克利尔",
-      "count": 2,
-      "names": [
-        "《掌控习惯》-詹姆斯·克利尔"
-      ]
-    },
-    {
-      "normalized": "指数基金投资指南-约翰·博格",
-      "count": 2,
-      "names": [
-        "《指数基金投资指南》-约翰·博格"
       ]
     },
     {
@@ -8731,17 +8703,73 @@
       ]
     },
     {
+      "normalized": "演讲的力量",
+      "count": 2,
+      "names": [
+        "演讲的力量"
+      ]
+    },
+    {
+      "normalized": "giveandtake",
+      "count": 2,
+      "names": [
+        "Give and Take"
+      ]
+    },
+    {
+      "normalized": "亲密关系-罗兰·米勒",
+      "count": 2,
+      "names": [
+        "《亲密关系》-罗兰·米勒"
+      ]
+    },
+    {
+      "normalized": "界限",
+      "count": 2,
+      "names": [
+        "界限"
+      ]
+    },
+    {
+      "normalized": "高难度谈话",
+      "count": 2,
+      "names": [
+        "高难度谈话"
+      ]
+    },
+    {
+      "normalized": "谈判力",
+      "count": 2,
+      "names": [
+        "谈判力"
+      ]
+    },
+    {
       "normalized": "系统之美-德内拉·梅多斯",
-      "count": 3,
+      "count": 2,
       "names": [
         "《系统之美》-德内拉·梅多斯"
       ]
     },
     {
-      "normalized": "世界葡萄酒地图（第8版）-休·约翰逊、杰西斯·罗宾逊",
+      "normalized": "最好的告别",
       "count": 2,
       "names": [
-        "《世界葡萄酒地图（第8版）》-休·约翰逊、杰西斯·罗宾逊"
+        "最好的告别"
+      ]
+    },
+    {
+      "normalized": "世界葡萄酒地图（第8版）",
+      "count": 2,
+      "names": [
+        "世界葡萄酒地图（第8版）"
+      ]
+    },
+    {
+      "normalized": "系统之美",
+      "count": 2,
+      "names": [
+        "系统之美"
       ]
     }
   ],

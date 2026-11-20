@@ -37,6 +37,10 @@ jobs:
           hugo-version: '0.168.0'
           extended: true
 
+      - name: 记录同步前笔记版本
+        id: before
+        run: echo "version=$(node -p "require('./public/notes/manifest.json').version")" >> "$GITHUB_OUTPUT"
+
       - name: 同步 Obsidian 笔记（书单已拆到每周的 lists-sync）
         env:
           # 只读 PAT，需在仓库 Settings → Secrets → Actions 中配置 OBSIDIAN_TOKEN
@@ -63,6 +67,15 @@ jobs:
       - name: 提交生成产物
         id: commit
         run: |
+          # 清单版本由内容哈希派生；版本未变说明只有 generated_at 时间戳变化，
+          # 不能因此每天制造一个空提交并触发部署。
+          before="${{ steps.before.outputs.version }}"
+          after="$(node -p "require('./public/notes/manifest.json').version")"
+          if [ "$before" = "$after" ]; then
+            echo "笔记版本未变（$after），只有生成时间变化，无需提交"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
