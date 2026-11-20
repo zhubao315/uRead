@@ -3,7 +3,7 @@
  * 只读取已生成的公开产物，不写 IndexedDB、不增加第 9 个 store。
  */
 import { SITE_BASE } from '../config';
-import { loadPublicNotes, type PublicNote } from './publicNotes';
+import { loadNoteIndex, type NoteIndexItem } from './publicNotes';
 
 export interface ReaderBook {
   id: string;
@@ -31,12 +31,12 @@ export interface ReaderHubResult {
   error: string;
 }
 
-export const noteAudioKey = (note: PublicNote) => `uread:audio:${note.content_hash}`;
+export const noteAudioKey = (note: NoteIndexItem) => `uread:audio:${note.content_hash}`;
 export const bookProgressKey = (id: string) => `uread:book:${id}`;
 
 export async function loadReaderHub(): Promise<ReaderHubResult> {
   const [notesResult, booksResponse] = await Promise.all([
-    loadPublicNotes(),
+    loadNoteIndex().then((items) => ({ notes: items, available: true, error: '' })),
     fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
   ]);
   const aggregate = booksResponse?.ok ? await booksResponse.json() : null;

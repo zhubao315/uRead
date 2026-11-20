@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SITE_BASE } from '../config';
-import { loadPublicNotes, type PublicNote } from '../data/publicNotes';
+import { loadNoteIndex, type NoteIndexItem } from '../data/publicNotes';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
 import { ArrowRightIcon, BookOpenIcon, HeadphonesIcon, ListIcon, NotebookPenIcon, SearchIcon, TagsIcon } from '../components/icons';
 
 interface HomeBook { id: string; title: string; author: string; format: string; cover: string; }
 interface HomeState {
   ready: boolean;
-  notes: PublicNote[];
+  notes: NoteIndexItem[];
   audio: number;
   themes: PublicList[];
   booklists: PublicList[];
@@ -26,7 +26,7 @@ const ContentHomeView: React.FC = () => {
   useEffect(() => {
     let alive = true;
     void Promise.all([
-      loadPublicNotes(),
+      loadNoteIndex(),
       loadPublicLists(),
       fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
     ]).then(async ([notes, lists, booksResponse]) => {
@@ -35,12 +35,12 @@ const ContentHomeView: React.FC = () => {
       if (!alive) return;
       setState({
         ready: true,
-        notes: notes.notes,
-        audio: notes.notes.filter((note) => note.audio).length,
+        notes,
+        audio: notes.filter((note) => note.audio).length,
         themes: lists.themes,
         booklists: lists.booklists,
         books,
-        generated_at: lists.manifest?.generated_at ?? notes.manifest?.generated_at ?? '',
+        generated_at: lists.manifest?.generated_at ?? '',
       });
     });
     return () => { alive = false; };
@@ -154,7 +154,7 @@ const ContentHomeView: React.FC = () => {
                 <NotebookPenIcon size="md" className="mt-1 shrink-0 text-brand" />
                 <div className="min-w-0">
                   <h3 className="font-editorial text-base text-navy group-hover:text-brand">{note.title}</h3>
-                  <p className="mt-1 truncate text-sm text-muted">{note.body.replace(/[#*`>|]/g, '').trim().slice(0, 120)}</p>
+                  <p className="mt-1 truncate text-sm text-muted">{note.excerpt}</p>
                   <p className="mt-1 text-xs text-muted">{note.author || '作者未标注'} · {note.category || '未分类'}{note.updated ? ` · ${note.updated}` : ''}</p>
                 </div>
                 {note.audio ? <HeadphonesIcon size="sm" className="ml-auto mt-1 shrink-0 text-gold" /> : null}

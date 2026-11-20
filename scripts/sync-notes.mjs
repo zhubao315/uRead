@@ -296,6 +296,21 @@ async function main() {
     console.log(`[dry-run] 笔记 ${notes.length} 篇（本次变化 ${changed.length} 篇），音频 ${withAudio ? `上限 ${audioLimit}` : '关闭'}，版本 ${version}`);
     return;
   }
+  const index = notes.map((note) => ({
+    slug: note.slug,
+    title: note.title,
+    author: note.author,
+    category: note.category,
+    updated: note.updated,
+    tags: note.tags,
+    aliases: note.aliases,
+    excerpt: note.body.replace(/[#*`>|]/g, '').trim().slice(0, 160),
+    audio: !!note.audio,
+    content_hash: note.content_hash,
+    source_path: note.source_ref?.path ?? '',
+  }));
+  await atomicWrite(path.join(OUT_NOTES, 'index.json'), JSON.stringify(index, null, 2));
+
   await atomicWrite(path.join(OUT_NOTES, 'notes.json'), payload);
   await atomicWrite(path.join(OUT_NOTES, 'manifest.json'), manifest);
   const nextState = {

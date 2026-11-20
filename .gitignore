@@ -58,7 +58,3 @@ publishing/PREVIEW.md
 # Playwright 产物
 test-results/
 playwright-report/
-
-# Python bytecode
-__pycache__/
-*.pyc

@@ -138,3 +138,24 @@ export function filterNotes(notes: PublicNote[], query: string): PublicNote[] {
     return words.every((word) => text.includes(word.toLowerCase()));
   });
 }
+
+export interface NoteIndexItem {
+  slug: string;
+  title: string;
+  author: string;
+  category: string;
+  updated: string;
+  tags: string[];
+  aliases: string[];
+  excerpt: string;
+  audio: boolean;
+  content_hash: string;
+  source_path: string;
+}
+
+/** 轻量索引：首页 / 继续阅读 / 列表首屏用，避免下载整份正文。 */
+export async function loadNoteIndex(): Promise<NoteIndexItem[]> {
+  const response = await fetch(`${SITE_BASE}notes/index.json`, { cache: 'no-store' });
+  if (!response.ok) throw new Error(`${response.status} notes/index.json`);
+  return (await response.json()) as NoteIndexItem[];
+}
