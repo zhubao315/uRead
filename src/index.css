@@ -124,7 +124,7 @@ textarea:focus-visible {
 :root {
   --theme-page: light-dark(#f8fafc, #0f172a);
   --theme-surface: light-dark(#ffffff, #1e293b);
-  --theme-text: light-dark(#e2e8f0, #e2e8f0);
+  --theme-text: light-dark(#17243A, #e2e8f0);
   --theme-strong: light-dark(#172033, #f1f5f9);
   --theme-muted: light-dark(#64748b, #cbd5e1);
   --theme-line: light-dark(#e5e7eb, #334155);

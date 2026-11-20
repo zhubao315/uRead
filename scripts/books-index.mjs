@@ -128,10 +128,11 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 }[ch]));
 
-const STYLE = `body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;color:#263244;background:#fff}
-h1,h2{color:#172033} a{color:#2457A6;text-decoration:none} a:hover{text-decoration:underline}
-.card{border:1px solid #e2e8f0;border-radius:6px;padding:1rem;margin:.6rem 0;background:#fff}
-.small{color:#64748b;font-size:.85rem} mark{background:#fef3c7}
+const STYLE = `:root{--navy:#17243A;--brand:#2457A6;--page:#F3F6FA;--line:#E2E8F0;--muted:#64748B;--surface:#fff}
+body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;color:var(--navy);background:var(--page)}
+h1,h2{color:var(--navy)} a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
+.card{border:1px solid var(--line);border-radius:10px;padding:1rem;margin:.6rem 0;background:var(--surface);box-shadow:0 1px 2px rgba(23,36,58,.06)}
+.small{color:var(--muted);font-size:.85rem} mark{background:#DCE8F8}
 input{width:100%;max-width:32rem;padding:.6rem .8rem;border:1px solid #cbd5e1;border-radius:4px;font:inherit}
 .cover{width:64px;height:92px;object-fit:cover;float:left;margin:0 1rem 1rem 0;border-radius:4px}
 @media(max-width:640px){body{margin:1rem auto}.cover{width:48px;height:70px}}`;
