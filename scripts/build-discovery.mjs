@@ -2,7 +2,6 @@
 /** 生成静态发现文件：sitemap.xml / rss.xml / robots.txt。只收录真实公开内容。 */
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
