@@ -50,19 +50,18 @@ const Navbar: React.FC = () => {
     path: string;
     label: string;
     icon: React.ReactNode;
-    description: string;
     /** Pages 上的静态目录不是 React 路由：必须用普通 <a>，否则会被 SPA 接管成 404。 */
     staticHref?: string;
   }> = [
-    { path: '/', label: '首页', icon: <HomeIcon size="md" />, description: '读书内容门户' },
-    { path: '/read', label: '笔记', icon: <NotebookPenIcon size="md" />, description: '读书笔记' },
-    { path: '/booklists', label: '书单', icon: <ListIcon size="md" />, description: '主题与书单' },
-    { path: '/books', label: '书籍', icon: <BookOpenIcon size="md" />, description: '书库', staticHref: `${SITE_BASE}books/` },
-    { path: '/workspace', label: '工作台', icon: <BriefcaseIcon size="md" />, description: '本地管理' }
+    { path: '/', label: '首页', icon: <HomeIcon size="md" /> },
+    { path: '/read', label: '笔记', icon: <NotebookPenIcon size="md" /> },
+    { path: '/booklists', label: '书单', icon: <ListIcon size="md" /> },
+    { path: '/books', label: '书籍', icon: <BookOpenIcon size="md" />, staticHref: `${SITE_BASE}books/` },
+    { path: '/workspace', label: '工作台', icon: <BriefcaseIcon size="md" /> }
   ];
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <nav aria-label="主导航" className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo：统一品牌资产，不再用渐变方块 */}
@@ -77,29 +76,27 @@ const Navbar: React.FC = () => {
           {/* Navigation Items */}
           <div className="hidden md:flex space-x-1">
             {navItems.map((item) => {
+              const active = location.pathname === item.path;
               const className = `relative flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-inter font-medium transition-all duration-200 cursor-pointer-custom ${
-                location.pathname === item.path
+                active
                   ? 'text-blue-600 bg-blue-50'
                   : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
               }`;
               const content = (
                 <>
-                  <span className={`transition-transform ${location.pathname === item.path ? 'scale-110' : ''}`}>
+                  <span className={`transition-transform ${active ? 'scale-110' : ''}`}>
                     {item.icon}
                   </span>
-                  <div className="flex flex-col items-start">
-                    <span>{item.label}</span>
-                    <span className="text-xs opacity-75">{item.description}</span>
-                  </div>
-                  {location.pathname === item.path && (
+                  <span>{item.label}</span>
+                  {active && (
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-600 rounded-full"></div>
                   )}
                 </>
               );
               return item.staticHref ? (
-                <a key={item.path} href={item.staticHref} className={className}>{content}</a>
+                <a key={item.path} href={item.staticHref} aria-current={active ? 'page' : undefined} className={className}>{content}</a>
               ) : (
-                <Link key={item.path} to={item.path} className={className}>{content}</Link>
+                <Link key={item.path} to={item.path} aria-current={active ? 'page' : undefined} className={className}>{content}</Link>
               );
             })}
           </div>
