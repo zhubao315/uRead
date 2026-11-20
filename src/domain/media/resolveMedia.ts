@@ -8,6 +8,10 @@ export const mediaKey = (type: string, id: string): string => `${type}:${id}`;
 export const generatedBookCoverSrc = (id: string): string =>
   `${SITE_BASE}media/books/${encodeURIComponent(id)}.svg`;
 
+/** 主题 / 书单的 16:9 抽象主题视觉路径。 */
+export const generatedCollectionArtSrc = (kind: 'theme' | 'booklist', id: string): string =>
+  `${SITE_BASE}media/collections/${kind}-${encodeURIComponent(id)}.svg`;
+
 /** 真实电子书封面的静态路径（来自 EPUB 内嵌封面）。 */
 export const realBookCoverSrc = (cover: string): string =>
   `${SITE_BASE}books/${cover}`;

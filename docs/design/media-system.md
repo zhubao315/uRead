@@ -14,6 +14,7 @@ description: "独立媒体清单、解析优先级、统一图片组件与构建
 | 结构约束 | `media/manifest.schema.json` | Draft-07，约束类型、来源、审核态与官方封面标记 |
 | 浏览器侧产物 | `dist/media/manifest.json` | 由 `media:build` 从源文件复制 |
 | 生成封面 | `dist/media/books/<id>.svg` | 书籍 ID 作种子的确定性 SVG，2:3 |
+| 生成栏目视觉 | `dist/media/collections/<kind>-<id>.svg` | 主题/书单的 16:9 抽象视觉，画面内不写文字 |
 | 真实封面 | `dist/books/covers/*` | 仅来自有权分发的 EPUB 内嵌封面；PDF 不提取 |
 
 媒体键统一为 `type:id`（`book:` / `booklist:` / `theme:` / `category:` / `note:` / `fallback:`），避免不同实体 ID 冲突。
@@ -40,7 +41,7 @@ description: "独立媒体清单、解析优先级、统一图片组件与构建
 ```
 npm run media:validate   # 校验清单结构、审核态、实体 ID、来源标记、重复引用
 npm run media:audit      # 输出各实体配图覆盖率与生成资源统计
-npm run media:build      # 复制清单 + 生成 1868 张 SVG → dist/media/
+npm run media:build      # 复制清单 + 生成 1868 张书籍封面 + 49 张栏目视觉 → dist/media/
 ```
 
 `media:build` 已接入正式 `build` 链，位置在 `books:index` 之后、`build:fallbacks` 与 `build:discovery` 之前，因为书籍 SVG 依赖 `dist/books/aggregate.json`。它不覆盖 `dist/books/` 下的阅读器文件。

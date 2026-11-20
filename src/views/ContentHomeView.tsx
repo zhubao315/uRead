@@ -5,6 +5,7 @@ import { loadNoteIndex, type NoteIndexItem } from '../data/publicNotes';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
 import { ArrowRightIcon, HeadphonesIcon, ListIcon, NotebookPenIcon, SearchIcon, TagsIcon } from '../components/icons';
 import BookCover from '../components/media/BookCover';
+import CollectionArtwork from '../components/media/CollectionArtwork';
 
 interface HomeBook { id: string; title: string; author: string; format: string; cover: string; }
 interface HomeState {
@@ -131,14 +132,17 @@ const ContentHomeView: React.FC = () => {
         <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {featured.map((item) => (
             <Link key={item.id} to={item.kind === 'theme' ? `/themes/${item.id}` : `/lists/${item.id}`}
-              className="rounded-lg border border-border bg-surface p-5 shadow-card transition hover:-translate-y-0.5 hover:border-brand">
-              <p className="inline-flex items-center gap-1.5 text-xs text-gold">
-                {item.kind === 'theme' ? <TagsIcon size="sm" /> : <ListIcon size="sm" />}
-                {item.kind === 'theme' ? '主题阅读' : '书单'}
-              </p>
-              <h3 className="font-editorial mt-2 text-lg text-navy">{item.title}</h3>
-              <p className="mt-2 line-clamp-2 text-sm text-muted">{item.description || '（无摘要）'}</p>
-              <p className="mt-3 text-xs text-muted">{item.book_count} 本书</p>
+              className="overflow-hidden rounded-lg border border-border bg-surface shadow-card transition hover:-translate-y-0.5 hover:border-brand">
+              <CollectionArtwork kind={item.kind} id={item.id} title={item.title} className="w-full" />
+              <div className="p-5">
+                <p className="inline-flex items-center gap-1.5 text-xs text-gold">
+                  {item.kind === 'theme' ? <TagsIcon size="sm" /> : <ListIcon size="sm" />}
+                  {item.kind === 'theme' ? '主题阅读' : '书单'}
+                </p>
+                <h3 className="font-editorial mt-2 text-lg text-navy">{item.title}</h3>
+                <p className="mt-2 line-clamp-2 text-sm text-muted">{item.description || '（无摘要）'}</p>
+                <p className="mt-3 text-xs text-muted">{item.book_count} 本书</p>
+              </div>
             </Link>
           ))}
         </div>

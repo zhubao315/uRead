@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
+import CollectionArtwork from '../components/media/CollectionArtwork';
 
 /** 统一「主题书单」入口：保留 THEME / BOOKLIST 两种类型，不合并丢失说明。 */
 const BooklistsHubView: React.FC = () => {
@@ -56,12 +57,15 @@ const BooklistsHubView: React.FC = () => {
 
       <ul className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {visible.map((item) => (
-          <li key={item.id} className="rounded border border-slate-200 bg-white p-5 hover:border-brand">
-            <p className="text-xs text-accent">{item.kind === 'theme' ? '主题阅读' : '书单'}</p>
-            <Link to={item.kind === 'theme' ? `/themes/${item.id}` : `/lists/${item.id}`}
-              className="mt-1 block text-lg font-medium text-ink hover:underline">{item.title}</Link>
-            <p className="mt-2 line-clamp-3 text-sm text-slate-600">{item.description || '（无摘要）'}</p>
-            <p className="mt-3 text-xs text-slate-500">{item.book_count} 本书 · {item.linked_notes} 本有笔记</p>
+          <li key={item.id} className="overflow-hidden rounded border border-slate-200 bg-white hover:border-brand">
+            <CollectionArtwork kind={item.kind} id={item.id} title={item.title} className="w-full" />
+            <div className="p-5">
+              <p className="text-xs text-accent">{item.kind === 'theme' ? '主题阅读' : '书单'}</p>
+              <Link to={item.kind === 'theme' ? `/themes/${item.id}` : `/lists/${item.id}`}
+                className="mt-1 block text-lg font-medium text-ink hover:underline">{item.title}</Link>
+              <p className="mt-2 line-clamp-3 text-sm text-slate-600">{item.description || '（无摘要）'}</p>
+              <p className="mt-3 text-xs text-slate-500">{item.book_count} 本书 · {item.linked_notes} 本有笔记</p>
+            </div>
           </li>
         ))}
       </ul>

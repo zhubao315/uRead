@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { filterLists, loadPublicLists, watchPublicLists, type ListsResult, type PublicList } from '../data/publicLists';
+import CollectionArtwork from '../components/media/CollectionArtwork';
 
 /** 主题阅读 / 书单推荐共用的列表页：两块内容分开呈现，不混成一条信息流。 */
 const PublicListView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }) => {
@@ -81,14 +82,17 @@ const PublicListView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }) => {
       ) : (
         <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {items.map((item: PublicList) => (
-            <li key={item.id} className="rounded-2xl border border-gray-200 bg-white p-5 hover:border-blue-300">
-              <Link to={`${base}/${item.id}`} className="text-lg font-semibold text-blue-700 hover:underline">
-                {item.title}
-              </Link>
-              <p className="mt-2 line-clamp-3 text-sm text-gray-600">{item.description || '（这份清单没有摘要）'}</p>
-              <p className="mt-3 text-xs text-gray-500">
-                {item.book_count} 本书 · {item.linked_notes} 本有笔记{item.updated ? ` · 更新 ${item.updated}` : ''}
-              </p>
+            <li key={item.id} className="overflow-hidden rounded-2xl border border-gray-200 bg-white hover:border-blue-300">
+              <CollectionArtwork kind={item.kind} id={item.id} title={item.title} className="w-full" />
+              <div className="p-5">
+                <Link to={`${base}/${item.id}`} className="text-lg font-semibold text-blue-700 hover:underline">
+                  {item.title}
+                </Link>
+                <p className="mt-2 line-clamp-3 text-sm text-gray-600">{item.description || '（这份清单没有摘要）'}</p>
+                <p className="mt-3 text-xs text-gray-500">
+                  {item.book_count} 本书 · {item.linked_notes} 本有笔记{item.updated ? ` · 更新 ${item.updated}` : ''}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
