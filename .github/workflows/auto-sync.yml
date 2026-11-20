@@ -11,7 +11,8 @@ permissions:
   actions: write
 
 concurrency:
-  group: notes-sync
+  # 与书单同步共用分组，避免两个自动同步同时写基线/同时提交。
+  group: content-sync
   cancel-in-progress: false
 
 jobs:
@@ -36,13 +37,11 @@ jobs:
           hugo-version: '0.168.0'
           extended: true
 
-      - name: 同步 Obsidian 笔记与栏目
+      - name: 同步 Obsidian 笔记（书单已拆到每周的 lists-sync）
         env:
           # 只读 PAT，需在仓库 Settings → Secrets → Actions 中配置 OBSIDIAN_TOKEN
           GITHUB_TOKEN: ${{ secrets.OBSIDIAN_TOKEN }}
-        run: |
-          npm run notes:sync -- --no-audio
-          npm run lists:sync
+        run: npm run notes:sync -- --no-audio
 
       - name: 构建站点产物
         run: npm run build
@@ -68,7 +67,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
             public/notes \
-            public/lists \
             publishing/content-baseline.json \
             docs/migration 2>/dev/null || true
           if git diff --cached --quiet; then
@@ -76,7 +74,7 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "chore(auto-sync): sync reading assets $(date -u +%Y-%m-%dT%H:%MZ)"
+          git commit -m "chore(notes-sync): sync reading notes $(date -u +%Y-%m-%dT%H:%MZ)"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
 

@@ -122,9 +122,13 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新 publishing/approved-b
 
 ## 自动同步（GitHub Actions）
 
-`.github/workflows/auto-sync.yml` 每天 UTC 02:00（北京时间 10:00）自动检查私库更新，
-也支持在 Actions 页面手动 `Run workflow`。流程：同步笔记与栏目 → 重建内容基线/书籍索引 →
-跑类型、Lint、单测、构建、文档自检 → 若无内容变化则跳过提交，否则提交生成产物并派发 Pages 部署。
+两个自动同步工作流都支持在 Actions 页面手动 `Run workflow`，且共用 `content-sync` 并发分组，避免同时提交：
+
+- `.github/workflows/auto-sync.yml`：每天 UTC 02:00（北京时间 10:00）同步**笔记**（`--no-audio`）。
+- `.github/workflows/lists-sync.yml`：每周一 UTC 03:00（北京时间 11:00）同步**主题与书单**。
+
+两者流程相同：同步私库 → 重建内容基线/书籍索引 → 跑类型、Lint、单测、构建、文档自检 →
+若无内容变化则跳过提交，否则提交生成产物并显式派发 Pages 部署。
 
 所需仓库 Secret：`OBSIDIAN_TOKEN`（对 `zhubao315/obsidian-vault` 只读的 PAT）。
 token 只通过环境变量传给同步脚本，不进代码/产物/日志。
