@@ -69,26 +69,32 @@ function fail(message) {
 }
 
 async function api(url) {
-  let response;
-  try {
-    response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-        'User-Agent': 'uRead-notes-sync',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-      signal: AbortSignal.timeout(60_000),
-    });
-  } catch (error) {
-    fail(`网络请求失败 ${url}：${error instanceof Error ? error.message : String(error)}`);
+  let lastError = '';
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'User-Agent': 'uRead-notes-sync',
+          'X-GitHub-Api-Version': '2022-11-28',
+        },
+        signal: AbortSignal.timeout(60_000),
+      });
+      if (response.ok) return response.json();
+      const retryable = [403, 429, 500, 502, 503, 504].includes(response.status);
+      if (!retryable) fail(`GitHub API ${response.status}（${url}）`);
+      lastError = `HTTP ${response.status}`;
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : String(error);
+    }
+    if (attempt < 4) {
+      const delay = 2000 * 2 ** attempt;
+      console.log(`  重试 ${url.split('/').slice(-2).join('/')}（${lastError}），${delay}ms 后再试`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
   }
-  if (!response.ok) {
-    const remaining = response.headers.get('x-ratelimit-remaining');
-    const hint = remaining === '0' ? '（API 速率用尽，下次再跑；缓存不会丢）' : '';
-    fail(`GitHub API ${response.status} ${hint}（${url}）`);
-  }
-  return response.json();
+  fail(`GitHub API 连续 5 次失败 ${url}：${lastError}`);
 }
 
 async function listGithubFiles() {

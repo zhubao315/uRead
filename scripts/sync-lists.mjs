@@ -34,16 +34,31 @@ function fail(message) {
 }
 
 async function api(url) {
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'uRead-lists-sync',
-    },
-    signal: AbortSignal.timeout(60_000),
-  });
-  if (!response.ok) fail(`GitHub API ${response.status}（${url}）`);
-  return response.json();
+  let lastError = '';
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+          Accept: 'application/vnd.github+json',
+          'User-Agent': 'uRead-lists-sync',
+        },
+        signal: AbortSignal.timeout(60_000),
+      });
+      if (response.ok) return response.json();
+      const retryable = [403, 429, 500, 502, 503, 504].includes(response.status);
+      if (!retryable) fail(`GitHub API ${response.status}（${url}）`);
+      lastError = `HTTP ${response.status}`;
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : String(error);
+    }
+    if (attempt < 4) {
+      const delay = 2000 * 2 ** attempt;
+      console.log(`  重试 ${url.split('/').slice(-2).join('/')}（${lastError}），${delay}ms 后再试`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+  fail(`GitHub API 连续 5 次失败 ${url}：${lastError}`);
 }
 
 async function remoteFiles() {
