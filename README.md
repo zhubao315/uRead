@@ -105,6 +105,19 @@ npm run build
 
 ---
 
+## 自动同步（GitHub Actions）
+
+`.github/workflows/auto-sync.yml` 每天 UTC 02:00（北京时间 10:00）自动检查私库更新，
+也支持在 Actions 页面手动 `Run workflow`。流程：同步笔记与栏目 → 重建内容基线/书籍索引 →
+跑类型、Lint、单测、构建、文档自检 → 若无内容变化则跳过提交，否则提交生成产物并派发 Pages 部署。
+
+所需仓库 Secret：`OBSIDIAN_TOKEN`（对 `zhubao315/obsidian-vault` 只读的 PAT）。
+token 只通过环境变量传给同步脚本，不进代码/产物/日志。
+
+> 当前 TTS 服务停机，自动同步使用 `--no-audio`，只同步正文；音频需等服务恢复后手动 `npm run notes:sync` 生成。
+
+---
+
 ## 发布治理（先检查，不自动下线）
 
 ```sh
