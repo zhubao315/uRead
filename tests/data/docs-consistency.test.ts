@@ -92,7 +92,7 @@ describe('README 与实现一致', () => {
 
   it('GitHub Pages 子路径配置必须同源且不漂移（config / vite / 路由 / 文档 URL）', () => {
     // base 不再是两处手写字面量：vite.config.ts 必须复用 src/config.ts 的常量
-    expect(VITE_CONFIG).toContain("from './src/config'");
+    expect(VITE_CONFIG).toMatch(/from '\.\/src\/config(\.ts)?'/);
     expect(VITE_CONFIG).toMatch(/base:\s*SITE_BASE/);
 
     expect(SITE_BASE).toBe('/uRead/');
