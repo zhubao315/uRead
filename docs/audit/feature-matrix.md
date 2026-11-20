@@ -17,7 +17,7 @@ description: "按真实代码与测试判定的当前功能矩阵；与 2026-11-
 | 书单管理 | IMPLEMENTED | `src/views/BookListsView.tsx` | 本地书单与公开书单是两条数据 |
 | 全站搜索 | IMPLEMENTED | `tests/components/search-and-state.test.tsx` | 多词 AND + URL 状态 |
 | JSON 完整备份 / Markdown 导出 | IMPLEMENTED | `tests/data/repository.test.ts` | 八类全覆盖 |
-| 公开笔记浏览 / 搜索 / 听 | IMPLEMENTED | `public/notes/`、`src/views/PublicNotesView.tsx` | 1634 篇 / 10 音频 |
+| 公开笔记浏览 / 搜索 / 听 | IMPLEMENTED | `public/notes/`、`src/views/PublicNotesView.tsx` | 1595 篇 / 2 音频（另 8 个孤儿音频文件，TTS 服务停机后未再生） |
 | 主题阅读 / 书单推荐 | IMPLEMENTED | `public/lists/`、`src/views/PublicListView.tsx` | 10 主题 / 39 书单 |
 | EPUB 阅读 | IMPLEMENTED | `book-library/reader.html` + foliate-js 1.0.1 | 位置记忆有，选区批注无 |
 | PDF 阅读 | IMPLEMENTED | 浏览器原生 iframe | 页码定位/批注是 PLAIN 浏览器能力，不是自研 |
