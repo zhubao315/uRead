@@ -69,15 +69,20 @@ function fail(message) {
 }
 
 async function api(url) {
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'uRead-notes-sync',
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
-    signal: AbortSignal.timeout(60_000),
-  });
+  let response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'uRead-notes-sync',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      signal: AbortSignal.timeout(60_000),
+    });
+  } catch (error) {
+    fail(`网络请求失败 ${url}：${error instanceof Error ? error.message : String(error)}`);
+  }
   if (!response.ok) {
     const remaining = response.headers.get('x-ratelimit-remaining');
     const hint = remaining === '0' ? '（API 速率用尽，下次再跑；缓存不会丢）' : '';
@@ -204,6 +209,12 @@ async function synthChunk(text) {
 
 async function maybeAudio(notes) {
   if (!withAudio) {
+    // TTS 服务不可用时仍保留已有音频关联，避免把 audio 标记全部清掉。
+    for (const note of notes) {
+      if (await exists(path.join(OUT_AUDIO, audioName(note.content_hash)))) {
+        note.audio = true;
+      }
+    }
     return 0;
   }
   let made = 0;
