@@ -1,0 +1,89 @@
+<!-- 静态书页统一站点导航：与 React 顶部栏同一品牌、图标、五个栏目与激活态。
+     这一份 HTML 被 scripts/books-index.mjs 与 book-library/build.py 共同读取，改动只改这里。 -->
+<style>
+.uread-site-nav{position:sticky;top:0;z-index:50;background:light-dark(#fff,#1e293b);border-bottom:1px solid light-dark(#e5e7eb,#334155)}
+.uread-site-nav__inner{max-width:1280px;margin:0 auto;padding:0 1rem;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.uread-brand{display:flex;align-items:center;gap:.75rem;color:light-dark(#17243A,#f1f5f9);text-decoration:none;flex-shrink:0}
+.uread-brand:hover{text-decoration:none}
+.uread-brand img{width:36px;height:36px;display:block}
+.uread-brand strong{display:block;font-size:20px;font-weight:600;letter-spacing:-.025em;line-height:1.1}
+.uread-brand small{display:block;font-size:11px;letter-spacing:.12em;color:light-dark(#64748B,#cbd5e1);margin-top:2px}
+.uread-nav-links{display:flex;align-items:center;gap:.25rem;overflow-x:auto;scrollbar-width:none}
+.uread-nav-links::-webkit-scrollbar{display:none}
+.uread-nav-link{position:relative;display:flex;align-items:center;gap:.5rem;flex-shrink:0;padding:.5rem 1rem;border-radius:.5rem;font-size:14px;font-weight:500;color:light-dark(#374151,#e2e8f0);text-decoration:none;transition:background .15s,color .15s}
+.uread-nav-link:hover{color:light-dark(#2457A6,#93c5fd);background:light-dark(#f9fafb,#0f172a);text-decoration:none}
+.uread-nav-link svg{width:20px;height:20px;flex-shrink:0}
+.uread-nav-link[aria-current="page"]{color:light-dark(#2457A6,#93c5fd);background:light-dark(#eff6ff,#172554)}
+.uread-nav-link[aria-current="page"]::after{content:"";position:absolute;left:50%;bottom:0;width:4px;height:4px;border-radius:50%;background:light-dark(#2457A6,#93c5fd);transform:translateX(-50%)}
+.uread-nav-actions{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+.uread-theme-toggle{min-height:36px;min-width:36px;padding:.35rem;border:1px solid light-dark(#d1d5db,#475569);border-radius:.5rem;background:light-dark(#fff,#1e293b);color:light-dark(#374151,#e2e8f0);font:inherit;font-size:14px;cursor:pointer}
+.uread-theme-toggle:hover{background:light-dark(#f3f4f6,#334155)}
+.uread-nav-search{display:flex;align-items:center;gap:.25rem}
+.uread-nav-search input{max-width:9rem;padding:.5rem .75rem;border:1px solid light-dark(#e5e7eb,#334155);border-radius:.5rem;font:inherit;font-size:14px;background:light-dark(#fff,#0f172a);color:light-dark(#17243A,#f1f5f9)}
+.uread-nav-search button{display:flex;align-items:center;justify-content:center;min-height:36px;min-width:36px;border:0;border-radius:.5rem;background:transparent;color:light-dark(#4b5563,#cbd5e1);cursor:pointer}
+.uread-nav-search button:hover{background:light-dark(#f3f4f6,#334155)}
+.uread-nav-search button svg{width:20px;height:20px}
+.uread-sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:900px){.uread-nav-search input{max-width:7rem}.uread-nav-link{padding:.5rem .65rem}}
+@media(max-width:640px){.uread-brand small{display:none}.uread-brand img{width:30px;height:30px}.uread-brand strong{font-size:17px}.uread-site-nav__inner{min-height:56px;padding:0 .75rem}.uread-nav-search{display:none}}
+</style>
+<nav aria-label="主导航" class="uread-site-nav">
+  <div class="uread-site-nav__inner">
+    <a class="uread-brand" href="/uRead/" aria-label="uRead 首页">
+      <img src="/uRead/brand/logo-symbol.svg" alt="">
+      <span><strong>uRead</strong><small>READ · REFLECT · REVISIT</small></span>
+    </a>
+    <div class="uread-nav-links">
+      <a class="uread-nav-link" href="/uRead/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2h-4v-7H9v7H5a2 2 0 0 1-2-2z"/></svg><span>首页</span></a>
+      <a class="uread-nav-link" href="/uRead/read/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h11a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2z"/><path d="M6 4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2M10 8h6M10 12h4"/><path d="m16 17 2-2 2 2-2 2z"/></svg><span>笔记</span></a>
+      <a class="uread-nav-link" href="/uRead/booklists/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span>书单</span></a>
+      <a class="uread-nav-link" href="/uRead/books/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14M12 7C9.5 5.5 6.5 5 3 6v13c3.5-1 6.5-.5 9 1 2.5-1.5 5.5-2 9-1V6c-3.5-1-6.5-.5-9 1Z"/></svg><span>书籍</span></a>
+      <a class="uread-nav-link" href="/uRead/workspace/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg><span>工作台</span></a>
+    </div>
+    <div class="uread-nav-actions">
+      <button class="uread-theme-toggle" type="button" aria-label="切换到夜间模式" title="切换到夜间模式">☾</button>
+      <form class="uread-nav-search" role="search" action="/uRead/find/" method="get">
+        <label for="uread-nav-q" class="uread-sr-only">搜索全部数据</label>
+        <input id="uread-nav-q" type="search" name="q" placeholder="搜索全部数据" aria-label="搜索全部数据">
+        <button type="submit" aria-label="提交搜索"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+      </form>
+    </div>
+  </div>
+</nav>
+<script>
+(function () {
+  var KEY = 'color-scheme';
+  var meta = document.querySelector('meta[name="color-scheme"]');
+  var button = document.querySelector('.uread-theme-toggle');
+  var system = function () { return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; };
+  var stored = null;
+  try { stored = localStorage.getItem(KEY); } catch (e) { /* 存储被禁用时仍可切换 */ }
+  var preference = stored === 'light' || stored === 'dark' ? stored : 'light dark';
+  var resolve = function (value) { return value === 'light dark' ? system() : value; };
+  var apply = function (value) {
+    preference = value;
+    if (meta) meta.setAttribute('content', value);
+    try {
+      if (value === 'light dark') localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, value);
+    } catch (e) { /* 同上 */ }
+    var dark = resolve(value) === 'dark';
+    var label = dark ? '切换到日间模式' : '切换到夜间模式';
+    button.textContent = dark ? '☀' : '☾';
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  };
+  button.addEventListener('click', function () {
+    var target = resolve(preference) === 'dark' ? 'light' : 'dark';
+    apply(target === system() ? 'light dark' : target);
+  });
+  apply(preference);
+
+  var path = location.pathname;
+  document.querySelectorAll('.uread-nav-link').forEach(function (link) {
+    var target = new URL(link.href, location.origin).pathname;
+    var active = target === '/uRead/' ? (path === '/uRead/' || path === '/uRead') : path.indexOf(target) === 0;
+    if (active) link.setAttribute('aria-current', 'page');
+  });
+})();
+</script>

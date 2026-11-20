@@ -8,6 +8,7 @@
  */
 
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 
 const sha12 = (value) => createHash('sha256').update(value).digest('hex').slice(0, 12);
 const norm = (value) => String(value ?? '').replace(/[《》\s]/g, '').toLowerCase();
@@ -128,21 +129,18 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 }[ch]));
 
-const SITE_NAV = `
-<nav aria-label="站点导航" style="border-bottom:1px solid var(--line);background:var(--surface);margin:-2rem -1rem 2rem;padding:.75rem 1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-  <a href="/uRead/" style="display:flex;align-items:center;gap:.5rem;font-weight:700;color:var(--navy)">
-    <img src="/uRead/brand/logo-symbol.svg" alt="" width="28" height="28">uRead
-  </a>
-  <a href="/uRead/read/">笔记</a><a href="/uRead/booklists/">书单</a><a href="/uRead/books/">书籍</a><a href="/uRead/find/">搜索</a>
-</nav>`;
-const STYLE = `:root{--navy:#17243A;--brand:#2457A6;--page:#F3F6FA;--line:#E2E8F0;--muted:#64748B;--surface:#fff}
-body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;color:var(--navy);background:var(--page)}
+// 与 React 顶部栏共用的站点导航（logo / 五栏目 / 图标 / 激活态），单一来源。
+const SITE_NAV = readFileSync(new URL('../book-library/site-nav.html', import.meta.url), 'utf8');
+const STYLE = `:root{--navy:light-dark(#17243A,#f1f5f9);--brand:light-dark(#2457A6,#93c5fd);--page:light-dark(#F3F6FA,#0f172a);--line:light-dark(#E2E8F0,#334155);--muted:light-dark(#64748B,#cbd5e1);--surface:light-dark(#fff,#1e293b)}
+body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;margin:0;padding:0;color:var(--navy);background:var(--page)}
+.uread-page{max-width:1000px;margin:2rem auto;padding:0 1rem}
 h1,h2{color:var(--navy)} a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
 .card{border:1px solid var(--line);border-radius:10px;padding:1rem;margin:.6rem 0;background:var(--surface);box-shadow:0 1px 2px rgba(23,36,58,.06)}
-.small{color:var(--muted);font-size:.85rem} mark{background:#DCE8F8}
-input{width:100%;max-width:32rem;padding:.6rem .8rem;border:1px solid #cbd5e1;border-radius:4px;font:inherit}
+.small{color:var(--muted);font-size:.85rem} mark{background:light-dark(#DCE8F8,#1e3a8a)}
+input{width:100%;max-width:32rem;padding:.6rem .8rem;border:1px solid light-dark(#cbd5e1,#475569);border-radius:4px;font:inherit;background:var(--surface);color:var(--navy)}
+.uread-nav-search input{width:auto}
 .cover{width:64px;height:92px;object-fit:cover;float:left;margin:0 1rem 1rem 0;border-radius:4px}
-@media(max-width:640px){body{margin:1rem auto}.cover{width:48px;height:70px}}`;
+@media(max-width:640px){.uread-page{margin:1rem auto}.cover{width:48px;height:70px}}`;
 
 export function renderBookIndex(books, libraryBooks = []) {
   const rows = books.map((book) => `
@@ -160,6 +158,7 @@ export function renderBookIndex(books, libraryBooks = []) {
 <meta property="og:image" content="https://zhubao315.github.io/uRead/brand/icon-512.png">
 <style>${STYLE}</style></head><body>
 ${SITE_NAV}
+<main class="uread-page">
 <p class="small"><a href="../">← 返回 uRead</a></p>
 <h1>书籍索引</h1>
 <p class="small">共 ${books.length} 条书籍记录。原始书名保留，同名不自动合并；没有关联笔记的书也如实列出。</p>
@@ -189,6 +188,7 @@ ${SITE_NAV}
     document.getElementById('empty').hidden = shown > 0;
   });
 </script>
+</main>
 </body></html>`;
 }
 
@@ -213,6 +213,7 @@ export function renderBookDetail(book) {
 <meta property="og:image" content="https://zhubao315.github.io/uRead/brand/icon-512.png">
 <style>${STYLE}</style></head><body>
 ${SITE_NAV}
+<main class="uread-page">
 <p class="small"><a href="../">← 书籍索引</a> · <a href="../../">uRead 首页</a></p>
 ${book.cover ? `<img class="cover" src="../${esc(book.cover)}" alt="">` : ''}
 <h1>${esc(book.original_title)}</h1>
@@ -221,5 +222,6 @@ ${aliases}
 ${reader}
 <h2>关联笔记</h2><ul>${notes}</ul>
 <h2>所属书单</h2><ul>${lists}</ul>
+</main>
 </body></html>`;
 }

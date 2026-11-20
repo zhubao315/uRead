@@ -5,26 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>在线阅读 · uRead 书库</title>
 <style>
-  body { font-family: system-ui, -apple-system, "PingFang SC", sans-serif; margin: 0; color: #1f2937; }
-  header { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .6rem .8rem; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: #fff; z-index: 2; }
-  header a { color: #1d4ed8; text-decoration: none; }
+  body { font-family: system-ui, -apple-system, "PingFang SC", sans-serif; margin: 0; color: light-dark(#1f2937,#f1f5f9); background: light-dark(#fff,#0f172a); }
+  .reader-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .6rem .8rem; border-bottom: 1px solid light-dark(#e5e7eb,#334155); position: sticky; top: 64px; background: light-dark(#fff,#1e293b); z-index: 2; }
+  .reader-bar a { color: light-dark(#1d4ed8,#93c5fd); text-decoration: none; }
   h1 { font-size: 1.05rem; margin: 0 1rem 0 0; }
-  button, select { font: inherit; min-height: 44px; min-width: 44px; padding: .4rem .7rem; border: 1px solid #d1d5db; border-radius: .5rem; background: #fff; cursor: pointer; }
+  button, select { font: inherit; min-height: 44px; min-width: 44px; padding: .4rem .7rem; border: 1px solid light-dark(#d1d5db,#475569); border-radius: .5rem; background: light-dark(#fff,#1e293b); color: inherit; cursor: pointer; }
   #toc { max-width: min(42vw, 14rem); }
-  button:hover, select:hover { background: #f3f4f6; }
-  #meta { color: #6b7280; font-size: .85rem; }
-  #stage { height: calc(100dvh - 132px); }
-  @media (max-width: 640px) { #stage { height: calc(100dvh - 176px); } h1 { width: 100%; } #progress { margin-left: auto; } }
+  button:hover, select:hover { background: light-dark(#f3f4f6,#334155); }
+  #meta { color: light-dark(#6b7280,#cbd5e1); font-size: .85rem; }
+  #stage { height: calc(100dvh - 120px); }
+  @media (max-width: 640px) { .reader-bar { top: 56px; } #stage { height: calc(100dvh - 168px); } h1 { width: 100%; } #progress { margin-left: auto; } }
   foliate-view { display: block; width: 100%; height: 100%; }
   iframe { width: 100%; height: 100%; border: 0; }
   #notice { padding: 1rem; color: #b91c1c; }
 </style>
 </head>
 <body>
-<header aria-label="站点导航">
-  <a href="/uRead/" style="display:flex;align-items:center;gap:.4rem;font-weight:700"><img src="/uRead/brand/logo-symbol.svg" alt="" width="24" height="24">uRead</a>
-  <a href="/uRead/read/">笔记</a><a href="/uRead/booklists/">书单</a><a href="/uRead/books/">书籍</a><a href="/uRead/find/">搜索</a>
-  <span aria-hidden="true">|</span>
+<!--SITE_NAV-->
+<header class="reader-bar" aria-label="阅读工具">
   <a href="index.html">← 书库</a>
   <h1 id="title">正在打开…</h1>
   <span id="meta"></span>

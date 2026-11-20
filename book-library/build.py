@@ -197,20 +197,16 @@ def write_outputs(records: list[dict]) -> None:
         for r in records
     ) or "<li>书库还没有书。</li>"
     (DIST / "library.html").write_text(INDEX_HTML.format(rows=rows, count=len(records), SITE_NAV=SITE_NAV), encoding="utf-8")
-    shutil.copy2(ROOT / "reader.html", DIST / "reader.html")
+    reader = (ROOT / "reader.html").read_text(encoding="utf-8")
+    assert "<!--SITE_NAV-->" in reader, "阅读器缺少站点导航占位符"
+    (DIST / "reader.html").write_text(reader.replace("<!--SITE_NAV-->", SITE_NAV), encoding="utf-8")
     assert 'id="book-search"' in (DIST / "library.html").read_text(encoding="utf-8"), "书库搜索框没进产物"
     print(f"书库已生成：{len(records)} 本，版本 {version}，产物 {DIST}")
 
 
 
-SITE_NAV = """
-<nav aria-label="站点导航" style="border-bottom:1px solid #E2E8F0;background:#fff;margin:-2rem -1rem 2rem;padding:.75rem 1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-  <a href="/uRead/" style="display:flex;align-items:center;gap:.5rem;font-weight:700;color:#17243A">
-    <img src="/uRead/brand/logo-symbol.svg" alt="" width="28" height="28">uRead
-  </a>
-  <a href="/uRead/read/">笔记</a><a href="/uRead/booklists/">书单</a><a href="/uRead/books/">书籍</a><a href="/uRead/find/">搜索</a>
-</nav>
-"""
+# 与 React 顶部栏共用的站点导航，单一来源，供书库目录与阅读器一起注入。
+SITE_NAV = (ROOT / "site-nav.html").read_text(encoding="utf-8")
 
 INDEX_HTML = """<!doctype html>
 <html lang="zh-CN">
@@ -219,20 +215,22 @@ INDEX_HTML = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>电子书库 · uRead</title>
 <style>
-body{{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1f2937}}
-h1{{font-size:1.8rem}} ul{{list-style:none;padding:0}} li{{border:1px solid #e5e7eb;border-radius:12px;padding:1rem;margin:.75rem 0}}
-a{{color:#1d4ed8;text-decoration:none}} a:hover{{text-decoration:underline}}
-li span{{display:block;color:#6b7280;font-size:.9rem;margin:.35rem 0}}
+body{{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;margin:0;padding:0;color:light-dark(#1f2937,#f1f5f9);background:light-dark(#fff,#0f172a)}}
+.uread-page{{max-width:860px;margin:2rem auto;padding:0 1rem}}
+h1{{font-size:1.8rem}} ul{{list-style:none;padding:0}} li{{border:1px solid light-dark(#e5e7eb,#334155);border-radius:12px;padding:1rem;margin:.75rem 0}}
+a{{color:light-dark(#1d4ed8,#93c5fd);text-decoration:none}} a:hover{{text-decoration:underline}}
+li span{{display:block;color:light-dark(#6b7280,#cbd5e1);font-size:.9rem;margin:.35rem 0}}
 .cover{{float:left;width:72px;height:100px;object-fit:cover;margin:0 1rem 1rem 0;border-radius:6px}}
 li:after{{content:"";display:block;clear:both}}
-.download{{font-size:.85rem}} footer{{margin-top:2rem;color:#6b7280;font-size:.8rem}}
-input[type=search]{{width:100%;max-width:24rem;padding:.55rem .8rem;border:1px solid #d1d5db;border-radius:.5rem;font:inherit;margin:.5rem 0 1rem}}
+.download{{font-size:.85rem}} footer{{margin-top:2rem;color:light-dark(#6b7280,#cbd5e1);font-size:.8rem}}
+input[type=search]{{width:100%;max-width:24rem;padding:.55rem .8rem;border:1px solid light-dark(#d1d5db,#475569);border-radius:.5rem;font:inherit;margin:.5rem 0 1rem;background:light-dark(#fff,#1e293b);color:inherit}}
 .sr-only{{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}}
 @media(max-width:640px){{h1{{font-size:1.5rem}} li{{padding:.8rem}}}}
 </style>
 </head>
 <body>
 {SITE_NAV}
+<main class="uread-page">
 <h1>可在线阅读的电子书</h1>
 <p>共 {count} 本。点击书名在线阅读；EPUB 在浏览器里排版，PDF 用浏览器自带阅读器。</p>
 <label for="book-search" class="sr-only">搜索书名或作者</label>
@@ -250,6 +248,7 @@ input[type=search]{{width:100%;max-width:24rem;padding:.55rem .8rem;border:1px s
   }});
 </script>
 <footer>只收录放书人声明有权公开分发的书。GitHub 对单文件 >50 MiB 会告警、>100 MiB 直接拦截。</footer>
+</main>
 </body>
 </html>
 """
