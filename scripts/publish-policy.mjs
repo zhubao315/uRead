@@ -63,3 +63,30 @@ export function audioOrphans(audioFiles, allowedSlugs, hashToSlug) {
     .filter((item) => !item.slug || !allowedSlugs.includes(item.slug))
     .map((item) => item.file);
 }
+
+/** 与已批准基线比较，只返回 slug / hash / path，不含正文。 */
+export function diffAgainstBaseline(notes, baseline) {
+  const before = new Map((baseline.notes ?? []).map((item) => [item.slug, item]));
+  const after = new Map(notes.map((note) => [note.slug, {
+    slug: note.slug,
+    content_hash: note.content_hash,
+    source_path: note.source_ref?.path ?? '',
+  }]));
+  const added = [];
+  const modified = [];
+  const removed = [];
+  for (const [slug, item] of after) {
+    if (!before.has(slug)) added.push(item);
+    else if (before.get(slug).content_hash !== item.content_hash) modified.push(item);
+  }
+  for (const [slug, item] of before) {
+    if (!after.has(slug)) removed.push(item);
+  }
+  return { added, modified, removed };
+}
+
+/** require_approval 真正生效：有未批准变更即阻断。 */
+export function approvalBlocked(policy, diff) {
+  return policy.require_approval === true
+    && (diff.added.length > 0 || diff.modified.length > 0 || diff.removed.length > 0);
+}

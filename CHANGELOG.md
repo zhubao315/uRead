@@ -2,6 +2,15 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.31.0] - 2026-11-20
+
+### 安全（专项 2）
+- `require_approval` 真正生效：新增独立 `publishing/approved-baseline.json`，普通盘点不再覆盖审批基线。
+- 新增 `publish:preview`（只看差异）与 `publish:approve`（必须显式 `APPROVE=1`，仅人工执行）。
+- 严格发布检查识别未批准的新增/修改/删除、新敏感命中与新孤儿音频；历史已批准内容仅提示，不擅自下线。
+- deploy 工作流在构建后执行 `verify:release` 与 `publish:check -- --strict`，失败即阻断 Pages 部署。
+- 新增 4 条审批单元测试；测试 215 → 219（30 文件）。
+
 ## [0.30.0] - 2026-11-20
 
 ### 修复（专项 1）

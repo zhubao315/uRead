@@ -15,11 +15,12 @@ import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { audioOrphans, evaluate } from './publish-policy.mjs';
+import { approvalBlocked, audioOrphans, diffAgainstBaseline, evaluate, scanSensitive } from './publish-policy.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POLICY = path.join(ROOT, 'publishing', 'policy.json');
 const NOTES = path.join(ROOT, 'public', 'notes', 'notes.json');
+const BASELINE = path.join(ROOT, 'publishing', 'approved-baseline.json');
 const AUDIO = path.join(ROOT, 'public', 'audio');
 const OUT = path.join(ROOT, 'publishing');
 
@@ -28,11 +29,17 @@ const write = args.includes('--write');
 const strict = args.includes('--strict');
 
 const policy = JSON.parse(await readFile(POLICY, 'utf8'));
+const baseline = JSON.parse(await readFile(BASELINE, 'utf8'));
 const notes = JSON.parse(await readFile(NOTES, 'utf8'));
 const audioFiles = await readdir(AUDIO).catch(() => []);
 const hashToSlug = Object.fromEntries(notes.map((note) => [note.content_hash, note.slug]));
 
 const result = evaluate(notes, policy);
+const diff = diffAgainstBaseline(notes, baseline);
+const changed = [...diff.added, ...diff.modified].map((item) => item.slug);
+const changedSensitive = notes
+  .filter((note) => changed.includes(note.slug))
+  .flatMap((note) => scanSensitive(note, policy).map((hit) => ({ rule: hit.rule, slug: note.slug })));
 const orphans = audioOrphans(
   audioFiles.filter((name) => name.endsWith('.wav')).map((name) => name.replace(/\.wav$/, '')),
   result.allowed,
@@ -47,6 +54,9 @@ const report = {
   blocked_count: result.blocked.length,
   sensitive_hits: result.sensitive.length,
   audio_orphans: orphans,
+  new_audio_orphans: orphans.filter((hash) => !(hash in (baseline.audio ?? {}))),
+  approval_diff: { added: diff.added.length, modified: diff.modified.length, removed: diff.removed.length },
+  changed_sensitive: changedSensitive,
   blocked: result.blocked,
   sensitive: result.sensitive.map((hit) => ({ rule: hit.rule, slug: hit.slug })),
   warning: policy.mode === 'allow_all_legacy'
@@ -56,7 +66,9 @@ const report = {
 
 console.log(`发布检查：${result.total} 篇笔记 / 允许 ${result.allowed.length} / 拦截 ${result.blocked.length}`);
 console.log(`  模式：${result.mode}${report.warning ? `（${report.warning}）` : ''}`);
-console.log(`  敏感命中：${result.sensitive.length} 处；孤儿音频：${orphans.length} 个`);
+console.log(`  敏感命中：${result.sensitive.length} 处（历史已批准仅提示；新增/修改 ${changedSensitive.length} 处）`);
+console.log(`  审批差异：新增 ${diff.added.length} / 修改 ${diff.modified.length} / 删除 ${diff.removed.length}`);
+console.log(`  孤儿音频：${orphans.length} 个（其中新出现 ${report.new_audio_orphans.length} 个）`);
 if (result.blocked.length) {
   console.log('  拦截样例（只列 slug，不列正文）：');
   for (const item of result.blocked.slice(0, 10)) console.log(`    - ${item.slug}（${item.reason}）`);
@@ -74,7 +86,8 @@ if (write) {
   console.log('  已写本地报告（不会发布到 Pages）');
 }
 
-if (strict && (result.blocked.length || orphans.length)) {
-  console.error('严格模式：发布检查未通过');
+const policyIssue = policy.mode !== 'allow_all_legacy' && result.blocked.length > 0;
+if (strict && (approvalBlocked(policy, diff) || changedSensitive.length > 0 || policyIssue || report.new_audio_orphans.length > 0)) {
+  console.error('严格模式：发布检查未通过（存在未审批变更 / 新敏感命中 / 策略拦截 / 新孤儿音频）');
   process.exit(1);
 }

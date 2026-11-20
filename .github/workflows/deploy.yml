@@ -40,6 +40,13 @@ jobs:
       - name: 构建（SPA）
         run: npm run build
 
+      - name: 内容完整性对账
+        run: npm run verify:release
+
+      - name: 发布治理严格检查
+        # 未审批的新增/修改笔记、新敏感命中、新孤儿音频会阻断部署
+        run: npm run publish:check -- --strict
+
       - name: 安装 Hugo Extended（文档站唯一构建依赖，OINK 主题不需要 Node）
         uses: peaceiris/actions-hugo@v3
         with:
