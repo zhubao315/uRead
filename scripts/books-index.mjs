@@ -144,7 +144,12 @@ export function renderBookIndex(books, libraryBooks = []) {
       <p class="small">${esc(book.author || '作者未标注')} · ${book.notes.length} 篇笔记 · ${book.lists.length} 份书单</p>
     </article>`).join('');
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>书籍索引 · uRead</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>书籍索引 · uRead</title>
+<meta name="description" content="uRead 个人阅读档案：按书名、作者与主题浏览公开读书笔记与电子书。">
+<link rel="canonical" href="https://zhubao315.github.io/uRead/books/">
+<meta property="og:title" content="书籍索引 · uRead">
+<meta property="og:image" content="https://zhubao315.github.io/uRead/brand/icon-512.png">
 <style>${STYLE}</style></head><body>
 <p class="small"><a href="../">← 返回 uRead</a></p>
 <h1>书籍索引</h1>
@@ -191,7 +196,12 @@ export function renderBookDetail(book) {
   const aliases = book.aliases.length ? `<p class="small">原始 wikilink：${book.aliases.map(esc).join(' / ')}</p>` : '';
   const reader = book.library_book_id ? `<p><a href="./reader.html?id=${encodeURIComponent(book.library_book_id)}">在线阅读原文 →</a></p>` : '';
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(book.original_title)} · uRead</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(book.original_title)} · uRead</title>
+<meta name="description" content="${esc(book.notes[0]?.excerpt?.slice(0, 120) || `${book.original_title} 的阅读档案、关联笔记与书单。`)}">
+<link rel="canonical" href="https://zhubao315.github.io/uRead/books/${book.id}/">
+<meta property="og:title" content="${esc(book.original_title)} · uRead">
+<meta property="og:image" content="https://zhubao315.github.io/uRead/brand/icon-512.png">
 <style>${STYLE}</style></head><body>
 <p class="small"><a href="../">← 书籍索引</a> · <a href="../../">uRead 首页</a></p>
 ${book.cover ? `<img class="cover" src="../${esc(book.cover)}" alt="">` : ''}

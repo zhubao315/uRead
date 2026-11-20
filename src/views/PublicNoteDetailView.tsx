@@ -37,6 +37,11 @@ const PublicNoteDetailView: React.FC = () => {
 
   const progressKey = note ? `uread:audio:${note.content_hash}` : '';
   const player = useSpeechPlayer(note?.body ?? '', note?.slug ?? '');
+  useEffect(() => {
+    if (!note) return;
+    document.title = `${note.title} · uRead 读书笔记`;
+    return () => { document.title = 'uRead · 个人阅读档案与知识沉淀'; };
+  }, [note]);
   // 续播点只在用户真正听过之后才写：没听过的笔记不该被记成 0 秒。
 
   const headings = useMemo(() =>
