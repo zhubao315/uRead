@@ -26,7 +26,8 @@ const PublicNoteDetailView: React.FC = () => {
       setNote(detail);
       setLoading(false);
     });
-    void loadNoteIndex().then((items) => {
+    // 相关笔记只是增强，用 low 优先级抓取，别和正文/样式抢带宽。
+    void loadNoteIndex('low').then((items) => {
       if (!alive) return;
       setPool(items.map((item) => ({
         slug: item.slug, title: item.title, category: item.category, tags: item.tags, aliases: item.aliases,
