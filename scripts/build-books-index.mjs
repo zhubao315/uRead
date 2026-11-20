@@ -18,7 +18,7 @@ const { books, summary } = buildBookCatalog(notes, [...themes, ...booklists], li
 
 const DIST_BOOKS = path.join(ROOT, 'dist', 'books');
 await mkdir(DIST_BOOKS, { recursive: true });
-await writeFile(path.join(DIST_BOOKS, 'index.html'), renderBookIndex(books), 'utf8');
+await writeFile(path.join(DIST_BOOKS, 'index.html'), renderBookIndex(books, library), 'utf8');
 await writeFile(path.join(DIST_BOOKS, 'aggregate.json'), JSON.stringify({
   generated_at: new Date().toISOString(),
   summary,
