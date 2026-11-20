@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "note": "首页编辑配置：按 ID 选内容；ID 失效时回退到真实数据的前若干项。",
+  "featured_booklist_ids": [
+    "72ea28d70ac7",
+    "b7c61632855c",
+    "1789d1068c78",
+    "392eb891eb74",
+    "847f1a40d87b",
+    "e5034b910d65"
+  ],
+  "featured_theme_ids": [
+    "11c853041286",
+    "a204468defe7",
+    "b2bc8cf0f183",
+    "cb9edbb77fcb",
+    "4938b067c405",
+    "206bdffae9b8"
+  ],
+  "featured_book_ids": [
+    "9ffb4f5b6fd2",
+    "5c4719bf6934",
+    "8c4f200c6492",
+    "69c1ec67140e",
+    "68e340f1b5f9",
+    "08bbd1b7188e"
+  ]
+}
