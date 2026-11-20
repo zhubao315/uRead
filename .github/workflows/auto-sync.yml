@@ -38,6 +38,9 @@ jobs:
           npm run notes:sync -- --no-audio
           npm run lists:sync
 
+      - name: 构建站点产物
+        run: npm run build
+
       - name: 重建内容基线与书籍索引
         run: |
           npm run content:inventory
@@ -49,7 +52,6 @@ jobs:
           npm run typecheck
           npm run lint
           npm test
-          npm run build
           npm run docs:build
           npm run docs:check
 
