@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { SITE_BASE } from '../config';
 import { loadNoteIndex, type NoteIndexItem } from '../data/publicNotes';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
-import { ArrowRightIcon, BookOpenIcon, HeadphonesIcon, ListIcon, NotebookPenIcon, SearchIcon, TagsIcon } from '../components/icons';
+import { ArrowRightIcon, HeadphonesIcon, ListIcon, NotebookPenIcon, SearchIcon, TagsIcon } from '../components/icons';
+import BookCover from '../components/media/BookCover';
 
 interface HomeBook { id: string; title: string; author: string; format: string; cover: string; }
 interface HomeState {
@@ -31,7 +32,7 @@ const ContentHomeView: React.FC = () => {
       loadPublicLists(),
       fetch(`${SITE_BASE}publishing/homepage.json`, { cache: 'no-store' }).catch(() => null),
       fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
-    ]).then(async ([notes, lists, booksResponse, configResponse]) => {
+    ]).then(async ([notes, lists, configResponse, booksResponse]) => {
       const aggregate = booksResponse?.ok ? await booksResponse.json() : null;
       const books: HomeBook[] = aggregate?.books ?? [];
       if (!alive) return;
@@ -113,15 +114,9 @@ const ContentHomeView: React.FC = () => {
           </p>
         </div>
         <div className="hidden lg:grid grid-cols-2 gap-3" aria-hidden="true">
-          {state.books.slice(0, 4).map((book) => (
-            <div key={book.id} className="aspect-[2/3] rounded-lg border border-border bg-white p-3 shadow-card">
-              {book.cover ? <img loading="lazy" decoding="async" src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-full w-full rounded object-cover" /> : (
-                <div className="flex h-full flex-col justify-between">
-                  <span className="text-[10px] font-semibold tracking-widest text-gold">uREAD ARCHIVE</span>
-                  <span className="font-editorial text-sm leading-snug text-navy">{book.title}</span>
-                  <span className="text-[10px] text-muted">{book.author}</span>
-                </div>
-              )}
+          {featuredBooks.slice(0, 4).map((book) => (
+            <div key={book.id} className="aspect-[2/3] rounded-lg border border-border bg-white p-2 shadow-card">
+              <BookCover id={book.id} title={book.title} author={book.author} realCover={book.cover} className="h-full w-full rounded" />
             </div>
           ))}
         </div>
@@ -194,7 +189,7 @@ const ContentHomeView: React.FC = () => {
           {featuredBooks.map((book) => (
             <a key={book.id} href={`${SITE_BASE}books/${book.id}/`}
               className="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-card hover:border-brand">
-              {book.cover ? <img loading="lazy" decoding="async" src={`${SITE_BASE}books/${book.cover}`} alt="" className="h-24 w-16 rounded object-cover" /> : <BookOpenIcon size="lg" className="shrink-0 text-brand" />}
+              <BookCover id={book.id} title={book.title} author={book.author} realCover={book.cover} className="h-24 w-16 shrink-0 rounded" />
               <div>
                 <h3 className="font-editorial text-base text-navy">{book.title}</h3>
                 <p className="mt-1 text-sm text-muted">{book.author || '作者未标注'}</p>

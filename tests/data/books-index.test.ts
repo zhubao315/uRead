@@ -63,13 +63,16 @@ describe('书籍索引聚合', () => {
     expect(html).toContain('可在线阅读的电子书');
   });
 
-  it('详情页面不含假封面，空关联给出真实空状态', () => {
+  it('无真实封面时展示 uRead 主题视觉（不冒充出版封面），空关联给出真实空状态', () => {
     const book = {
       ...buildBookCatalog([note('a', '无封面书')], []).books[0],
       notes: [], cover: '',
     };
     const html = renderBookDetail(book);
     expect(html).toContain('这本书还没有关联笔记');
-    expect(html).not.toContain('<img class="cover"');
+    // 生成封面是 uRead 主题视觉，路径明确，不能伪装成真实出版封面。
+    expect(html).toContain('<img class="cover"');
+    expect(html).toContain('../../media/books/');
+    expect(html).not.toContain('真实出版封面');
   });
 });

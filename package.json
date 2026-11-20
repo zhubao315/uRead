@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run build:publish-config && npm run books:build && npm run books:index && npm run build:fallbacks && npm run build:discovery",
+    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run build:publish-config && npm run books:build && npm run books:index && npm run media:build && npm run build:fallbacks && npm run build:discovery",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -33,7 +33,10 @@
     "publish:preview": "node scripts/publish-preview.mjs",
     "publish:approve": "node scripts/publish-approve.mjs",
     "build:discovery": "node scripts/build-discovery.mjs",
-    "build:publish-config": "node scripts/copy-publish-config.mjs"
+    "build:publish-config": "node scripts/copy-publish-config.mjs",
+    "media:audit": "node scripts/media-audit.mjs",
+    "media:validate": "node scripts/media-validate.mjs",
+    "media:build": "node scripts/media-build.mjs"
   },
   "keywords": [
     "reading",

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://zhubao315.github.io/uRead/media/manifest.schema.json",
+  "title": "uRead curated media manifest",
+  "type": "object",
+  "required": ["schema_version", "assets"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "note": { "type": "string" },
+    "assets": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/definitions/asset" }
+    }
+  },
+  "definitions": {
+    "asset": {
+      "type": "object",
+      "required": ["type", "src", "source_type", "alt", "is_official_cover", "is_ai_generated", "review_status"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["book", "booklist", "theme", "category", "note", "fallback"] },
+        "src": { "type": "string", "minLength": 1, "description": "本地路径（相对 dist）或 https URL" },
+        "source_type": { "enum": ["licensed", "ai_generated", "generated_svg", "official_cover"] },
+        "source_url": { "type": "string" },
+        "license": { "type": "string" },
+        "attribution": { "type": "string" },
+        "alt": { "type": "string", "minLength": 1 },
+        "is_official_cover": { "type": "boolean" },
+        "is_ai_generated": { "type": "boolean" },
+        "review_status": { "enum": ["approved", "pending", "rejected"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "source_type": { "const": "ai_generated" } } },
+          "then": { "properties": { "is_ai_generated": { "const": true }, "is_official_cover": { "const": false } } }
+        },
+        {
+          "if": { "properties": { "is_official_cover": { "const": true } } },
+          "then": { "properties": { "is_ai_generated": { "const": false } } }
+        }
+      ]
+    }
+  }
+}

@@ -131,6 +131,14 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({
 
 // 与 React 顶部栏共用的站点导航（logo / 五栏目 / 图标 / 激活态），单一来源。
 const SITE_NAV = readFileSync(new URL('../book-library/site-nav.html', import.meta.url), 'utf8');
+
+/** 静态书页封面：真实 EPUB 封面优先，否则用 media:build 生成的确定性 SVG 主题视觉。 */
+const bookCover = (book, realPrefix, mediaPrefix) => {
+  const src = book.cover
+    ? `${realPrefix}${esc(book.cover)}`
+    : `${mediaPrefix}media/books/${encodeURIComponent(book.id)}.svg`;
+  return `<img class="cover" src="${src}" alt="" width="64" height="92" loading="lazy" decoding="async">`;
+};
 const STYLE = `:root{--navy:light-dark(#17243A,#f1f5f9);--brand:light-dark(#2457A6,#93c5fd);--page:light-dark(#F3F6FA,#0f172a);--line:light-dark(#E2E8F0,#334155);--muted:light-dark(#64748B,#cbd5e1);--surface:light-dark(#fff,#1e293b)}
 body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;margin:0;padding:0;color:var(--navy);background:var(--page)}
 .uread-page{max-width:1000px;margin:2rem auto;padding:0 1rem}
@@ -145,7 +153,7 @@ input{width:100%;max-width:32rem;padding:.6rem .8rem;border:1px solid light-dark
 export function renderBookIndex(books, libraryBooks = []) {
   const rows = books.map((book) => `
     <article class="card" data-search="${esc(`${book.original_title} ${book.author} ${book.aliases.join(' ')}`.toLowerCase())}">
-      ${book.cover ? `<img class="cover" src="./${esc(book.cover)}" alt="">` : ''}
+      ${bookCover(book, './', '../')}
       <h2><a href="./${book.id}/">${esc(book.original_title)}</a></h2>
       <p class="small">${esc(book.author || '作者未标注')} · ${book.notes.length} 篇笔记 · ${book.lists.length} 份书单</p>
     </article>`).join('');
@@ -215,7 +223,7 @@ export function renderBookDetail(book) {
 ${SITE_NAV}
 <main class="uread-page">
 <p class="small"><a href="../">← 书籍索引</a> · <a href="../../">uRead 首页</a></p>
-${book.cover ? `<img class="cover" src="../${esc(book.cover)}" alt="">` : ''}
+${bookCover(book, '../', '../../')}
 <h1>${esc(book.original_title)}</h1>
 <p class="small">作者：${esc(book.author || '未标注')} · ${book.notes.length} 篇笔记 · ${book.lists.length} 份书单${book.format ? ` · ${esc(book.format.toUpperCase())}` : ''}</p>
 ${aliases}
