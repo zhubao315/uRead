@@ -171,7 +171,7 @@ const Dashboard: React.FC = () => {
         <div className="grid gap-4 md:grid-cols-2">
           <Link to="/read" className="rounded-2xl border border-blue-200 bg-blue-50 p-6 hover:border-blue-400">
             <h3 className="flex items-center gap-2 text-lg font-semibold text-navy"><NotebookPenIcon size="md" />公开读书笔记</h3>
-            <p className="mt-2 text-sm text-gray-700">从 Obsidian 私库同步的 1634 篇笔记：按类浏览、全文检索、点开能看到原文锚点；其中 10 篇可以直接听。</p>
+            <p className="mt-2 text-sm text-gray-700">从 Obsidian 私库同步的公开笔记：按类浏览、全文检索、点开能看到原文锚点；有音频的可以直接听。</p>
             <span className="mt-3 inline-block text-sm font-medium text-blue-700">去浏览 →</span>
           </Link>
           <a href={`${SITE_BASE}books/`} className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 hover:border-emerald-400">
