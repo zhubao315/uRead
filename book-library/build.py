@@ -7,7 +7,8 @@
   * 版权由放书的人负责：README 里写明「只放你有权公开分发的书」。
   * 大文件硬线：GitHub 单文件 >100 MiB 直接拦截、>50 MiB 告警；超线拒绝生成并点名文件。
 
-产物：uRead/dist/books/{index.html,reader.html,catalog.json,books/*,vendor/foliate-js/*}
+产物：uRead/dist/books/{library.html,reader.html,catalog.json,books/*,vendor/foliate-js/*}
+注意：index.html 由 scripts/build-books-index.mjs 生成，避免覆盖。
 """
 
 from __future__ import annotations
@@ -195,9 +196,9 @@ def write_outputs(records: list[dict]) -> None:
         )
         for r in records
     ) or "<li>书库还没有书。</li>"
-    (DIST / "index.html").write_text(INDEX_HTML.format(rows=rows, count=len(records)), encoding="utf-8")
+    (DIST / "library.html").write_text(INDEX_HTML.format(rows=rows, count=len(records)), encoding="utf-8")
     shutil.copy2(ROOT / "reader.html", DIST / "reader.html")
-    assert 'id="book-search"' in (DIST / "index.html").read_text(encoding="utf-8"), "书库搜索框没进产物"
+    assert 'id="book-search"' in (DIST / "library.html").read_text(encoding="utf-8"), "书库搜索框没进产物"
     print(f"书库已生成：{len(records)} 本，版本 {version}，产物 {DIST}")
 
 
@@ -206,7 +207,7 @@ INDEX_HTML = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>uRead 书库</title>
+<title>电子书库 · uRead</title>
 <style>
 body{{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1f2937}}
 h1{{font-size:1.8rem}} ul{{list-style:none;padding:0}} li{{border:1px solid #e5e7eb;border-radius:12px;padding:1rem;margin:.75rem 0}}
@@ -221,7 +222,7 @@ input[type=search]{{width:100%;max-width:24rem;padding:.55rem .8rem;border:1px s
 </style>
 </head>
 <body>
-<h1>uRead 书库</h1>
+<h1>可在线阅读的电子书</h1>
 <p>共 {count} 本。点击书名在线阅读；EPUB 在浏览器里排版，PDF 用浏览器自带阅读器。</p>
 <label for="book-search" class="sr-only">搜索书名或作者</label>
 <input id="book-search" type="search" placeholder="搜索书名或作者" aria-label="搜索书名或作者" autocomplete="off">
