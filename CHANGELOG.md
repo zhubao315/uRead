@@ -2,6 +2,13 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.29.0] - 2026-11-20
+
+### 新增
+- GitHub Actions `auto-sync.yml`：每日定时 + 手动触发，从私库同步笔记/栏目，重建基线与书籍索引，跑门禁后提交产物并派发 Pages 部署。
+- 仓库 Secret `OBSIDIAN_TOKEN` 用于私库只读访问；token 不进代码与产物。
+- 自动同步使用 `--no-audio`，TTS 停机期间只同步正文。
+
 ## [0.28.0] - 2026-11-20
 
 ### 同步
