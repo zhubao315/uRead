@@ -15,7 +15,7 @@ const aggregate = await readJson('dist/books/aggregate.json');
 
 const problems = [...compareBaseline(inventory, baseline)];
 if (notesManifest.note_count !== inventory.counts.notes) problems.push('笔记 manifest 数量与盘点不一致');
-if (notesManifest.audio_count !== inventory.counts.audio_files) problems.push('音频 manifest 数量与盘点不一致');
+if (notesManifest.audio_count !== inventory.counts.notes_with_audio) problems.push('音频 manifest 数量与笔记实际引用不一致');
 if (listsManifest.theme_count !== inventory.counts.themes) problems.push('主题 manifest 数量与盘点不一致');
 if (listsManifest.booklist_count !== inventory.counts.booklists) problems.push('书单 manifest 数量与盘点不一致');
 const fallbackCount = (await readdir(path.join(ROOT, 'dist/read'), { recursive: true }))
@@ -37,7 +37,8 @@ const lines = [
   `| 笔记 | ${baseline.counts.notes} | ${inventory.counts.notes} | ${baseline.counts.notes === inventory.counts.notes ? '一致' : '不一致'} |`,
   `| 主题 | ${baseline.counts.themes} | ${inventory.counts.themes} | ${baseline.counts.themes === inventory.counts.themes ? '一致' : '不一致'} |`,
   `| 书单 | ${baseline.counts.booklists} | ${inventory.counts.booklists} | ${baseline.counts.booklists === inventory.counts.booklists ? '一致' : '不一致'} |`,
-  `| 音频 | ${baseline.counts.audio_files} | ${inventory.counts.audio_files} | ${baseline.counts.audio_files === inventory.counts.audio_files ? '一致' : '不一致'} |`,
+  `| 音频（笔记引用） | ${baseline.counts.audio_files} | ${inventory.counts.notes_with_audio} | ${baseline.counts.audio_files === inventory.counts.notes_with_audio ? '一致' : '不一致'} |`,
+  `| 孤儿音频文件 | - | ${inventory.counts.audio_files - inventory.counts.notes_with_audio} | 仅提示，不判红 |`,
   `| 逐项哈希 | ${baseline.hashes.notes.length + baseline.hashes.lists.length + baseline.hashes.audio.length} 项 | 逐项比对 | ${problems.length ? '有差异' : '全部一致'} |`,
   `| 深链回退 | ≥${inventory.counts.notes} | ${fallbackCount} | ${fallbackCount >= inventory.counts.notes ? '通过' : '未通过'} |`,
   `| 书籍索引 | ≥${inventory.counts.booklist_items} | ${aggregate.summary.book_count} | ${aggregate.summary.book_count >= inventory.counts.booklist_items ? '通过' : '未通过'} |`,
