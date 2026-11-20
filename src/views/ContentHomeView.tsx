@@ -14,12 +14,13 @@ interface HomeState {
   booklists: PublicList[];
   books: HomeBook[];
   generated_at: string;
+  config: { featured_booklist_ids: string[]; featured_theme_ids: string[]; featured_book_ids: string[] } | null;
 }
 
 /** 公开站首页：编辑式数字阅读杂志，只展示真实产物。 */
 const ContentHomeView: React.FC = () => {
   const [state, setState] = useState<HomeState>({
-    ready: false, notes: [], audio: 0, themes: [], booklists: [], books: [], generated_at: '',
+    ready: false, notes: [], audio: 0, themes: [], booklists: [], books: [], generated_at: '', config: null,
   });
   const [query, setQuery] = useState('');
 
@@ -28,8 +29,9 @@ const ContentHomeView: React.FC = () => {
     void Promise.all([
       loadNoteIndex(),
       loadPublicLists(),
+      fetch(`${SITE_BASE}publishing/homepage.json`, { cache: 'no-store' }).catch(() => null),
       fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
-    ]).then(async ([notes, lists, booksResponse]) => {
+    ]).then(async ([notes, lists, booksResponse, configResponse]) => {
       const aggregate = booksResponse?.ok ? await booksResponse.json() : null;
       const books: HomeBook[] = aggregate?.books ?? [];
       if (!alive) return;
@@ -41,13 +43,19 @@ const ContentHomeView: React.FC = () => {
         booklists: lists.booklists,
         books,
         generated_at: lists.manifest?.generated_at ?? '',
+        config: configResponse?.ok ? await configResponse.json() : null,
       });
     });
     return () => { alive = false; };
   }, []);
 
-  const featured = useMemo(() => state.booklists.slice(0, 6), [state.booklists]);
-  const featuredBooks = useMemo(() => state.books.slice(0, 6), [state.books]);
+  const pick = <T extends { id: string }>(items: T[], ids: string[] | undefined, limit: number) => {
+    const byId = new Map(items.map((item) => [item.id, item]));
+    const chosen = (ids ?? []).map((id) => byId.get(id)).filter((item): item is T => !!item);
+    return (chosen.length ? chosen : items).slice(0, limit);
+  };
+  const featured = useMemo(() => pick(state.booklists, state.config?.featured_booklist_ids, 6), [state.booklists, state.config]);
+  const featuredBooks = useMemo(() => pick(state.books, state.config?.featured_book_ids, 6), [state.books, state.config]);
   const latest = useMemo(() =>
     [...state.notes]
       .sort((a, b) => (b.updated || '').localeCompare(a.updated || ''))
