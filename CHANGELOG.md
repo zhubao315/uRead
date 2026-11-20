@@ -2,6 +2,14 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.30.0] - 2026-11-20
+
+### 修复（专项 1）
+- 解决 `books:build` 与 `books:index` 争写 `dist/books/index.html`：电子书目录改到 `library.html`，聚合首页同时展示书籍档案与电子书库入口，reader.html 与原始 EPUB/PDF 不再被覆盖。
+- 书籍聚合新增 `library_book_id`，只有与 catalog 真实匹配才生成在线阅读链接；不再用聚合 ID 冒充文件 ID。
+- 新增 2 条单元测试与 4 条 E2E（真实点击阅读器、核对 catalog ID、两个入口互不覆盖）。
+- 落 Phase 0 审计三件套：`docs/audit/2026-11-20-{current-state,issues,risk-register}.md`。
+
 ## [0.29.0] - 2026-11-20
 
 ### 新增
