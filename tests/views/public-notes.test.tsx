@@ -52,7 +52,13 @@ const manifest = {
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn(async (input: string) => {
     const url = String(input);
-    const body = url.includes('manifest.json') ? manifest : [noteA, noteB];
+    const body = url.includes('slugs.json')
+      ? { [noteA.slug]: noteA.content_hash, [noteB.slug]: noteB.content_hash }
+      : url.includes('/detail/hash-aaaa.json') ? noteA
+        : url.includes('/detail/hash-bbbb.json') ? noteB
+          : url.includes('index.json')
+            ? [noteA, noteB].map((n) => ({ ...n, excerpt: n.body.slice(0, 60), source_path: n.source_ref.path }))
+            : url.includes('manifest.json') ? manifest : [noteA, noteB];
     return { ok: true, status: 200, json: async () => body } as Response;
   }));
 });

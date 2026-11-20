@@ -1,0 +1,27 @@
+{
+  "slug": "B9-哲学宗教__《剑桥哲学研究指针_认识论》-奥迪",
+  "title": "《剑桥哲学研究指针_认识论》-奥迪",
+  "author": "奥迪",
+  "category": "B9-哲学宗教",
+  "created": "2026-05-14",
+  "updated": "2026-07-17",
+  "source": "微信读书",
+  "status": "已读",
+  "tags": [
+    "维度/哲学",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "《剑桥哲学研究指针_认识论》",
+    "剑桥哲学研究指针_认识论"
+  ],
+  "body": "\n# 《剑桥哲学研究指针：认识论》 (Epistemology: A Contemporary Introduction)\n## Robert Audi\n\n> \"A comprehensive map of the territory.\"\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这本书？ (Why this book?)**\n这是一本工具书，一张详尽的地图。它列出了当代认识论的所有主要流派：基础主义、融贯主义、内在主义、外在主义……\n作为架构师，你不需要信奉每一个流派，但你需要知道它们的存在，以便在设计系统时选择最合适的**验证策略 (Validation Strategy)**。\n\n**核心拷问 (The First Question)**\nAudi 讨论了\"知识的结构\"。\n**Le Miroir 问你**：你的 Knowledge Graph 是基于**基础主义**（所有节点最终指向几个公理节点），还是**融贯主义**（节点之间互相支撑，没有绝对基础）？目前的 Web 3.0 和 Decentralized Identity 似乎更倾向于融贯主义。\n---\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. 基础主义 (Foundationalism)\n*   **观点**：知识像金字塔，必须建立在不可动摇的地基（如笛卡尔的我思，或直接感知）之上。\n*   **System 2 思考**：这对应 **Rule-Based System** 或 **Axiomatic Logic**。\n\n### 2. 融贯主义 (Coherentism)\n*   **观点**：知识像一张网 (Web) 或一艘在海上修补的船 (Neurath's Boat)。只要信念之间不矛盾，就是合理的。\n*   **System 2 思考**：这对应 **Neural Networks** 或 **Bayesian Networks**。没有绝对真理，只有概率的一致性。\n\n### 3. 内在主义 vs. 外在主义\n*   **内在主义**：辩护必须是主体能意识到的（Internal Access）。\n*   **外在主义**：只要产生信念的过程是可靠的（Reliable Process），就是知识，主体不需要知道为什么。\n*   **System 2 思考**：这是 **Explainable AI (内在)** vs **Black Box AI (外在)** 的哲学根源。\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **知觉** | 也就是 Perception。 | Computer Vision。 |\n| **记忆** | Memory。 | Database & Vector Store。 |\n| **归纳** | Induction。 | Machine Learning Training。 |\n| **先验知识** | A Priori。 | Pre-trained Models / Architecture Bias。 |\n\n---\n**Status**: ⚪ To Be Started\n\n## 相关笔记\n\n- [[知识产权顾问技能]]\n- [[人生文件夹：从 CompanyOS 到 LifeOS - 将文件系统哲学应用于人生管理]]\n- [[微服务课程准备笔记]]\n",
+  "source_ref": {
+    "path": "B9-哲学宗教/《剑桥哲学研究指针_认识论》-奥迪.md",
+    "sha": "685426385508f49e6cef4cc2bb0bdcb1c11981e3",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B9-%E5%93%B2%E5%AD%A6%E5%AE%97%E6%95%99/%E3%80%8A%E5%89%91%E6%A1%A5%E5%93%B2%E5%AD%A6%E7%A0%94%E7%A9%B6%E6%8C%87%E9%92%88_%E8%AE%A4%E8%AF%86%E8%AE%BA%E3%80%8B-%E5%A5%A5%E8%BF%AA.md"
+  },
+  "content_hash": "8f97991f266bfd25",
+  "audio": false
+}

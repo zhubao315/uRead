@@ -128,6 +128,13 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 }[ch]));
 
+const SITE_NAV = `
+<nav aria-label="站点导航" style="border-bottom:1px solid var(--line);background:var(--surface);margin:-2rem -1rem 2rem;padding:.75rem 1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+  <a href="/uRead/" style="display:flex;align-items:center;gap:.5rem;font-weight:700;color:var(--navy)">
+    <img src="/uRead/brand/logo-symbol.svg" alt="" width="28" height="28">uRead
+  </a>
+  <a href="/uRead/read/">笔记</a><a href="/uRead/booklists/">书单</a><a href="/uRead/books/">书籍</a><a href="/uRead/find/">搜索</a>
+</nav>`;
 const STYLE = `:root{--navy:#17243A;--brand:#2457A6;--page:#F3F6FA;--line:#E2E8F0;--muted:#64748B;--surface:#fff}
 body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;color:var(--navy);background:var(--page)}
 h1,h2{color:var(--navy)} a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
@@ -145,13 +152,14 @@ export function renderBookIndex(books, libraryBooks = []) {
       <p class="small">${esc(book.author || '作者未标注')} · ${book.notes.length} 篇笔记 · ${book.lists.length} 份书单</p>
     </article>`).join('');
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>书籍索引 · uRead</title>
 <meta name="description" content="uRead 个人阅读档案：按书名、作者与主题浏览公开读书笔记与电子书。">
 <link rel="canonical" href="https://zhubao315.github.io/uRead/books/">
 <meta property="og:title" content="书籍索引 · uRead">
 <meta property="og:image" content="https://zhubao315.github.io/uRead/brand/icon-512.png">
 <style>${STYLE}</style></head><body>
+${SITE_NAV}
 <p class="small"><a href="../">← 返回 uRead</a></p>
 <h1>书籍索引</h1>
 <p class="small">共 ${books.length} 条书籍记录。原始书名保留，同名不自动合并；没有关联笔记的书也如实列出。</p>
@@ -197,13 +205,14 @@ export function renderBookDetail(book) {
   const aliases = book.aliases.length ? `<p class="small">原始 wikilink：${book.aliases.map(esc).join(' / ')}</p>` : '';
   const reader = book.library_book_id ? `<p><a href="./reader.html?id=${encodeURIComponent(book.library_book_id)}">在线阅读原文 →</a></p>` : '';
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>${esc(book.original_title)} · uRead</title>
 <meta name="description" content="${esc(book.notes[0]?.excerpt?.slice(0, 120) || `${book.original_title} 的阅读档案、关联笔记与书单。`)}">
 <link rel="canonical" href="https://zhubao315.github.io/uRead/books/${book.id}/">
 <meta property="og:title" content="${esc(book.original_title)} · uRead">
 <meta property="og:image" content="https://zhubao315.github.io/uRead/brand/icon-512.png">
 <style>${STYLE}</style></head><body>
+${SITE_NAV}
 <p class="small"><a href="../">← 书籍索引</a> · <a href="../../">uRead 首页</a></p>
 ${book.cover ? `<img class="cover" src="../${esc(book.cover)}" alt="">` : ''}
 <h1>${esc(book.original_title)}</h1>

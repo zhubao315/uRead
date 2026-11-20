@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SafeMarkdown, { headingId, type WikilinkMap } from '../components/SafeMarkdown';
 import { SITE_BASE } from '../config';
-import { loadPublicNotes, type PublicNote, type PublicNotesResult } from '../data/publicNotes';
+import { loadNoteDetail, loadNoteIndex, type PublicNote } from '../data/publicNotes';
 import { SECTION_LABEL, splitNoteSections } from '../domain/note-sections';
 import { relatedNotes } from '../domain/note-relations';
 import { useSpeechPlayer } from '../hooks/useSpeechPlayer';
@@ -11,7 +11,8 @@ import { HeadphonesIcon } from '../components/icons';
 /** 公开笔记详情：正文只读渲染，音频只在确实生成过时显示播放器。 */
 const PublicNoteDetailView: React.FC = () => {
   const { slug = '' } = useParams();
-  const [result, setResult] = useState<PublicNotesResult | null>(null);
+  const [note, setNote] = useState<PublicNote | null>(null);
+  const [pool, setPool] = useState<Array<{ slug: string; title: string; category: string; tags: string[]; aliases: string[] }>>([]);
   const [loading, setLoading] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [speed, setSpeed] = useState(1);
@@ -19,21 +20,20 @@ const PublicNoteDetailView: React.FC = () => {
 
   useEffect(() => {
     let alive = true;
-    void loadPublicNotes().then((next) => {
-      if (alive) {
-        setResult(next);
-        setLoading(false);
-      }
+    // 正文先到先渲染；相关笔记是增强，不应阻塞阅读。
+    void loadNoteDetail(slug).then((detail) => {
+      if (!alive) return;
+      setNote(detail);
+      setLoading(false);
     });
-    return () => {
-      alive = false;
-    };
-  }, []);
-
-  const note = useMemo(
-    () => (result?.notes ?? []).find((item) => item.slug === slug) ?? null,
-    [result, slug],
-  );
+    void loadNoteIndex().then((items) => {
+      if (!alive) return;
+      setPool(items.map((item) => ({
+        slug: item.slug, title: item.title, category: item.category, tags: item.tags, aliases: item.aliases,
+      })));
+    });
+    return () => { alive = false; };
+  }, [slug]);
 
   const progressKey = note ? `uread:audio:${note.content_hash}` : '';
   const player = useSpeechPlayer(note?.body ?? '', note?.slug ?? '');
@@ -54,18 +54,18 @@ const PublicNoteDetailView: React.FC = () => {
   const related = useMemo(() => note
     ? relatedNotes(
         { slug: note.slug, title: note.title, category: note.category, tags: note.tags },
-        (result?.notes ?? []).map((item) => ({ slug: item.slug, title: item.title, category: item.category, tags: item.tags })),
+        pool,
       )
-    : [], [note, result]);
+    : [], [note, pool]);
 
   const links = useMemo<WikilinkMap>(() => {
     const map: WikilinkMap = {};
-    const register = (key: string, target: PublicNote) => {
+    const register = (key: string, target: { slug: string }) => {
       if (key) {
         map[key] = target.slug;
       }
     };
-    for (const item of result?.notes ?? []) {
+    for (const item of pool) {
       register(item.slug, item);
       register(item.slug.split('__').pop() ?? '', item);
       register(item.title, item);
@@ -74,9 +74,9 @@ const PublicNoteDetailView: React.FC = () => {
       }
     }
     return map;
-  }, [result]);
+  }, [pool]);
 
-  if (loading && result === null) {
+  if (loading && note === null) {
     return <p className="font-inter text-gray-700">正在读取笔记…</p>;
   }
   if (!note) {

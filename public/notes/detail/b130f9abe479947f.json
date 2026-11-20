@@ -1,0 +1,26 @@
+{
+  "slug": "B5-科技科普__《推荐系统实践》-项亮",
+  "title": "推荐系统实践",
+  "author": "项亮",
+  "category": "B5-科技科普",
+  "created": "2026-06-18",
+  "updated": "2026-06-18",
+  "source": "",
+  "status": "已读",
+  "tags": [
+    "维度/科技",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "推荐系统实践"
+  ],
+  "body": "\n# 《推荐系统实践》- 项亮\n\n推荐系统的设计与实现，涵盖协同过滤、内容推荐、混合推荐等核心算法。\n\n## 关联\n\n- 协同过滤 — 推荐系统的核心算法\n- [[个性化推荐]] — 推荐系统的应用场景\n- [[机器学习]] — 推荐系统的算法基础\n\n## 参考资料\n\n- 《推荐系统实践》- 项亮\n",
+  "source_ref": {
+    "path": "B5-科技科普/《推荐系统实践》-项亮.md",
+    "sha": "bd1c95a3a85bc4ba9a5284d99ab1751524973e77",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E5%AE%9E%E8%B7%B5%E3%80%8B-%E9%A1%B9%E4%BA%AE.md"
+  },
+  "content_hash": "b130f9abe479947f",
+  "audio": false
+}

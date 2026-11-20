@@ -159,3 +159,34 @@ export async function loadNoteIndex(): Promise<NoteIndexItem[]> {
   if (!response.ok) throw new Error(`${response.status} notes/index.json`);
   return (await response.json()) as NoteIndexItem[];
 }
+
+/** 列表用的轻量结果：正文以摘要代替，用于标题/标签/摘要筛选，不再下载 22MB 全文。 */
+export async function loadNoteIndexResult(): Promise<PublicNotesResult> {
+  const manifest = await getJson<NotesManifest>(`${URLS.manifest}?t=${Date.now()}`);
+  const items = await loadNoteIndex();
+  const notes: PublicNote[] = items.map((item) => ({
+    slug: item.slug,
+    title: item.title,
+    author: item.author,
+    category: item.category,
+    created: '',
+    updated: item.updated,
+    source: '',
+    status: '',
+    tags: item.tags,
+    aliases: item.aliases,
+    body: item.excerpt,
+    source_ref: { path: item.source_path, sha: '', url: '' },
+    content_hash: item.content_hash,
+    audio: item.audio,
+  }));
+  return { available: true, notes, manifest, error: '' };
+}
+
+/** 单篇按需加载：slug → hash 映射只有几十 KB，正文只有当前一篇。 */
+export async function loadNoteDetail(slug: string): Promise<PublicNote | null> {
+  const slugs = await getJson<Record<string, string>>(`${SITE_BASE}notes/slugs.json`);
+  const hash = slugs[slug];
+  if (!hash) return null;
+  return getJson<PublicNote>(`${SITE_BASE}notes/detail/${encodeURIComponent(hash)}.json`);
+}

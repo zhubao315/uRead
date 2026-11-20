@@ -111,7 +111,7 @@ const Navbar: React.FC = () => {
           */}
           <button type="button" onClick={toggleTheme} aria-label={dark ? '切换到日间模式' : '切换到夜间模式'}
             title={dark ? '切换到日间模式' : '切换到夜间模式'}
-            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-slate-600">
+            className="hidden md:inline-flex rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:border-slate-600">
             {dark ? '☀' : '☾'}
           </button>
           <NavbarSearch

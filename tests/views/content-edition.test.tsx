@@ -23,16 +23,31 @@ const theme = {
 const booklist = { ...theme, id: 'l1', kind: 'booklist' as const, title: '2026年度书单', description: '年度计划', book_count: 47 };
 const listsManifest = { version: 'v2', theme_count: 1, booklist_count: 1, generated_at: '', source: '', note_path: '' };
 const book = { id: 'b1', title: '朱光潜作品集', author: '朱光潜', format: 'epub', cover: '' };
+// 首页从 index.json 取轻量笔记，再用 publishing/homepage.json 选精选内容。
+const indexItem = { ...note, excerpt: '黑暗森林法则', source_path: '' };
+const homepageConfig = {
+  version: 1,
+  featured_booklist_ids: ['l1'],
+  featured_theme_ids: ['t1'],
+  featured_book_ids: ['b1'],
+};
 
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn(async (input: string) => {
     const url = String(input);
     const body = url.includes('books/aggregate.json') ? { books: [book] }
-      : url.includes('lists/manifest.json') ? listsManifest
-        : url.includes('lists/themes.json') ? [theme]
-          : url.includes('lists/booklists.json') ? [booklist]
-            : url.includes('notes/manifest.json') ? manifest : [note];
-    return { ok: true, status: 200, json: async () => body } as Response;
+      : url.includes('publishing/homepage.json') ? homepageConfig
+        : url.includes('lists/manifest.json') ? listsManifest
+          : url.includes('lists/themes.json') ? [theme]
+            : url.includes('lists/booklists.json') ? [booklist]
+              : url.includes('notes/index.json') ? [indexItem]
+                : url.includes('notes/manifest.json') ? manifest : [note];
+    // 必须带 content-type：首页防御性检查会读它，缺 headers 会抛错导致永远停在「正在整理」。
+    return {
+      ok: true, status: 200,
+      headers: { get: () => 'application/json' },
+      json: async () => body,
+    } as unknown as Response;
   }));
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });

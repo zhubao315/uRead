@@ -196,17 +196,27 @@ def write_outputs(records: list[dict]) -> None:
         )
         for r in records
     ) or "<li>书库还没有书。</li>"
-    (DIST / "library.html").write_text(INDEX_HTML.format(rows=rows, count=len(records)), encoding="utf-8")
+    (DIST / "library.html").write_text(INDEX_HTML.format(rows=rows, count=len(records), SITE_NAV=SITE_NAV), encoding="utf-8")
     shutil.copy2(ROOT / "reader.html", DIST / "reader.html")
     assert 'id="book-search"' in (DIST / "library.html").read_text(encoding="utf-8"), "书库搜索框没进产物"
     print(f"书库已生成：{len(records)} 本，版本 {version}，产物 {DIST}")
 
 
+
+SITE_NAV = """
+<nav aria-label="站点导航" style="border-bottom:1px solid #E2E8F0;background:#fff;margin:-2rem -1rem 2rem;padding:.75rem 1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+  <a href="/uRead/" style="display:flex;align-items:center;gap:.5rem;font-weight:700;color:#17243A">
+    <img src="/uRead/brand/logo-symbol.svg" alt="" width="28" height="28">uRead
+  </a>
+  <a href="/uRead/read/">笔记</a><a href="/uRead/booklists/">书单</a><a href="/uRead/books/">书籍</a><a href="/uRead/find/">搜索</a>
+</nav>
+"""
+
 INDEX_HTML = """<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>电子书库 · uRead</title>
 <style>
 body{{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#1f2937}}
@@ -222,6 +232,7 @@ input[type=search]{{width:100%;max-width:24rem;padding:.55rem .8rem;border:1px s
 </style>
 </head>
 <body>
+{SITE_NAV}
 <h1>可在线阅读的电子书</h1>
 <p>共 {count} 本。点击书名在线阅读；EPUB 在浏览器里排版，PDF 用浏览器自带阅读器。</p>
 <label for="book-search" class="sr-only">搜索书名或作者</label>

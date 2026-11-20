@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { SITE_BASE } from '../config';
-import { loadPublicNotes, type PublicNote } from '../data/publicNotes';
+import { loadNoteIndex, type NoteIndexItem } from '../data/publicNotes';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
 
 interface FindBook { id: string; title: string; author: string; note_count?: number; }
 interface Pool {
-  notes: PublicNote[];
+  notes: NoteIndexItem[];
   lists: PublicList[];
   books: FindBook[];
 }
@@ -32,12 +32,12 @@ const FindView: React.FC = () => {
   useEffect(() => {
     let alive = true;
     void Promise.all([
-      loadPublicNotes(),
+      loadNoteIndex(),
       loadPublicLists(),
       fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
     ]).then(async ([notes, lists, response]) => {
       const books: FindBook[] = response?.ok ? (await response.json()).books ?? [] : [];
-      if (alive) setPool({ notes: notes.notes, lists: [...lists.themes, ...lists.booklists], books });
+      if (alive) setPool({ notes, lists: [...lists.themes, ...lists.booklists], books });
     });
     return () => { alive = false; };
   }, []);
@@ -47,7 +47,7 @@ const FindView: React.FC = () => {
     if (!words.length || !pool) return { notes: [], books: [], booklists: [], themes: [] };
     const hit = (text: string) => words.every((word) => text.toLowerCase().includes(word));
     return {
-      notes: pool.notes.filter((n) => hit([n.title, n.body, ...n.tags].join('\n'))).slice(0, 30),
+      notes: pool.notes.filter((n) => hit([n.title, n.excerpt, ...n.tags, n.author].join('\n'))).slice(0, 30),
       books: pool.books.filter((b) => hit([b.title, b.author].join('\n'))),
       booklists: pool.lists.filter((l) => l.kind === 'booklist' && hit([l.title, l.description].join('\n'))),
       themes: pool.lists.filter((l) => l.kind === 'theme' && hit([l.title, l.description].join('\n'))),
@@ -83,14 +83,14 @@ const FindView: React.FC = () => {
           <a key={item.id} href={`${SITE_BASE}books/${item.id}/`} className="text-brand hover:underline">
             {item.title}<span className="ml-2 text-slate-500">{item.author} · {item.note_count ?? 0} 篇笔记</span>
           </a>)],
-        ['读书笔记', groups.notes, (item: PublicNote) => (
+        ['读书笔记', groups.notes, (item: NoteIndexItem) => (
           <Link key={item.slug} to={`/read/${encodeURIComponent(item.slug)}`} className="text-brand hover:underline">{item.title}</Link>)],
         ['书单', groups.booklists, (item: PublicList) => (
           <Link key={item.id} to={`/lists/${item.id}`} className="text-brand hover:underline">{item.title}</Link>)],
         ['主题阅读', groups.themes, (item: PublicList) => (
           <Link key={item.id} to={`/themes/${item.id}`} className="text-brand hover:underline">{item.title}</Link>)],
       ].map(([label, items, render]) => {
-        const typed = items as Array<FindBook | PublicNote | PublicList>;
+        const typed = items as Array<FindBook | NoteIndexItem | PublicList>;
         const typeKey = label === '书籍' ? 'book' : label === '读书笔记' ? 'note' : label === '书单' ? 'list' : 'theme';
         if (type !== 'all' && type !== typeKey) return null;
         if (!typed.length) return null;
@@ -98,7 +98,7 @@ const FindView: React.FC = () => {
           <section key={label as string} className="mt-8" aria-label={label as string}>
             <h2 className="text-lg font-semibold text-ink">{label as string}（{typed.length}）</h2>
             <ul className="mt-3 space-y-2">
-              {typed.slice(0, 12).map((item) => <li key={(item as { id?: string; slug?: string }).id ?? (item as PublicNote).slug}>{(render as (x: typeof item) => React.ReactNode)(item)}</li>)}
+              {typed.slice(0, 12).map((item) => <li key={(item as { id?: string; slug?: string }).id ?? (item as NoteIndexItem).slug}>{(render as (x: typeof item) => React.ReactNode)(item)}</li>)}
             </ul>
           </section>
         );

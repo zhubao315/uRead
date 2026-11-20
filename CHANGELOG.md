@@ -2,6 +2,15 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.33.0] - 2026-11-20
+
+### 性能与体验
+- 移除阻塞渲染的外部 Google Fonts（中文字体子集过大），改用系统字体栈。
+- 新增 notes/index.json / slugs.json / detail/<hash>.json：首页与搜索不再下载 22MB 全文，详情按单篇加载；相关笔记后台加载不阻塞正文。
+- 静态书籍页（聚合索引、详情、电子书库、阅读器）统一顶部导航与品牌色；补 color-scheme。
+- 移动端夜间模式按钮只保留一个（桌面按钮限定 md 以上）。
+- 发布配置在构建时复制到 dist/publishing，避免 SPA fallback 把 JSON 变成 HTML。
+
 ## [0.32.0] - 2026-11-20
 
 ### 易用性 / 速度 / 趣味（10 轮）

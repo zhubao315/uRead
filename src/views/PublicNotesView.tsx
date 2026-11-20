@@ -13,7 +13,7 @@ function highlight(text: string, words: string[]): React.ReactNode {
 import { Link, useSearchParams } from 'react-router-dom';
 import { TagsIcon, ListIcon, BookOpenIcon } from '../components/icons';
 import { SITE_BASE } from '../config';
-import { filterNotes, loadPublicNotes, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
+import { filterNotes, loadNoteIndexResult, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
 
 /**
  * 公开笔记列表。只读：不写 IndexedDB、不新建任何 store，
@@ -31,14 +31,14 @@ const PublicNotesView: React.FC = () => {
 
   const refresh = async () => {
     setLoading(true);
-    setResult(await loadPublicNotes());
+    setResult(await loadNoteIndexResult());
     setLoading(false);
   };
 
   useEffect(() => {
     let alive = true;
     let stop = () => {};
-    void loadPublicNotes().then((next) => {
+    void loadNoteIndexResult().then((next) => {
       if (!alive) return;
       setResult(next);
       setLoading(false);

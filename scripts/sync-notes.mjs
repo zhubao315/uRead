@@ -311,6 +311,18 @@ async function main() {
   }));
   await atomicWrite(path.join(OUT_NOTES, 'index.json'), JSON.stringify(index, null, 2));
 
+  // 单篇详情按需加载：详情路由不必每次下载整份 notes.json（22MB）。
+  // slug → content_hash 的小映射让历史 URL 继续有效；正文放在 detail/<hash>.json。
+  const slugs = Object.fromEntries(notes.map((note) => [note.slug, note.content_hash]));
+  await atomicWrite(path.join(OUT_NOTES, 'slugs.json'), JSON.stringify(slugs, null, 2));
+  await mkdir(path.join(OUT_NOTES, 'detail'), { recursive: true });
+  for (const note of notes) {
+    await atomicWrite(
+      path.join(OUT_NOTES, 'detail', `${note.content_hash}.json`),
+      JSON.stringify(note, null, 2),
+    );
+  }
+
   await atomicWrite(path.join(OUT_NOTES, 'notes.json'), payload);
   await atomicWrite(path.join(OUT_NOTES, 'manifest.json'), manifest);
   const nextState = {

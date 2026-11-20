@@ -43,7 +43,8 @@ const ContentHomeView: React.FC = () => {
         booklists: lists.booklists,
         books,
         generated_at: lists.manifest?.generated_at ?? '',
-        config: configResponse?.ok ? await configResponse.json() : null,
+        config: configResponse?.ok && configResponse.headers.get('content-type')?.includes('application/json')
+          ? await configResponse.json() : null,
       });
     });
     return () => { alive = false; };

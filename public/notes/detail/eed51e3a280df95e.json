@@ -1,0 +1,27 @@
+{
+  "slug": "B5-科技科普__《Knowledge_Representation》-Sowa",
+  "title": "《Knowledge_Representation》-Sowa",
+  "author": "Sowa",
+  "category": "B5-科技科普",
+  "created": "2026-05-14",
+  "updated": "2026-07-17",
+  "source": "微信读书",
+  "status": "已读",
+  "tags": [
+    "维度/科技",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "《Knowledge_Representation》",
+    "Knowledge_Representation"
+  ],
+  "body": "# 《Knowledge_Representation》-Sowa\n\n---\n\n## Knowledge Representation\n## John F. Sowa\n\n> \"Connecting Philosophy, Logic, and Computation.\"\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这本书？ (Why this book?)**\nSowa 是那个把皮尔士 (Peirce) 的符号学、亚里士多德的逻辑和现代计算机科学串起来的人。他发明的 **Conceptual Graphs (概念图)** 是一种非常直观的 KR 方式。\n**Le Miroir 问你**：你的思维是线性的（文本），还是网状的（图）？Conceptual Graph 试图捕捉人类思维的网状结构。\n\n**核心拷问 (The First Question)**\nSowa 强调 **Context (语境)** 的重要性。\n**Le Miroir 问你**：在你的 uLife 中，同样一句话或一个数据，在不同的 Context 下是否有不同的含义？如何建模 Context？\n---\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. 概念图 (Conceptual Graphs)\n*   **结构**：Concept Node (概念节点) + Relation Node (关系节点)。\n*   **System 2 思考**：比 RDF 更具表达力，可以直接映射到自然语言的语法结构。\n\n### 2. 顶层本体 (Top-Level Ontology)\n*   **分类**：Physical, Psychical, Abstract.\n*   **System 2 思考**：Sowa 提供了一个非常实用的顶层分类框架，可以直接拿来用。\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **Logic** | 逻辑是转换真理的规则。 | Logic preserves truth. |\n| **Ontology** | 本体是描述存在的类别。 | Ontology categorizes existence. |\n\n---\n**Status**: ⚪ To Be Started\n\n---\n*以下内容来自 cc 阅读笔记副本*\n\n## Knowledge Representation and Reasoning\n## Brachman & Levesque\n\n> \"The Bible of KR.\"\n\n---\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这本书？ (Why this book?)**\n这是计算机科学领域关于 KR (Knowledge Representation) 的权威教材。它不仅讲怎么存知识，更讲怎么**用**知识（Reasoning）。\n**Le Miroir 问你**：你存了一堆数据，如果不能用来回答问题，那它就是垃圾。Reasoning (推理) 才是本体论的最终目的。\n\n**核心拷问 (The First Question)**\n书中提出了 **Expressivity vs. Tractability Trade-off** (表达力与可计算性的权衡)。\n**Le Miroir 问你**：你的系统想做得多聪明？表达力越强（能描述复杂的逻辑），推理就越慢（甚至不可计算）。作为架构师，你在哪里画这条线？\n\n---\n\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. 逻辑作为表示语言 (Logic as Representation)\n*   **观点**：一阶逻辑 (First-Order Logic) 是最通用的表达方式。\n*   **System 2 思考**：Prolog 语言的精髓。但在大数据时代，逻辑推理往往太慢，需要结合 Probabilistic Models。\n\n### 2. 框架系统 (Frame Systems)\n*   **观点**：以对象为中心的表示法。Slot-Filler 结构。\n*   **System 2 思考**：这就是 JSON 对象或 Python Class 的原型。但在 KR 中，Slot 可以有 Default Value 和 Trigger Procedure。\n\n### 3. 语义网 (Semantic Networks)\n*   **观点**：节点和连线。\n*   **System 2 思考**：Knowledge Graph 的前身。\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **Non-monotonic Reasoning** | 非单调推理。新知识可能推翻旧结论。 | 现实世界是变化的。AI 必须能处理\"鸟会飞\"->\"企鹅是鸟\"->\"企鹅不会飞\"的矛盾。 |\n| **Planning** | 基于知识的行动规划。 | Agent 的核心能力。从当前状态推导出一系列 Action 达到目标状态。 |\n\n---\n**Status**: ⚪ To Be Started\n\n## 相关笔记\n\n",
+  "source_ref": {
+    "path": "B5-科技科普/《Knowledge_Representation》-Sowa.md",
+    "sha": "697baa8f065aa15c2321c04ee5a2b9a6adc8b347",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8AKnowledge_Representation%E3%80%8B-Sowa.md"
+  },
+  "content_hash": "eed51e3a280df95e",
+  "audio": false
+}

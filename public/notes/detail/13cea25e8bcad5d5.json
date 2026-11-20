@@ -1,0 +1,27 @@
+{
+  "slug": "B5-科技科普__《Knowledge_Graphs_for_Explainable_AI》-未知",
+  "title": "《Knowledge_Graphs_for_Explainable_AI》-未知",
+  "author": "未知",
+  "category": "B5-科技科普",
+  "created": "2026-05-14",
+  "updated": "2026-07-17",
+  "source": "微信读书",
+  "status": "已读",
+  "tags": [
+    "维度/科技",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "《Knowledge_Graphs_for_Explainable_AI》",
+    "Knowledge_Graphs_for_Explainable_AI"
+  ],
+  "body": "\n# Knowledge Graphs for Explainable AI\n## Tsumoto et al. (Eds.)\n\n> \"Black Box -> Glass Box.\"\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这本书？ (Why this book?)**\nDeep Learning 是黑盒。Knowledge Graph 是白盒。这本书讲怎么把两者结合，实现 **Neuro-Symbolic AI**。\n**Le Miroir 问你**：当你的用户问 \"Why?\" 时，你的系统能回答吗？如果不能，你就无法建立信任。\n\n**核心拷问 (The First Question)**\n如何用 KG 来解释 DL 的预测？\n**Le Miroir 问你**：你可以把 KG 作为 DL 的约束条件，或者作为后处理的解释工具。你选哪条路？\n---\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. Neuro-Symbolic Integration\n*   **方法**：将符号推理（逻辑）嵌入到神经网络（向量计算）中。\n*   **System 2 思考**：这是目前 AI 最前沿的方向。System 1 (直觉/DL) + System 2 (逻辑/KG)。\n\n### 2. Explanation Generation\n*   **方法**：通过在 KG 上寻找路径来生成解释。\n*   **System 2 思考**：推荐理由：\"因为你买过 A (Is-a Electronics)，且 A 的产地是 B，而 C 也是 B 生产的，所以推荐 C。\"\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **Mapping** | Embedding Entity to Vector Space. | TransE, RotatE 等算法。 |\n| **Reasoning** | Path-based reasoning. | 路径本身就是解释。 |\n\n---\n**Status**: ⚪ To Be Started\n\n## 相关笔记\n\n- [[Home]]\n- [[《大模型、RAG、AI-Agent技术选型之道》-未知]]\n",
+  "source_ref": {
+    "path": "B5-科技科普/《Knowledge_Graphs_for_Explainable_AI》-未知.md",
+    "sha": "c8d819bde89e39db96dcae390993a026fc7d03cb",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8AKnowledge_Graphs_for_Explainable_AI%E3%80%8B-%E6%9C%AA%E7%9F%A5.md"
+  },
+  "content_hash": "13cea25e8bcad5d5",
+  "audio": false
+}

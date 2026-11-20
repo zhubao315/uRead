@@ -1,0 +1,27 @@
+{
+  "slug": "B5-科技科普__《Artificial_Intelligence_The_Very_Idea》-Haugeland",
+  "title": "《Artificial_Intelligence_The_Very_Idea》-Haugeland",
+  "author": "Haugeland",
+  "category": "B5-科技科普",
+  "created": "2026-05-14",
+  "updated": "2026-07-17",
+  "source": "微信读书",
+  "status": "已读",
+  "tags": [
+    "维度/科技",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "《Artificial_Intelligence_The_Very_Idea》",
+    "Artificial_Intelligence_The_Very_Idea"
+  ],
+  "body": "\n# Artificial Intelligence: The Very Idea\n## John Haugeland\n\n> \"GOFAI (Good Old-Fashioned AI) 的哲学反思。\"\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这本书？ (Why this book?)**\nHaugeland 发明了 GOFAI 这个词。他深刻地反思了符号主义 AI 的局限性。\n**Le Miroir 问你**：你相信如果你把所有的规则都写出来，机器就有智能了吗？还是说智能有一些无法形式化的东西（如直觉、身体感）？\n\n**核心拷问 (The First Question)**\nHaugeland 讨论了 **Semantic Engine (语义引擎)** 的可能性——机器能否真的理解符号的含义，而不仅仅是操作符号（形式句法）？\n**Le Miroir 问你**：ChatGPT 懂中文吗？还是它只是在做高维度的统计接龙？如果它不懂，你的 System 该如何弥补这一点？\n---\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. 形式系统 (Formal Systems)\n*   **定义**：像国际象棋一样的游戏，规则是确定的，与外部世界无关。\n*   **System 2 思考**：计算机本质上是形式系统。如何让形式系统拥有 Intentionality (意向性/指向外部世界的能力)？\n\n### 2. 整体论 (Holism)\n*   **观点**：智能依赖于背景知识（Common Sense），而背景知识是无限的，无法完全形式化。\n*   **System 2 思考**：这就是为什么 AI 总是遭遇 Edge Case。我们无法把整个世界都建模进系统里。\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **Automatic Formal Systems** | 计算机是自动的形式系统。 | 只要有电，它就按规则跑。 |\n| **Meaning** | Original Meaning vs Derived Meaning. | 人的意义是原生的，AI 的意义是我们赋予的。 |\n\n---\n**Status**: ⚪ To Be Started\n\n## 相关笔记\n\n- [[个人输出发布系统]]\n- [[北京超高层建筑统计一览（200米以上）]]\n",
+  "source_ref": {
+    "path": "B5-科技科普/《Artificial_Intelligence_The_Very_Idea》-Haugeland.md",
+    "sha": "563cda40fd5d81daa63c1fc2256ee1b09c203b29",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8AArtificial_Intelligence_The_Very_Idea%E3%80%8B-Haugeland.md"
+  },
+  "content_hash": "36dd2f7b574e8605",
+  "audio": false
+}

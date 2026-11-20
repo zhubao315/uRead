@@ -1,0 +1,27 @@
+{
+  "slug": "B5-科技科普__《Building_Machines_That_Learn_and_Think_Like_People》-Lake",
+  "title": "《Building_Machines_That_Learn_and_Think_Like_People》-Lake",
+  "author": "Lake",
+  "category": "B5-科技科普",
+  "created": "2026-05-14",
+  "updated": "2026-07-17",
+  "source": "微信读书",
+  "status": "已读",
+  "tags": [
+    "维度/科技",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "《Building_Machines_That_Learn_and_Think_Like_People》",
+    "Building_Machines_That_Learn_and_Think_Like_People"
+  ],
+  "body": "\n# Building Machines That Learn and Think Like People\n## Lake, Ullman, Tenenbaum, Gershman\n\n> \"Behavioral and Brain Sciences (2017) 经典论文\"\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这篇论文？ (Why this paper?)**\n这篇论文是对 Deep Learning 的\"檄文\"。作者们（认知科学家）指出，人类学习不是靠大数据硬暴力破解，而是靠 **Model Building (模型构建)**。\n**Le Miroir 问你**：人类看一眼自行车就知道它是怎么骑的（因果模型），Deep Learning 需要看一百万张自行车的照片。你的 uLife 是想模仿哪一种？\n\n**核心拷问 (The First Question)**\n论文提出了 **Intuitive Physics (直觉物理)** 和 **Intuitive Psychology (直觉心理)**。\n**Le Miroir 问你**：你的 System 有常识吗？它知道杯子掉在地上会碎吗？它知道人生气了会大声说话吗？这些常识是内置的先验，还是学来的？\n---\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. Compositionality (组合性)\n*   **观点**：不仅是 Part-of，而是像乐高积木一样，可以通过有限的组件组合出无限的可能。\n*   **System 2 思考**：你的系统模块化程度够高吗？\n\n### 2. Causality (因果性)\n*   **观点**：理解机制，而不仅仅是模式。\n*   **System 2 思考**：Pearl 的 Causal Ladder。Observation -> Intervention -> Counterfactual。\n\n### 3. Learning to Learn (Meta-Learning)\n*   **观点**：学会\"如何学习\"。\n*   **System 2 思考**：Few-shot Learning。\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **Start-up Software** | 婴儿不是白板，自带了一些启动软件。 | 康德的先验范畴在认知科学中的回响。 |\n| **Model-based RL** | 基于模型的强化学习。 | 比 Model-free 更高效，更像人。 |\n\n---\n**Status**: ⚪ To Be Started\n\n## 相关笔记\n\n- [[个人输出发布系统]]\n- [[架构师技能]]\n- [[兰斯顿·休斯（Langston Hughes）]]\n",
+  "source_ref": {
+    "path": "B5-科技科普/《Building_Machines_That_Learn_and_Think_Like_People》-Lake.md",
+    "sha": "a9c77d4d8234158d5e321bdfe9581445fd5b0106",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8ABuilding_Machines_That_Learn_and_Think_Like_People%E3%80%8B-Lake.md"
+  },
+  "content_hash": "5e24966fc4a597ca",
+  "audio": false
+}
