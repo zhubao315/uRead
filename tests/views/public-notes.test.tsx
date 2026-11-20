@@ -105,7 +105,7 @@ describe('公开笔记详情', () => {
   it('没有 WAV 时也提供设备语音朗读，不放假播放器', async () => {
     renderDetail(noteB.slug);
     expect(await screen.findByText('思考的快与慢')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '用设备语音朗读' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '收听' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '复制笔记链接' })).toBeInTheDocument();
     expect(document.querySelector('audio')).toBeNull();
   });

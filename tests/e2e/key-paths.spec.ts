@@ -19,7 +19,7 @@ test('公开笔记详情有来源与分区，无 WAV 也能朗读', async ({ pag
   await expect(page.locator('article')).toBeVisible();
   await expect(page.getByRole('heading', { name: '相关阅读' })).toBeVisible();
   const audioCount = await page.locator('audio').count();
-  const listenButton = await page.getByRole('button', { name: '用设备语音朗读' }).count();
+  const listenButton = await page.getByRole('button', { name: '收听' }).count();
   expect(audioCount > 0 || listenButton > 0).toBeTruthy();
 });
 

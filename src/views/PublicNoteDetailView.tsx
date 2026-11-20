@@ -159,7 +159,7 @@ const PublicNoteDetailView: React.FC = () => {
           ) : player.state === 'paused' ? (
             <button type="button" onClick={player.resume} className="rounded border border-border px-3 py-1.5 text-xs">继续</button>
           ) : (
-            <button type="button" onClick={() => player.play(0)} className="rounded bg-brand px-3 py-1.5 text-xs text-white">用设备语音朗读</button>
+            <button type="button" onClick={() => player.play(0)} className="rounded bg-brand px-3 py-1.5 text-xs text-white">收听</button>
           )}
           <button type="button" onClick={player.previous} disabled={!player.segment} className="rounded border border-border px-2 py-1.5 text-xs">上一段</button>
           <button type="button" onClick={player.next} disabled={!player.segment} className="rounded border border-border px-2 py-1.5 text-xs">下一段</button>
