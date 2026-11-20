@@ -43,6 +43,7 @@ export default tseslint.config(
       globals: {
         process: 'readonly',
         console: 'readonly',
+        setTimeout: 'readonly',
         URL: 'readonly',
         Blob: 'readonly',
         document: 'readonly',
