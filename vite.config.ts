@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-import { SITE_BASE } from './src/config';
+import { SITE_BASE } from './src/config.ts';
 
 // GitHub Pages 以项目子路径 https://zhubao315.github.io/uRead/ 部署，
 // 因此 base 必须与仓库名一致，否则静态资源与深层路由都会 404。
