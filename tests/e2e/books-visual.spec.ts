@@ -18,6 +18,30 @@ test('书籍索引展示真实统计且导航为共享的毛玻璃栏', async ({
   await expect(page.locator('.uread-nav-link')).toHaveCount(5);
 });
 
+test('顶部四张统计卡可点击筛选书籍列表', async ({ page }) => {
+  await page.goto('books/');
+  const visible = () => page.evaluate(() =>
+    [...document.querySelectorAll('#list .card')].filter((card) => !(card as HTMLElement).hidden).length);
+
+  expect(await visible()).toBe(1804);
+  await page.locator('[data-filter="notes"]').click();
+  await expect(page.locator('[data-filter="notes"]')).toHaveAttribute('aria-pressed', 'true');
+  expect(await visible()).toBe(1714);
+
+  await page.locator('[data-filter="lists"]').click();
+  expect(await visible()).toBe(680);
+
+  // 电子书在独立区块，点击后隐藏 1804 条聚合列表，只显示 2 本可在线阅读的书。
+  await page.locator('[data-filter="reader"]').click();
+  await expect(page.locator('#list')).toBeHidden();
+  await expect(page.locator('#library-section')).toBeVisible();
+  await expect(page.locator('#library-section li.card')).toHaveCount(2);
+
+  await page.locator('[data-filter="all"]').click();
+  await expect(page.locator('#list')).toBeVisible();
+  expect(await visible()).toBe(1804);
+});
+
 test('移动端书页仍有四宫格底栏与真实统计', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('books/');
