@@ -137,7 +137,7 @@ const bookCover = (book, realPrefix, mediaPrefix) => {
   const src = book.cover
     ? `${realPrefix}${esc(book.cover)}`
     : `${mediaPrefix}media/books/${encodeURIComponent(book.id)}.svg`;
-  return `<img class="cover" src="${src}" alt="" width="64" height="92" loading="lazy" decoding="async">`;
+  return `<span class="cover-wrap"><img class="cover" src="${src}" alt="" width="64" height="92" loading="lazy" decoding="async"></span>`;
 };
 const STYLE = `:root{--navy:light-dark(#17243A,#f1f5f9);--brand:light-dark(#2457A6,#93c5fd);--page:light-dark(#F3F6FA,#0f172a);--line:light-dark(#E2E8F0,#334155);--muted:light-dark(#64748B,#cbd5e1);--surface:light-dark(#fff,#1e293b)}
 body{font-family:system-ui,-apple-system,"PingFang SC",sans-serif;margin:0;padding:0;color:var(--navy);background:var(--page)}
@@ -147,8 +147,18 @@ h1,h2{color:var(--navy)} a{color:var(--brand);text-decoration:none} a:hover{text
 .small{color:var(--muted);font-size:.85rem} mark{background:light-dark(#DCE8F8,#1e3a8a)}
 input{width:100%;max-width:32rem;padding:.6rem .8rem;border:1px solid light-dark(#cbd5e1,#475569);border-radius:4px;font:inherit;background:var(--surface);color:var(--navy)}
 .uread-nav-search input{width:auto}
-.cover{width:64px;height:92px;object-fit:cover;float:left;margin:0 1rem 1rem 0;border-radius:4px}
-@media(max-width:640px){.uread-page{margin:1rem auto}.cover{width:48px;height:70px}}`;
+.cover{display:block;width:64px;height:92px;object-fit:cover;border-radius:4px}
+.cover-wrap{position:relative;float:left;margin:0 1rem 1rem 0;transition:transform .3s ease}
+.cover-wrap::after{content:"";position:absolute;top:0;left:0;bottom:0;width:10px;border-radius:4px 0 0 4px;background:linear-gradient(90deg,rgba(255,255,255,.4),rgba(255,255,255,0));pointer-events:none}
+.card{transition:transform .25s ease,box-shadow .25s ease}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 24px -8px rgba(15,23,42,.25)}
+.card:hover .cover-wrap{transform:scale(1.04)}
+.uread-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin:1.4rem 0 1.8rem}
+.uread-stat{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;background:var(--surface);text-align:center}
+.uread-stat strong{display:block;font-size:1.4rem;color:var(--brand);line-height:1.2}
+.uread-stat span{font-size:.78rem;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){.card,.cover-wrap{transition:none}.card:hover,.card:hover .cover-wrap{transform:none}}
+@media(max-width:640px){.uread-page{margin:1rem auto}.cover{width:48px;height:70px}.cover-wrap{margin:0 .8rem .8rem 0}}`;
 
 export function renderBookIndex(books, libraryBooks = []) {
   const rows = books.map((book) => `
@@ -170,6 +180,12 @@ ${SITE_NAV}
 <p class="small"><a href="../">← 返回 uRead</a></p>
 <h1>书籍索引</h1>
 <p class="small">共 ${books.length} 条书籍记录。原始书名保留，同名不自动合并；没有关联笔记的书也如实列出。</p>
+<section class="uread-stats" aria-label="书籍统计">
+  <div class="uread-stat"><strong>${books.length}</strong><span>书籍记录</span></div>
+  <div class="uread-stat"><strong>${books.filter((book) => book.notes.length).length}</strong><span>有关联笔记</span></div>
+  <div class="uread-stat"><strong>${books.filter((book) => book.lists.length).length}</strong><span>收录于书单</span></div>
+  <div class="uread-stat"><strong>${libraryBooks.length}</strong><span>可在线阅读</span></div>
+</section>
 <label for="q" class="small">搜索书名或作者</label>
 <input id="q" type="search" placeholder="搜索书名或作者" aria-label="搜索书名或作者">
 <div id="list">${rows}</div>
