@@ -194,6 +194,28 @@ body { background-color: var(--theme-page) !important; color: var(--theme-text) 
   ::selection { background: #1E40AF; color: #F1F5F9; }
 }
 
+/* 阅读主题只作用于当前文章，优先级高于全局明暗映射；不写入全局状态。 */
+[data-reading-theme] { background: var(--note-bg) !important; color: var(--note-text) !important; }
+[data-reading-theme] [data-note-progress],
+[data-reading-theme] [data-note-settings] { background: var(--note-bg) !important; color: var(--note-text) !important; border-color: var(--note-muted) !important; }
+[data-reading-theme] .note-section-heading { color: var(--note-text) !important; }
+[data-reading-theme] .note-section-label { color: var(--note-accent) !important; }
+[data-reading-theme] .note-section-excerpt { background: var(--note-tint) !important; }
+[data-reading-theme] .note-section-meta,
+[data-reading-theme] blockquote { color: var(--note-muted) !important; border-color: var(--note-muted) !important; }
+[data-reading-theme] a { color: var(--note-accent) !important; }
+[data-reading-theme] .text-navy,
+[data-reading-theme] .text-ink,
+[data-reading-theme] .text-body,
+[data-reading-theme] .text-gray-900,
+[data-reading-theme] .text-gray-800,
+[data-reading-theme] .text-gray-700,
+[data-reading-theme] .text-gray-600 { color: var(--note-text) !important; }
+[data-reading-theme] .text-muted,
+[data-reading-theme] .text-gray-500 { color: var(--note-muted) !important; }
+[data-reading-theme] [data-note-audio],
+[data-reading-theme] [data-note-tts] { background: var(--note-bg) !important; border-color: var(--note-muted) !important; }
+
 /* Phase 3 阅读排版：按原文标题分区，原文摘录与个人理解视觉区分，不改变语义。 */
 .note-article { max-width: 46rem; font-size: var(--note-font-size, 1rem); }
 .note-section { margin: 1.8rem 0; }

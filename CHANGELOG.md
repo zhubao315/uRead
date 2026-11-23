@@ -2,6 +2,14 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循语义化版本。
 
+## [0.34.4] - 2026-11-23
+
+### PWA 与阅读体验
+- 新增标准 `manifest.webmanifest`：`start_url` / `scope` 均为 `/uRead/`，`display: standalone`，复用现有 192/512 图标；加入 Apple 主屏相关 meta。
+- Service Worker v4 将 manifest 纳入应用外壳预缓存；新增「发现新版本，点击刷新」提示，不打断当前阅读。
+- 阅读页新增四套正文主题（纯白 / 羊皮纸 / 护眼绿 / 极夜），与字号、行距设置一起持久化；主题只作用于当前文章，不影响全局明暗模式。
+- 未引入 TXT 分章 Worker、Dexie 与 CSS 分页：uRead 的 EPUB 由 foliate-js 提供，存储已是 IndexedDB 八类 + JSON 备份，避免无依据的重构。
+
 ## [0.34.3] - 2026-11-23
 
 ### 视觉升级

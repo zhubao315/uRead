@@ -3,6 +3,7 @@ import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileBottomNav from './components/MobileBottomNav';
 import WorkspaceMobileNav from './components/WorkspaceMobileNav';
+import UpdateNotice from './components/UpdateNotice';
 // 首页是默认落地页：保持静态导入，让它进入预缓存的应用外壳，离线也能立刻渲染。
 import ContentHomeView from './views/ContentHomeView';
 
@@ -156,6 +157,7 @@ function App() {
         </button>
       ) : null}
       {isWorkspace ? <WorkspaceMobileNav /> : <MobileBottomNav />}
+      <UpdateNotice />
     </div>
   );
 }
