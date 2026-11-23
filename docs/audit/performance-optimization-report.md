@@ -3,8 +3,6 @@ title: 性能优化实施报告
 description: "路由级代码拆分、工作台 IndexedDB 延迟初始化、构建分块、Service Worker 缓存治理与搜索热路径优化的实测前后对比。"
 ---
 
-# uRead 性能优化实施报告
-
 日期：2026-11-20
 仓库：`zhubao315/uRead`（本地工作副本 `/oc/upstream/uRead`）
 构建：`vite 8.3` / `rolldown`，生产构建（`vite build`）

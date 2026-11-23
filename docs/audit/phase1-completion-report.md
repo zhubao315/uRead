@@ -3,8 +3,6 @@ title: Phase 1 工程优化完成报告
 description: "首页轻量快照、搜索防抖、Service Worker 真实预缓存、离线验收与 CI 门禁的实测前后对比。"
 ---
 
-# Phase 1 工程优化完成报告
-
 日期：2026-11-23
 仓库：`zhubao315/uRead`（本地 `/oc/upstream/uRead`）
 
