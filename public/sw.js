@@ -10,11 +10,11 @@
  * 文件）写进缓存，且 manifest 的 ?t= 时间戳让每个请求都变成新 key。本版本通过
  * 白名单 + query 归一化 + 容量上限修复这两个问题。
  */
-const SHELL_CACHE = 'uread-shell-v3';
-const DATA_CACHE = 'uread-data-v3';
-const ASSET_CACHE = 'uread-assets-v3';
+const SHELL_CACHE = 'uread-shell-v4';
+const DATA_CACHE = 'uread-data-v4';
+const ASSET_CACHE = 'uread-assets-v4';
 const ALL_CACHES = [SHELL_CACHE, DATA_CACHE, ASSET_CACHE];
-const SHELL = ['/uRead/', '/uRead/index.html', '/uRead/404.html'];
+const SHELL = ['/uRead/', '/uRead/index.html', '/uRead/404.html', '/uRead/manifest.webmanifest'];
 
 // 由 scripts/build-sw-precache.mjs 在构建期注入真实的首屏 JS/CSS 哈希文件。
 const PRECACHE = [];

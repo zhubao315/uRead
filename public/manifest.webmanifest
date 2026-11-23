@@ -1,0 +1,29 @@
+{
+  "name": "uRead · 个人阅读档案与知识沉淀",
+  "short_name": "uRead",
+  "description": "为问题而读，亲自理解，用输出检验认知。",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "start_url": "/uRead/",
+  "scope": "/uRead/",
+  "id": "/uRead/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F3F6FA",
+  "theme_color": "#2457A6",
+  "categories": ["education", "books", "productivity"],
+  "icons": [
+    {
+      "src": "/uRead/brand/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/uRead/brand/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -8,13 +8,24 @@ import { relatedNotes } from '../domain/note-relations';
 import { useSpeechPlayer } from '../hooks/useSpeechPlayer';
 import { HeadphonesIcon } from '../components/icons';
 
+type ReadingTheme = 'paper' | 'sepia' | 'green' | 'night';
+
 interface ReadingPrefs {
   fontSize: number;
   lineHeight: number;
+  theme: ReadingTheme;
 }
 
 const READING_PREFS_KEY = 'uread:reading-prefs';
-const DEFAULT_READING_PREFS: ReadingPrefs = { fontSize: 16, lineHeight: 1.9 };
+const DEFAULT_READING_PREFS: ReadingPrefs = { fontSize: 16, lineHeight: 1.9, theme: 'paper' };
+
+/** 阅读主题只作用于当前文章，不改全局明暗模式。 */
+const READING_THEMES: Record<ReadingTheme, { label: string; bg: string; text: string; muted: string; accent: string; tint: string; swatch: string }> = {
+  paper: { label: '纯白', bg: '#FFFFFF', text: '#1F2937', muted: '#64748B', accent: '#2457A6', tint: '#FFFCF5', swatch: '#FFFFFF' },
+  sepia: { label: '羊皮纸', bg: '#F6F1E7', text: '#4A3F35', muted: '#8A7A68', accent: '#9A6B35', tint: '#EFE6D6', swatch: '#F6F1E7' },
+  green: { label: '护眼绿', bg: '#C7EDCC', text: '#1F3A2B', muted: '#4F735B', accent: '#2E7D4F', tint: '#BCE4C2', swatch: '#C7EDCC' },
+  night: { label: '极夜', bg: '#121212', text: '#D8D8D8', muted: '#9AA0A6', accent: '#8FBCFF', tint: '#1C1C1C', swatch: '#121212' },
+};
 
 function loadReadingPrefs(): ReadingPrefs {
   try {
@@ -26,6 +37,8 @@ function loadReadingPrefs(): ReadingPrefs {
         ? Math.max(14, Math.min(22, parsed.fontSize)) : DEFAULT_READING_PREFS.fontSize,
       lineHeight: typeof parsed.lineHeight === 'number'
         ? Math.max(1.6, Math.min(2.2, parsed.lineHeight)) : DEFAULT_READING_PREFS.lineHeight,
+      theme: parsed.theme && parsed.theme in READING_THEMES
+        ? parsed.theme : DEFAULT_READING_PREFS.theme,
     };
   } catch {
     return DEFAULT_READING_PREFS;
@@ -147,14 +160,21 @@ const PublicNoteDetailView: React.FC = () => {
 
   return (
     <article
+      data-reading-theme={reading.theme}
       className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white p-6 md:p-10 font-inter"
       style={{
         '--note-font-size': `${reading.fontSize}px`,
         '--note-line-height': reading.lineHeight,
+        '--note-bg': READING_THEMES[reading.theme].bg,
+        '--note-text': READING_THEMES[reading.theme].text,
+        '--note-muted': READING_THEMES[reading.theme].muted,
+        '--note-accent': READING_THEMES[reading.theme].accent,
+        '--note-tint': READING_THEMES[reading.theme].tint,
       } as React.CSSProperties}
     >
       <div
         role="progressbar"
+        data-note-progress
         aria-label="阅读进度"
         aria-valuemin={0}
         aria-valuemax={100}
@@ -166,7 +186,7 @@ const PublicNoteDetailView: React.FC = () => {
         </div>
         <span className="sr-only">已读 {Math.round(progress)}%</span>
       </div>
-      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-muted">
+      <div data-note-settings className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-muted">
         <span>阅读设置</span>
         <button type="button" aria-label="缩小字号" title="缩小字号"
           onClick={() => setReading((value) => ({ ...value, fontSize: Math.max(14, value.fontSize - 1) }))}
@@ -184,6 +204,17 @@ const PublicNoteDetailView: React.FC = () => {
               : Math.round((value.lineHeight + 0.2) * 10) / 10,
           }))}
           className="rounded border border-border px-2 py-1 hover:bg-mist">行距 {reading.lineHeight}</button>
+        <span className="mx-1">·</span>
+        {(Object.keys(READING_THEMES) as ReadingTheme[]).map((key) => (
+          <button key={key} type="button" aria-label={`阅读主题：${READING_THEMES[key].label}`}
+            title={READING_THEMES[key].label}
+            aria-pressed={reading.theme === key}
+            onClick={() => setReading((value) => ({ ...value, theme: key }))}
+            className={`flex items-center gap-1 rounded border px-2 py-1 ${reading.theme === key ? 'border-brand text-brand' : 'border-border hover:bg-mist'}`}>
+            <span className="inline-block h-3 w-3 rounded-sm border border-gray-300" style={{ background: READING_THEMES[key].swatch }} />
+            {READING_THEMES[key].label}
+          </button>
+        ))}
       </div>
       <div className="mb-3 flex items-center gap-3">
         <button type="button" onClick={() => {
@@ -212,7 +243,7 @@ const PublicNoteDetailView: React.FC = () => {
       ) : null}
 
       {note.audio ? (
-        <div className="my-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+        <div data-note-audio className="my-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium text-gray-800">收听原文录音</span>
             {[1, 1.25, 1.5, 2].map((rate) => (
@@ -243,7 +274,7 @@ const PublicNoteDetailView: React.FC = () => {
         </div>
       ) : null}
 
-      <section className="my-6 rounded-lg border border-border bg-surface p-4" aria-label="朗读正文（设备语音）">
+      <section data-note-tts className="my-6 rounded-lg border border-border bg-surface p-4" aria-label="朗读正文（设备语音）">
         <div className="flex flex-wrap items-center gap-2">
           <HeadphonesIcon size="md" className="text-brand" />
           <span className="text-sm font-semibold text-navy">朗读正文（设备语音）</span>

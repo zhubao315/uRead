@@ -1,6 +1,6 @@
 {
   "name": "uread",
-  "version": "0.34.3",
+  "version": "0.34.4",
   "description": "uRead · 本地优先的个人深度阅读与结构化笔记工作台",
   "private": true,
   "type": "module",
