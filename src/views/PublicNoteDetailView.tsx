@@ -71,7 +71,7 @@ const PublicNoteDetailView: React.FC = () => {
   }, [reading]);
 
   const progressKey = note ? `uread:audio:${note.content_hash}` : '';
-  const player = useSpeechPlayer(note?.body ?? '', note?.slug ?? '');
+  const player = useSpeechPlayer(note?.body ?? '', note?.slug ?? '', note?.title ?? '');
   useEffect(() => {
     if (!note) return;
     document.title = `${note.title} · uRead 读书笔记`;
@@ -283,6 +283,10 @@ const PublicNoteDetailView: React.FC = () => {
         {!player.capabilities.supported ? (
           <p className="mt-2 text-xs text-muted">当前浏览器不支持设备语音朗读，建议使用 Chrome / Edge / Safari。</p>
         ) : null}
+        <p className="mt-3 text-xs text-muted">
+          移动端浏览器的设备语音无法真正后台播放：锁屏或切到后台时会被系统暂停。
+          朗读期间会尽量保持屏幕常亮，并提供锁屏/通知栏的播放控制；如需边锁屏边听，请使用上方已生成的原文录音（如有）。
+        </p>
       </section>
 
       {headings.length > 1 ? (
