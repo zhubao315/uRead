@@ -1,0 +1,24 @@
+{
+  "slug": "B5-科技科普__《Building Microservices》-Sam Newman",
+  "title": "《Building Microservices》-Sam Newman",
+  "author": "Sam Newman",
+  "category": "B5-科技科普",
+  "created": "2026-06-18",
+  "updated": "2026-06-22",
+  "source": "",
+  "status": "已读",
+  "tags": [
+    "维度/架构",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [],
+  "body": "\n# 《Building Microservices》读书笔记\n\n## 核心主题\n\n微服务架构的设计、实现和运维最佳实践。\n\n## 核心观点\n\n### 1. 微服务定义\n\n> \"Microservices are small, autonomous services that work together.\"\n\n- 小而专一\n- 独立部署\n- 松耦合\n\n### 2. 拆分原则\n\n| 原则 | 说明 |\n|------|------|\n| **单一职责** | 一个服务只做一件事 |\n| **业务边界** | 按业务能力拆分 |\n| **数据所有权** | 每个服务拥有自己的数据 |\n\n### 3. 关键挑战\n\n| 挑战 | 解决方案 |\n|------|----------|\n| **分布式复杂性** | 服务发现、负载均衡 |\n| **数据一致性** | 最终一致性、Saga |\n| **可观测性** | 日志、指标、追踪 |\n| **测试复杂性** | 契约测试 |\n\n### 4. 部署策略\n\n| 策略 | 说明 |\n|------|------|\n| **容器化** | Docker打包 |\n| **编排** | Kubernetes部署 |\n| **CI/CD** | 自动化流水线 |\n\n## 关键收获\n\n1. **渐进式拆分**：从单体逐步迁移\n2. **自动化优先**：测试、部署、监控\n3. **设计为失败**：假设服务会失败\n\n## 相关链接\n\n- [[架构风格与模式]]\n- [[云原生基础设施]]\n- [[DevOps与平台工程]]",
+  "source_ref": {
+    "path": "B5-科技科普/《Building Microservices》-Sam Newman.md",
+    "sha": "d528ec3d525f81f8faaed18481102e12e180dc90",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8ABuilding%20Microservices%E3%80%8B-Sam%20Newman.md"
+  },
+  "content_hash": "ddaf7612d7793829",
+  "audio": false
+}

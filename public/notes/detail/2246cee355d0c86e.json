@@ -1,0 +1,24 @@
+{
+  "slug": "B5-科技科普__《人月神话》-Frederick Brooks",
+  "title": "《人月神话》",
+  "author": "Frederick Brooks",
+  "category": "B5-科技科普",
+  "created": "2026-06-18",
+  "updated": "2026-10-06",
+  "source": "",
+  "status": "",
+  "tags": [
+    "维度/架构",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [],
+  "body": "# 《人月神话》\n\n> 软件工程经典，探讨大型项目管理的核心难题。\n\n## 核心观点\n\n- \"向进度落后的项目增加人力，只会使其更加落后\"\n- 没有银弹：本质复杂性 vs 偶然复杂性\n- 概念完整性是系统设计的最高优先级\n\n## 相关\n\n- [[《人件》-Tom DeMarco]]\n- [[《人件》-Tom DeMarco]]\n",
+  "source_ref": {
+    "path": "B5-科技科普/《人月神话》-Frederick Brooks.md",
+    "sha": "b6a08731cd6bcc1dd78c4097ca30edfc4d36bd7e",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B5-%E7%A7%91%E6%8A%80%E7%A7%91%E6%99%AE/%E3%80%8A%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D%E3%80%8B-Frederick%20Brooks.md"
+  },
+  "content_hash": "2246cee355d0c86e",
+  "audio": false
+}
