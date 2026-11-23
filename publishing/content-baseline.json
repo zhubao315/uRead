@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23T10:35:05.705Z",
+  "generated_at": "2026-11-23T11:32:07.236Z",
   "counts": {
     "notes": 1595,
     "notes_with_source_path": 1595,
@@ -7,17 +7,17 @@
     "themes": 10,
     "booklists": 39,
     "lists_total": 49,
-    "booklist_items": 789,
+    "booklist_items": 787,
     "resolved_book_links": 694,
-    "unresolved_book_links": 95,
-    "raw_book_entries": 680,
+    "unresolved_book_links": 93,
+    "raw_book_entries": 679,
     "duplicate_book_candidates": 59,
     "library_books": 2,
     "audio_files": 10
   },
   "manifests": {
     "notes": "3b0808dc27a86ddf",
-    "lists": "b8c2af40b6b76c3f"
+    "lists": "1c606c35c7d77d94"
   },
   "hashes": {
     "notes": [
@@ -8055,7 +8055,7 @@
       {
         "id": "3a6f6d5f089d",
         "kind": "theme",
-        "hash": "f40efa66ba9fbe04",
+        "hash": "c6cf74714e045024",
         "path": "主题-投资与人生.md"
       },
       {
@@ -8139,7 +8139,7 @@
       {
         "id": "a0873266ae35",
         "kind": "booklist",
-        "hash": "d87f14277733c7b9",
+        "hash": "ffde4173e09b0261",
         "path": "书单-九个维度的人生.md"
       },
       {
