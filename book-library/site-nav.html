@@ -3,7 +3,7 @@
      移动端与 src/components/Navbar.tsx + MobileBottomNav.tsx 对齐：
        顶栏 = 品牌 + 搜索；第二行 = 品牌语 + 主题开关 + 菜单；底栏 = 首页/笔记/书单/书籍。 -->
 <style>
-.uread-site-nav{position:sticky;top:0;z-index:50;background:light-dark(#fff,#1e293b);border-bottom:1px solid light-dark(#e5e7eb,#334155)}
+.uread-site-nav{position:sticky;top:0;z-index:50;background:light-dark(rgba(255,255,255,.86),rgba(30,41,59,.86));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid light-dark(#e5e7eb,#334155);box-shadow:0 1px 8px rgba(15,23,42,.06)}
 .uread-site-nav__inner{max-width:1280px;margin:0 auto;padding:0 1rem;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .uread-brand{display:flex;align-items:center;gap:.75rem;color:light-dark(#17243A,#f1f5f9);text-decoration:none;flex-shrink:0}
 .uread-brand:hover{text-decoration:none}
@@ -29,7 +29,7 @@
 
 /* 以下两块只在移动端出现，结构与 React 主站一致 */
 .uread-mobile-bar,.uread-bottom-nav{display:none}
-.uread-mobile-menu{margin:0;padding:.5rem 1rem;list-style:none;border-top:1px solid light-dark(#e5e7eb,#334155);background:light-dark(#fff,#1e293b)}
+.uread-mobile-menu{margin:0;padding:.5rem 1rem;list-style:none;border-top:1px solid light-dark(#e5e7eb,#334155);background:light-dark(rgba(255,255,255,.94),rgba(30,41,59,.94));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .uread-mobile-menu[hidden]{display:none}
 .uread-mobile-menu a{display:block;padding:.6rem 0;font-size:14px;color:light-dark(#17243A,#f1f5f9);text-decoration:none}
 .uread-mobile-menu a[aria-current="page"]{color:light-dark(#2457A6,#93c5fd);font-weight:600}
@@ -48,7 +48,7 @@
   .uread-mobile-bar span{font-size:10px;letter-spacing:.16em;color:light-dark(#64748B,#cbd5e1)}
   .uread-mobile-actions{display:flex;align-items:center;gap:.5rem}
   .uread-mobile-menu-btn{min-height:44px;min-width:44px;padding:0 .75rem;border:1px solid light-dark(#d1d5db,#475569);border-radius:.5rem;background:light-dark(#fff,#1e293b);color:light-dark(#374151,#e2e8f0);font:inherit;font-size:14px;cursor:pointer}
-  .uread-bottom-nav{display:block;position:fixed;inset-inline:0;bottom:0;z-index:40;border-top:1px solid light-dark(#e5e7eb,#334155);background:light-dark(#fff,#1e293b);padding-bottom:env(safe-area-inset-bottom)}
+  .uread-bottom-nav{display:block;position:fixed;inset-inline:0;bottom:0;z-index:40;border-top:1px solid light-dark(#e5e7eb,#334155);background:light-dark(rgba(255,255,255,.9),rgba(30,41,59,.9));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding-bottom:env(safe-area-inset-bottom)}
   .uread-bottom-nav ul{display:grid;grid-template-columns:repeat(4,1fr);margin:0;padding:0;list-style:none}
   .uread-bottom-link{display:flex;min-height:56px;flex-direction:column;align-items:center;justify-content:center;gap:.125rem;font-size:11px;text-decoration:none;color:light-dark(#64748B,#94a3b8)}
   .uread-bottom-link svg{width:20px;height:20px}
