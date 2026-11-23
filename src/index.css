@@ -136,6 +136,64 @@ body { background-color: var(--theme-page) !important; color: var(--theme-text) 
 .text-gray-600 { color: var(--theme-muted) !important; }
 .border-gray-200 { border-color: var(--theme-line) !important; }
 
+/* 暗色阅读：上一段只覆盖少数几个类，自定义色与常见浅色底仍是白块。
+   主题真相仍是 <meta name="color-scheme">，这里只做 CSS 映射，不加 class/data 属性。 */
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  --brand: #7FB0FF;
+  --ink: #F1F5F9;
+  --body: #CBD5E1;
+  --accent: #E3B072;
+  --page: #0F172A;
+  --line: #334155;
+  --surface: #1E293B;
+  --mist: #16233A;
+
+  .bg-surface,
+  .bg-white,
+  [class*='bg-white'],
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-mist\/40,
+  .bg-blue-50,
+  .bg-violet-50,
+  .bg-amber-50,
+  .bg-green-50,
+  .bg-red-50 { background-color: #1E293B !important; }
+
+  .bg-page { background-color: #0F172A !important; }
+
+  .text-navy,
+  .text-ink,
+  .text-body,
+  .text-gray-900,
+  .text-gray-800,
+  .text-gray-700,
+  .text-gray-600 { color: #E2E8F0 !important; }
+
+  .text-muted,
+  .text-gray-500 { color: #94A3B8 !important; }
+
+  .text-brand,
+  .text-blue-700,
+  .text-blue-600,
+  .text-violet-700 { color: #8FBCFF !important; }
+
+  .border-border,
+  .border-gray-200,
+  .border-gray-300,
+  .border-mist,
+  .border-blue-200,
+  .border-amber-200,
+  .border-green-200,
+  .border-red-200 { border-color: #334155 !important; }
+
+  .note-section-excerpt { background: #232A36 !important; }
+  .note-section-heading { color: #F1F5F9 !important; }
+  .note-section-label { border-color: #475569 !important; }
+  .note-article blockquote { color: #CBD5E1 !important; border-color: #475569 !important; }
+  ::selection { background: #1E40AF; color: #F1F5F9; }
+}
+
 /* Phase 3 阅读排版：按原文标题分区，原文摘录与个人理解视觉区分，不改变语义。 */
 .note-article { max-width: 46rem; font-size: var(--note-font-size, 1rem); }
 .note-section { margin: 1.8rem 0; }

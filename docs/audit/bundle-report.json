@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T03:55:31.767Z",
+  "generatedAt": "2026-11-23T06:27:58.539Z",
   "base": "/uRead/",
   "budget": {
     "initialJsGzip": "200.0 KB",
@@ -9,9 +9,9 @@
   "initial": {
     "js": [
       {
-        "file": "index-CotHf_i-.js",
+        "file": "index-C-2FUEPM.js",
         "raw": 39621,
-        "gzip": 11954
+        "gzip": 11950
       },
       {
         "file": "rolldown-runtime-WkwZ5CU-.js",
@@ -31,24 +31,24 @@
     ],
     "css": [
       {
-        "file": "index-D7BLBiSF.css",
-        "raw": 35746,
-        "gzip": 7839
+        "file": "index-B1YErnhS.css",
+        "raw": 38921,
+        "gzip": 8166
       }
     ],
-    "jsGzipTotal": 93578,
-    "cssGzipTotal": 7839
+    "jsGzipTotal": 93574,
+    "cssGzipTotal": 8166
   },
   "chunks": [
     {
-      "file": "BookListsView-kei7bikQ.js",
+      "file": "BookListsView-ChERyCQN.js",
       "raw": 10507,
-      "gzip": 3716
+      "gzip": 3718
     },
     {
-      "file": "BooklistsHubView-Bo5-dzVU.js",
+      "file": "BooklistsHubView-DLF9E-vb.js",
       "raw": 3617,
-      "gzip": 1584
+      "gzip": 1590
     },
     {
       "file": "Card-DXvSpVb9.js",
@@ -56,14 +56,14 @@
       "gzip": 329
     },
     {
-      "file": "CardsView-8RUCdvwX.js",
+      "file": "CardsView-est3K0vX.js",
       "raw": 10903,
-      "gzip": 3593
+      "gzip": 3594
     },
     {
-      "file": "Dashboard-Cd4yiZBi.js",
+      "file": "Dashboard-ClNbkj1r.js",
       "raw": 11510,
-      "gzip": 4409
+      "gzip": 4411
     },
     {
       "file": "DraftNotice-ObreHkSy.js",
@@ -71,44 +71,44 @@
       "gzip": 1058
     },
     {
-      "file": "FindView-cL1bwT6d.js",
+      "file": "FindView-DMrSPfnz.js",
       "raw": 5225,
-      "gzip": 2242
+      "gzip": 2245
     },
     {
-      "file": "LibraryView-Dc9bbg9u.js",
+      "file": "LibraryView-CGZcN7oQ.js",
       "raw": 10161,
       "gzip": 3535
     },
     {
-      "file": "NotesView-KkZApr67.js",
+      "file": "NotesView-DAvam7aa.js",
       "raw": 13297,
-      "gzip": 4534
+      "gzip": 4535
     },
     {
-      "file": "PublicListDetailView-DU-wOGQb.js",
+      "file": "PublicListDetailView-DDRPIcvQ.js",
       "raw": 4007,
-      "gzip": 1781
+      "gzip": 1784
     },
     {
-      "file": "PublicListView-BAcHSoHB.js",
+      "file": "PublicListView-CvBnitYP.js",
       "raw": 3969,
-      "gzip": 1760
+      "gzip": 1762
     },
     {
-      "file": "PublicNoteDetailView-CBesXGj7.js",
-      "raw": 17127,
-      "gzip": 6273
+      "file": "PublicNoteDetailView-CP31km2a.js",
+      "raw": 18882,
+      "gzip": 6985
     },
     {
-      "file": "PublicNotesView-Bq0XolsJ.js",
+      "file": "PublicNotesView-e5JDRWNX.js",
       "raw": 6176,
-      "gzip": 2575
+      "gzip": 2578
     },
     {
-      "file": "ReaderHubView-BhDVtyOC.js",
+      "file": "ReaderHubView-D-WAdJnU.js",
       "raw": 5128,
-      "gzip": 2315
+      "gzip": 2317
     },
     {
       "file": "ReadingLoopView-By3-suv5.js",
@@ -126,9 +126,9 @@
       "gzip": 641
     },
     {
-      "file": "SearchView-ie-4E2vK.js",
+      "file": "SearchView-D9hM3od8.js",
       "raw": 3981,
-      "gzip": 1750
+      "gzip": 1752
     },
     {
       "file": "StateBlock-D6OCc_qI.js",
@@ -141,9 +141,9 @@
       "gzip": 569
     },
     {
-      "file": "index-CotHf_i-.js",
+      "file": "index-C-2FUEPM.js",
       "raw": 39621,
-      "gzip": 11954
+      "gzip": 11950
     },
     {
       "file": "labels-CQP6i9uL.js",
@@ -186,9 +186,9 @@
       "gzip": 306
     },
     {
-      "file": "index-D7BLBiSF.css",
-      "raw": 35746,
-      "gzip": 7839
+      "file": "index-B1YErnhS.css",
+      "raw": 38921,
+      "gzip": 8166
     }
   ],
   "sourceMaps": [],
