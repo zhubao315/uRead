@@ -39,6 +39,16 @@ const KIND_META: Record<
     icon: <StarIcon size="sm" />,
     badge: 'bg-green-100 text-green-800',
   },
+  intent: {
+    label: '阅读意图',
+    icon: <StarIcon size="sm" />,
+    badge: 'bg-violet-100 text-violet-800',
+  },
+  feynman: {
+    label: '费曼输出',
+    icon: <LightBulbIcon size="sm" />,
+    badge: 'bg-amber-100 text-amber-800',
+  },
 };
 
 const NoteCard: React.FC<NoteCardProps> = ({

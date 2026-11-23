@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SITE_BASE } from '../config';
 import { loadNoteIndex, type NoteIndexItem } from '../data/publicNotes';
 import { loadPublicLists, type PublicList } from '../data/publicLists';
@@ -17,37 +17,110 @@ interface HomeState {
   books: HomeBook[];
   generated_at: string;
   config: { featured_booklist_ids: string[]; featured_theme_ids: string[]; featured_book_ids: string[] } | null;
+  /** 快照提供的真实计数；缺省时退回索引长度，不编造数字。 */
+  counts: { notes: number; audio: number; themes: number; booklists: number } | null;
+  source: 'snapshot' | 'index' | null;
+}
+
+interface HomeSnapshot {
+  generated_at: string;
+  counts: { notes: number; audio: number; themes: number; booklists: number };
+  featured_book_ids: string[];
+  featured_books: HomeBook[];
+  featured_lists: PublicList[];
+  themes: PublicList[];
+  latest_notes: NoteIndexItem[];
+}
+
+function isHomeSnapshot(value: unknown): value is HomeSnapshot {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const candidate = value as Partial<HomeSnapshot>;
+  return Array.isArray(candidate.featured_books)
+    && Array.isArray(candidate.featured_lists)
+    && Array.isArray(candidate.latest_notes)
+    && Array.isArray(candidate.themes)
+    && Boolean(candidate.counts && typeof candidate.counts.notes === 'number');
 }
 
 /** 公开站首页：编辑式数字阅读杂志，只展示真实产物。 */
 const ContentHomeView: React.FC = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState<HomeState>({
-    ready: false, notes: [], audio: 0, themes: [], booklists: [], books: [], generated_at: '', config: null,
+    ready: false, notes: [], audio: 0, themes: [], booklists: [], books: [], generated_at: '', config: null, counts: null, source: null,
   });
   const [query, setQuery] = useState('');
 
+  // 首选构建期生成的首页快照（只有几十 KB）；快照缺失时回退到完整索引。
+  useEffect(() => {
+    let alive = true;
+
+    const fromFullIndex = () => {
+      void Promise.all([loadNoteIndex(), loadPublicLists()]).then(([notes, lists]) => {
+        if (!alive) return;
+        setState({
+          ready: true,
+          notes,
+          audio: notes.filter((note) => note.audio).length,
+          themes: lists.themes,
+          booklists: lists.booklists,
+          books: [],
+          generated_at: lists.manifest?.generated_at ?? '',
+          config: null,
+          counts: null,
+          source: 'index',
+        });
+      });
+    };
+
+    void fetch(`${SITE_BASE}publishing/homepage-snapshot.json`, { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) {
+          throw new Error('missing snapshot');
+        }
+        return await response.json() as unknown;
+      })
+      .then((data) => {
+        if (!alive || !isHomeSnapshot(data)) {
+          if (alive) fromFullIndex();
+          return;
+        }
+        setState({
+          ready: true,
+          notes: data.latest_notes,
+          audio: data.counts.audio,
+          themes: data.themes,
+          booklists: data.featured_lists,
+          books: data.featured_books,
+          generated_at: data.generated_at,
+          config: {
+            featured_book_ids: data.featured_book_ids,
+            featured_booklist_ids: data.featured_lists.map((list) => list.id),
+            featured_theme_ids: data.themes.map((theme) => theme.id),
+          },
+          counts: data.counts,
+          source: 'snapshot',
+        });
+      })
+      .catch(() => { if (alive) fromFullIndex(); });
+
+    return () => { alive = false; };
+  }, []);
+
+  // 书籍聚合（361 KB）与首页策展配置是增强内容：后台取，到了再填，不阻塞首屏。
   useEffect(() => {
     let alive = true;
     void Promise.all([
-      loadNoteIndex(),
-      loadPublicLists(),
       fetch(`${SITE_BASE}publishing/homepage.json`, { cache: 'no-store' }).catch(() => null),
       fetch(`${SITE_BASE}books/aggregate.json`, { cache: 'no-store' }).catch(() => null),
-    ]).then(async ([notes, lists, configResponse, booksResponse]) => {
+    ]).then(async ([configResponse, booksResponse]) => {
       const aggregate = booksResponse?.ok ? await booksResponse.json() : null;
-      const books: HomeBook[] = aggregate?.books ?? [];
+      const config = configResponse?.ok && configResponse.headers.get('content-type')?.includes('application/json')
+        ? await configResponse.json() : null;
       if (!alive) return;
-      setState({
-        ready: true,
-        notes,
-        audio: notes.filter((note) => note.audio).length,
-        themes: lists.themes,
-        booklists: lists.booklists,
-        books,
-        generated_at: lists.manifest?.generated_at ?? '',
-        config: configResponse?.ok && configResponse.headers.get('content-type')?.includes('application/json')
-          ? await configResponse.json() : null,
-      });
+      // 快照路径已经带好了精选书籍与策展配置，不再下载整份聚合数据。
+      setState((previous) => previous.source === 'snapshot'
+        ? previous
+        : { ...previous, books: aggregate?.books ?? [], config });
     });
     return () => { alive = false; };
   }, []);
@@ -65,7 +138,18 @@ const ContentHomeView: React.FC = () => {
       .slice(0, 6), [state.notes]);
 
   if (!state.ready) {
-    return <p className="mx-auto max-w-4xl px-4 py-16 text-muted">正在整理读书内容…</p>;
+    // 断网时不给空白页：先渲染静态主视觉，并明确说明内容会在联网后恢复。
+    return (
+      <div className="mx-auto max-w-4xl px-5 py-16">
+        <p className="text-xs font-semibold tracking-[0.24em] text-gold">READ · REFLECT · REVISIT</p>
+        <h1 className="font-editorial mt-4 text-4xl leading-[1.25] text-navy sm:text-5xl">
+          让读过的书，<br />留下值得反复阅读的内容。
+        </h1>
+        <p role="status" aria-live="polite" className="mt-6 text-sm text-muted">
+          正在整理读书内容…（若当前离线，联网后将自动恢复）
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -81,7 +165,7 @@ const ContentHomeView: React.FC = () => {
           <p className="mt-2 text-sm text-muted">Personal Reading Library · 个人阅读档案与知识沉淀</p>
           <form onSubmit={(event) => {
             event.preventDefault();
-            window.location.href = `${SITE_BASE}find?q=${encodeURIComponent(query)}`;
+            navigate(query.trim() ? `/find?q=${encodeURIComponent(query.trim())}` : '/find');
           }} className="mt-7 flex max-w-xl gap-2">
             <label htmlFor="home-search" className="sr-only">搜索书名、作者、笔记或主题</label>
             <SearchIcon size="md" className="mt-3 shrink-0 text-muted" />
@@ -98,8 +182,8 @@ const ContentHomeView: React.FC = () => {
             {state.booklists.length ? (
               <button type="button"
                 onClick={() => {
-                  const pick = state.booklists[Math.floor(Math.random() * state.booklists.length)];
-                  window.location.href = `/uRead/booklists/${pick.id}`;
+                  const picked = state.booklists[Math.floor(Math.random() * state.booklists.length)];
+                  navigate(`/booklists/${picked.id}`);
                 }}
                 className="inline-flex items-center gap-2 rounded-md border border-mist bg-mist/40 px-5 py-2.5 text-sm font-medium text-navy hover:border-brand">
                 随手翻一份书单
@@ -110,16 +194,20 @@ const ContentHomeView: React.FC = () => {
             </Link>
           </div>
           <p className="mt-5 text-xs text-muted">
-            {state.notes.length} 篇读书笔记 · {state.themes.length} 个主题 · {state.booklists.length} 份书单 · {state.audio} 篇可听
+            {state.counts?.notes ?? state.notes.length} 篇读书笔记 · {state.counts?.themes ?? state.themes.length} 个主题 · {state.counts?.booklists ?? state.booklists.length} 份书单 · {state.audio} 篇可听
             {state.generated_at ? ` · 内容更新 ${state.generated_at.slice(0, 10)}` : ''}
           </p>
         </div>
         <div className="hidden lg:grid grid-cols-2 gap-3" aria-hidden="true">
-          {featuredBooks.slice(0, 4).map((book) => (
-            <div key={book.id} className="aspect-[2/3] rounded-lg border border-border bg-white p-2 shadow-card">
-              <BookCover id={book.id} title={book.title} author={book.author} realCover={book.cover} className="h-full w-full rounded" />
-            </div>
-          ))}
+          {featuredBooks.length
+            ? featuredBooks.slice(0, 4).map((book) => (
+                <div key={book.id} className="aspect-[2/3] rounded-lg border border-border bg-white p-2 shadow-card">
+                  <BookCover id={book.id} title={book.title} author={book.author} realCover={book.cover} className="h-full w-full rounded" />
+                </div>
+              ))
+            : Array.from({ length: 4 }, (_, index) => (
+                <div key={index} className="aspect-[2/3] rounded-lg border border-border bg-mist/40" />
+              ))}
         </div>
       </section>
 
@@ -189,19 +277,23 @@ const ContentHomeView: React.FC = () => {
       <section className="mt-14" aria-labelledby="books-title">
         <h2 id="books-title" className="font-editorial text-2xl text-navy">推荐书籍</h2>
         <a href={`${SITE_BASE}books/`} className="float-right text-sm text-brand hover:underline">全部书籍 →</a>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredBooks.map((book) => (
-            <a key={book.id} href={`${SITE_BASE}books/${book.id}/`}
-              className="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-card hover:border-brand">
-              <BookCover id={book.id} title={book.title} author={book.author} realCover={book.cover} className="h-24 w-16 shrink-0 rounded" />
-              <div>
-                <h3 className="font-editorial text-base text-navy">{book.title}</h3>
-                <p className="mt-1 text-sm text-muted">{book.author || '作者未标注'}</p>
-                <p className="mt-2 text-xs text-brand">查看书籍档案 →</p>
-              </div>
-            </a>
-          ))}
-        </div>
+        {featuredBooks.length === 0 ? (
+          <p className="mt-5 rounded-lg border border-border bg-surface p-5 text-sm text-muted">正在整理推荐书籍…</p>
+        ) : (
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredBooks.map((book) => (
+              <a key={book.id} href={`${SITE_BASE}books/${book.id}/`}
+                className="flex gap-4 rounded-lg border border-border bg-surface p-4 shadow-card hover:border-brand">
+                <BookCover id={book.id} title={book.title} author={book.author} realCover={book.cover} className="h-24 w-16 shrink-0 rounded" />
+                <div>
+                  <h3 className="font-editorial text-base text-navy">{book.title}</h3>
+                  <p className="mt-1 text-sm text-muted">{book.author || '作者未标注'}</p>
+                  <p className="mt-2 text-xs text-brand">查看书籍档案 →</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Footer */}

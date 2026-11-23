@@ -1,23 +1,58 @@
-import { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileBottomNav from './components/MobileBottomNav';
 import WorkspaceMobileNav from './components/WorkspaceMobileNav';
-import BookListsView from './views/BookListsView';
-import CardsView from './views/CardsView';
-import Dashboard from './views/Dashboard';
+// 首页是默认落地页：保持静态导入，让它进入预缓存的应用外壳，离线也能立刻渲染。
 import ContentHomeView from './views/ContentHomeView';
-import BooklistsHubView, { BooklistDetailRedirect } from './views/BooklistsHubView';
-import FindView from './views/FindView';
-import LibraryView from './views/LibraryView';
-import NotesView from './views/NotesView';
-import PublicNoteDetailView from './views/PublicNoteDetailView';
-import PublicNotesView from './views/PublicNotesView';
-import ReaderHubView from './views/ReaderHubView';
-import PublicListView from './views/PublicListView';
-import PublicListDetailView from './views/PublicListDetailView';
-import SearchView from './views/SearchView';
-import { useLibraryStore } from './store/libraryStore';
+
+/**
+ * 路由级代码拆分：只有当前路由的页面代码会进入首屏请求。
+ * 工作台的布局壳也懒加载——它静态导入了 Zustand 仓储，
+ * 因此公开门户不会把 IndexedDB 相关代码下载到浏览器。
+ */
+const Dashboard = lazy(() => import('./views/Dashboard'));
+const LibraryView = lazy(() => import('./views/LibraryView'));
+const NotesView = lazy(() => import('./views/NotesView'));
+const CardsView = lazy(() => import('./views/CardsView'));
+const BookListsView = lazy(() => import('./views/BookListsView'));
+const SearchView = lazy(() => import('./views/SearchView'));
+const ReadingLoopView = lazy(() => import('./views/ReadingLoopView'));
+const WorkspaceGate = lazy(() => import('./components/WorkspaceGate'));
+
+const PublicNotesView = lazy(() => import('./views/PublicNotesView'));
+const PublicNoteDetailView = lazy(() => import('./views/PublicNoteDetailView'));
+const PublicListView = lazy(() => import('./views/PublicListView'));
+const PublicListDetailView = lazy(() => import('./views/PublicListDetailView'));
+const BooklistsHubView = lazy(() => import('./views/BooklistsHubView'));
+const BooklistDetailRedirect = lazy(
+  () => import('./views/BooklistsHubView').then((module) => ({ default: module.BooklistDetailRedirect })),
+);
+const ReaderHubView = lazy(() => import('./views/ReaderHubView'));
+const FindView = lazy(() => import('./views/FindView'));
+
+/**
+ * 各路由的浏览器标题。笔记详情自己管理标题（带笔记名），这里返回 null 不覆盖。
+ * 标题同时用于屏幕阅读器的路由播报，让换页不只是「画面变了」。
+ */
+function titleForPath(pathname: string): string | null {
+  if (/^\/read\/[^/]+/.test(pathname)) return null;
+  if (pathname === '/') return 'uRead · 个人阅读档案与知识沉淀';
+  if (pathname.startsWith('/workspace')) return '工作台 · uRead';
+  if (pathname === '/read') return '公开读书笔记 · uRead';
+  if (pathname.startsWith('/themes')) return '主题阅读 · uRead';
+  if (pathname.startsWith('/lists') || pathname.startsWith('/booklists')) return '书单 · uRead';
+  if (pathname === '/find') return '全站搜索 · uRead';
+  if (pathname === '/reader') return '继续阅读 · uRead';
+  return 'uRead · 个人阅读档案与知识沉淀';
+}
+
+/** 异步路由的轻量占位：不引入额外组件依赖，避免为了骨架屏反而增大首屏包。 */
+const PageSkeleton: React.FC = () => (
+  <p role="status" aria-live="polite" className="px-4 py-16 text-center text-sm text-muted">
+    正在加载页面…
+  </p>
+);
 
 /** 旧路由兼容：保留查询参数，迁移到 /workspace/* 命名空间。 */
 const LegacyRedirect: React.FC<{ to: string }> = ({ to }) => {
@@ -48,75 +83,70 @@ function App() {
   const location = useLocation();
   const isWorkspace = location.pathname.startsWith('/workspace');
   const [showTop, setShowTop] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+  const firstRender = useRef(true);
+  const routeTitle = titleForPath(location.pathname);
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 600);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  const load = useLibraryStore((state) => state.load);
-  const initialized = useLibraryStore((state) => state.initialized);
-  const error = useLibraryStore((state) => state.error);
-  const errorHint = useLibraryStore((state) => state.errorHint);
+  useEffect(() => {
+    if (routeTitle) document.title = routeTitle;
+  }, [routeTitle]);
 
   useEffect(() => {
-    if (!initialized) {
-      void load();
+    // 首次加载保持浏览器默认焦点；之后每次换页把焦点交回主内容，
+    // 避免键盘用户停留在已卸载的链接上。只依赖 pathname，搜索输入时不抢焦点。
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
     }
-  }, [load, initialized]);
+    mainRef.current?.focus({ preventScroll: true });
+  }, [location.pathname]);
 
   return (
     <div className={`min-h-screen ${isWorkspace ? 'workspace-shell bg-page' : 'bg-page'}`}>
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-[60] focus:rounded focus:bg-blue-600 focus:px-3 focus:py-2 focus:text-white">
         跳到主要内容
       </a>
+      <p className="sr-only" role="status" aria-live="polite">{routeTitle ? `${routeTitle} 已打开` : ''}</p>
       <Navbar />
-      {/* 读取失败时在页面顶部常驻提示：单个视图里的错误 banner 一旦切换页面就看不到了 */}
-      {error ? (
-        <div
-          role="alert"
-          aria-live="assertive"
-          className="bg-red-50 border-b border-red-200 text-red-800 font-inter text-sm"
-        >
-          <div className="container mx-auto px-4 py-2 flex flex-wrap items-center gap-3">
-            <span>
-              本地数据读取失败：{error}
-              {errorHint ? <span className="ml-2 opacity-80">{errorHint}</span> : null}
-            </span>
-            <button
-              type="button"
-              onClick={() => void load()}
-              className="underline hover:text-red-900"
-            >
-              重试
-            </button>
-          </div>
-        </div>
-      ) : null}
-      <main id="main" className="container mx-auto px-4 pb-20 pt-8 md:pb-8" tabIndex={-1}>
-        <Routes>
-          <Route path="/" element={<ContentHomeView />} />
-          <Route path="/workspace" element={<Dashboard />} />
-          <Route path="/workspace/library" element={<LibraryView />} />
-          <Route path="/library" element={<LegacyRedirect to="/workspace/library" />} />
-          <Route path="/workspace/notes" element={<NotesView />} />
-          <Route path="/notes" element={<LegacyRedirect to="/workspace/notes" />} />
-          <Route path="/reader" element={<ReaderHubView />} />
-          <Route path="/find" element={<FindView />} />
-          <Route path="/read" element={<PublicNotesView />} />
-          <Route path="/read/:slug" element={<PublicNoteDetailView />} />
-          <Route path="/themes" element={<PublicListView kind="theme" />} />
-          <Route path="/themes/:id" element={<PublicListDetailView kind="theme" />} />
-          <Route path="/lists" element={<PublicListView kind="booklist" />} />
-          <Route path="/lists/:id" element={<PublicListDetailView kind="booklist" />} />
-          <Route path="/booklists" element={<BooklistsHubView />} />
-          <Route path="/booklists/:id" element={<BooklistDetailRedirect />} />
-          <Route path="/workspace/booklists" element={<BookListsView />} />
-          <Route path="/workspace/cards" element={<CardsView />} />
-          <Route path="/cards" element={<LegacyRedirect to="/workspace/cards" />} />
-          <Route path="/workspace/search" element={<SearchView />} />
-          <Route path="/search" element={<LegacyRedirect to="/workspace/search" />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <main ref={mainRef} id="main" className="container mx-auto px-4 pb-20 pt-8 md:pb-8" tabIndex={-1}>
+        <Suspense fallback={<PageSkeleton />}>
+          <Routes>
+            <Route path="/" element={<ContentHomeView />} />
+
+            {/* 工作台：由 WorkspaceGate 统一初始化 IndexedDB，公开门户不参与 */}
+            <Route element={<WorkspaceGate />}>
+              <Route path="/workspace" element={<Dashboard />} />
+              <Route path="/workspace/library" element={<LibraryView />} />
+              <Route path="/workspace/notes" element={<NotesView />} />
+              <Route path="/workspace/booklists" element={<BookListsView />} />
+              <Route path="/workspace/cards" element={<CardsView />} />
+              <Route path="/workspace/search" element={<SearchView />} />
+              <Route path="/workspace/loop" element={<ReadingLoopView />} />
+            </Route>
+
+            {/* 旧地址跳转到工作台，重定向本身不需要初始化本地数据 */}
+            <Route path="/library" element={<LegacyRedirect to="/workspace/library" />} />
+            <Route path="/notes" element={<LegacyRedirect to="/workspace/notes" />} />
+            <Route path="/cards" element={<LegacyRedirect to="/workspace/cards" />} />
+            <Route path="/search" element={<LegacyRedirect to="/workspace/search" />} />
+
+            <Route path="/reader" element={<ReaderHubView />} />
+            <Route path="/find" element={<FindView />} />
+            <Route path="/read" element={<PublicNotesView />} />
+            <Route path="/read/:slug" element={<PublicNoteDetailView />} />
+            <Route path="/themes" element={<PublicListView kind="theme" />} />
+            <Route path="/themes/:id" element={<PublicListDetailView kind="theme" />} />
+            <Route path="/lists" element={<PublicListView kind="booklist" />} />
+            <Route path="/lists/:id" element={<PublicListDetailView kind="booklist" />} />
+            <Route path="/booklists" element={<BooklistsHubView />} />
+            <Route path="/booklists/:id" element={<BooklistDetailRedirect />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       {showTop ? (
         <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

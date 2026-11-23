@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { SITE_BASE } from '../config';
 import { loadNoteIndex, type NoteIndexItem } from '../data/publicNotes';
@@ -17,6 +17,21 @@ const FindView: React.FC = () => {
   const query = params.get('q') ?? '';
   const [pool, setPool] = useState<Pool | null>(null);
   const [type, setType] = useState<'all' | 'book' | 'note' | 'list' | 'theme'>('all');
+  // 输入框先本地响应，200ms 后再写回 URL；避免每敲一个键都触发整页筛选与历史替换。
+  const [draft, setDraft] = useState(query);
+  const debounceTimer = useRef<number | null>(null);
+
+  const commitQuery = (value: string, immediate = false) => {
+    if (debounceTimer.current !== null) window.clearTimeout(debounceTimer.current);
+    debounceTimer.current = null;
+    const write = () => setParams(value.trim() ? { q: value.trim() } : {}, { replace: true });
+    if (immediate) write();
+    else debounceTimer.current = window.setTimeout(write, 200);
+  };
+
+  useEffect(() => () => {
+    if (debounceTimer.current !== null) window.clearTimeout(debounceTimer.current);
+  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -42,30 +57,57 @@ const FindView: React.FC = () => {
     return () => { alive = false; };
   }, []);
 
+  // 小写检索串只在索引加载后计算一次；每次按键只做 includes，
+  // 避免 1595 篇笔记逐次 join + toLowerCase 形成长任务、拖慢 INP。
+  const haystacks = useMemo(() => {
+    if (!pool) return null;
+    return {
+      notes: pool.notes.map((n) => [n.title, n.excerpt, ...n.tags, n.author].join('\n').toLowerCase()),
+      books: pool.books.map((b) => `${b.title}\n${b.author}`.toLowerCase()),
+      lists: pool.lists.map((l) => `${l.title}\n${l.description ?? ''}`.toLowerCase()),
+    };
+  }, [pool]);
+
   const groups = useMemo(() => {
     const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (!words.length || !pool) return { notes: [], books: [], booklists: [], themes: [] };
-    const hit = (text: string) => words.every((word) => text.toLowerCase().includes(word));
+    if (!words.length || !pool || !haystacks) {
+      return { notes: [], books: [], booklists: [], themes: [] };
+    }
+    const hit = (text: string) => words.every((word) => text.includes(word));
+    const matching = <T,>(items: T[], texts: string[]): T[] => items.filter((_, i) => hit(texts[i]));
     return {
-      notes: pool.notes.filter((n) => hit([n.title, n.excerpt, ...n.tags, n.author].join('\n'))).slice(0, 30),
-      books: pool.books.filter((b) => hit([b.title, b.author].join('\n'))),
-      booklists: pool.lists.filter((l) => l.kind === 'booklist' && hit([l.title, l.description].join('\n'))),
-      themes: pool.lists.filter((l) => l.kind === 'theme' && hit([l.title, l.description].join('\n'))),
+      notes: matching(pool.notes, haystacks.notes).slice(0, 30),
+      books: matching(pool.books, haystacks.books),
+      booklists: pool.lists.flatMap((list, i) =>
+        list.kind === 'booklist' && hit(haystacks.lists[i]) ? [list] : []),
+      themes: pool.lists.flatMap((list, i) =>
+        list.kind === 'theme' && hit(haystacks.lists[i]) ? [list] : []),
     };
-  }, [pool, query]);
+  }, [pool, haystacks, query]);
 
   const total = groups.notes.length + groups.books.length + groups.booklists.length + groups.themes.length;
 
   return (
     <section className="mx-auto max-w-5xl px-5 py-8 font-inter text-body">
       <h1 className="text-2xl font-semibold text-ink">搜索读书内容</h1>
-      <form onSubmit={(event) => { event.preventDefault(); setParams(query ? { q: query } : {}); }} className="mt-4 flex gap-2">
+      <form onSubmit={(event) => { event.preventDefault(); commitQuery(draft, true); }} className="mt-4 flex gap-2">
         <label htmlFor="find-q" className="sr-only">搜索</label>
-        <input id="find-q" type="search" aria-label="搜索" value={query}
-          onChange={(event) => setParams(event.target.value ? { q: event.target.value } : {}, { replace: true })}
+        <input id="find-q" type="search" aria-label="搜索" value={draft}
+          onChange={(event) => {
+            setDraft(event.target.value);
+            commitQuery(event.target.value);
+          }}
           placeholder="搜索书名、作者、笔记或主题" className="w-full rounded border border-slate-300 bg-white px-3 py-2" />
-        <button type="submit" className="rounded bg-brand px-4 py-2 text-white">搜索</button>
+        {draft ? (
+          <button type="button" aria-label="清空搜索" title="清空搜索"
+            onClick={() => { setDraft(''); commitQuery('', true); }}
+            className="shrink-0 rounded border border-border px-3 text-muted hover:bg-mist">×</button>
+        ) : null}
+        <button type="submit" className="shrink-0 rounded bg-brand px-4 py-2 text-white">搜索</button>
       </form>
+      <p className="mt-2 text-xs text-muted">
+        按 <kbd className="rounded border border-border bg-surface px-1.5 py-0.5">/</kbd> 可快速聚焦搜索框
+      </p>
       {pool === null ? <p className="mt-6 text-slate-600">正在载入内容索引…</p> : null}
       {query && pool ? (
         <div className="mt-4 flex flex-wrap gap-2">

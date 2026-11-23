@@ -37,6 +37,15 @@ jobs:
       - name: 构建（SPA）
         run: npm run build
 
+      - name: 构建体积门禁
+        run: npm run budget:check
+
+      - name: 安装 Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: 关键路径 E2E（桌面 + 移动 + 离线）
+        run: npm run test:e2e
+
       - name: 安装 Hugo Extended
         uses: peaceiris/actions-hugo@v3
         with:

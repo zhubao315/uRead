@@ -224,6 +224,15 @@ const Dashboard: React.FC = () => {
         </section>
       )}
 
+      <Link to="/workspace/loop" className="mt-8 block rounded-xl border border-brand/30 bg-blue-50 p-6 transition hover:border-brand">
+        <p className="text-xs font-semibold tracking-[0.16em] text-brand">READ · REFLECT · INTERNALIZE</p>
+        <h2 className="font-editorial mt-2 text-xl text-navy">阅读闭环：为问题而读，用自己的话讲清楚</h2>
+        <p className="mt-1 text-sm text-gray-600">
+          记录现实问题与选书理由，读完后完成费曼复述、独立质疑与应用验证。AI 只提供参考，不替你思考。
+        </p>
+        <span className="mt-3 inline-block text-sm font-medium text-brand">进入阅读闭环 →</span>
+      </Link>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <section>
           <Card variant="default" className="p-6">

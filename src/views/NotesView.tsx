@@ -19,6 +19,8 @@ const KIND_LABEL: Record<NoteKind, string> = {
   highlight: '高亮',
   note: '笔记',
   summary: '总结',
+  intent: '阅读意图',
+  feynman: '费曼输出',
 };
 
 const NotesView: React.FC = () => {

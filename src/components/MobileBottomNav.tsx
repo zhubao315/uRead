@@ -7,10 +7,10 @@ import { HomeIcon, NotebookPenIcon, ListIcon, BookOpenIcon } from './icons';
 const MobileBottomNav: React.FC = () => {
   const location = useLocation();
   const items = [
-    { path: '/', label: '首页', icon: <HomeIcon size="md" /> },
-    { path: '/read', label: '笔记', icon: <NotebookPenIcon size="md" /> },
-    { path: '/booklists', label: '书单', icon: <ListIcon size="md" /> },
-    { path: '/books', label: '书籍', icon: <BookOpenIcon size="md" />, href: `${SITE_BASE}books/` },
+    { path: '/', label: '首页', icon: <HomeIcon size="md" />, aliases: [] },
+    { path: '/read', label: '笔记', icon: <NotebookPenIcon size="md" />, aliases: [] },
+    { path: '/booklists', label: '书单', icon: <ListIcon size="md" />, aliases: ['/lists', '/themes'] },
+    { path: '/books', label: '书籍', icon: <BookOpenIcon size="md" />, aliases: [], href: `${SITE_BASE}books/` },
   ];
 
   return (
@@ -21,7 +21,10 @@ const MobileBottomNav: React.FC = () => {
         {items.map((item) => {
           const active = item.path === '/books'
             ? location.pathname.startsWith('/books')
-            : location.pathname === item.path;
+            : item.path === '/'
+              ? location.pathname === '/'
+              : [item.path, ...item.aliases]
+                  .some((prefix) => location.pathname === prefix || location.pathname.startsWith(`${prefix}/`));
           const content = (
             <>
               <span className={active ? 'text-brand' : 'text-muted'}>{item.icon}</span>

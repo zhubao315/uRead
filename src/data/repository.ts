@@ -184,6 +184,7 @@ export interface NoteInput {
   source_refs?: SourceRef[];
   relations?: Relation[];
   status?: Note['status'];
+  provenance?: Note['metadata']['provenance'];
 }
 
 export async function listNotes(filter?: { book_id?: string; note_kind?: NoteKind }): Promise<Note[]> {
@@ -213,7 +214,8 @@ export async function createNote(input: NoteInput): Promise<Note> {
     metadata: {
       origin: 'uread',
       language: 'zh-CN',
-      ai_generated: false,
+      ai_generated: input.provenance === 'AI_GENERATED' || input.provenance === 'AI_ASSISTED',
+      ...(input.provenance ? { provenance: input.provenance } : {}),
       tags: input.tags ?? [],
     },
     version: '1.0.0',

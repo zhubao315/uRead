@@ -100,6 +100,8 @@ export interface AssetMetadata {
   identity?: string;
   language?: string;
   ai_generated?: boolean;
+  /** 内容归属标记；缺省的老数据按 HUMAN_WRITTEN 理解，不倒推历史。 */
+  provenance?: ContentProvenance;
   reviewed_by?: string;
   // 契约的共享质量指标：uWise 计算、uRead 展示与筛选，
   // 显式声明后才能类型安全读取（否则只是索引签名里的 unknown）。
@@ -142,7 +144,17 @@ export interface Book extends BaseAsset {
   body?: string;
 }
 
-export type NoteKind = 'highlight' | 'note' | 'summary';
+/**
+ * 笔记用途。
+ *
+ * intent = 读之前的「现实问题 / 为什么读这本书」；
+ * feynman = 读之后的「用自己的话讲清楚 + 独立质疑 + 应用验证」。
+ * 两者都复用 Note 存储，不新增 IndexedDB Store，因此八类备份契约不变。
+ */
+export type NoteKind = 'highlight' | 'note' | 'summary' | 'intent' | 'feynman';
+
+/** 内容归属：AI 可以参考，但不能冒充人的理解。 */
+export type ContentProvenance = 'HUMAN_WRITTEN' | 'AI_GENERATED' | 'AI_ASSISTED' | 'HUMAN_VERIFIED';
 
 export interface Note extends BaseAsset {
   type: 'note';

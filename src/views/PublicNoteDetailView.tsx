@@ -8,6 +8,30 @@ import { relatedNotes } from '../domain/note-relations';
 import { useSpeechPlayer } from '../hooks/useSpeechPlayer';
 import { HeadphonesIcon } from '../components/icons';
 
+interface ReadingPrefs {
+  fontSize: number;
+  lineHeight: number;
+}
+
+const READING_PREFS_KEY = 'uread:reading-prefs';
+const DEFAULT_READING_PREFS: ReadingPrefs = { fontSize: 16, lineHeight: 1.9 };
+
+function loadReadingPrefs(): ReadingPrefs {
+  try {
+    const raw = localStorage.getItem(READING_PREFS_KEY);
+    if (!raw) return DEFAULT_READING_PREFS;
+    const parsed = JSON.parse(raw) as Partial<ReadingPrefs>;
+    return {
+      fontSize: typeof parsed.fontSize === 'number'
+        ? Math.max(14, Math.min(22, parsed.fontSize)) : DEFAULT_READING_PREFS.fontSize,
+      lineHeight: typeof parsed.lineHeight === 'number'
+        ? Math.max(1.6, Math.min(2.2, parsed.lineHeight)) : DEFAULT_READING_PREFS.lineHeight,
+    };
+  } catch {
+    return DEFAULT_READING_PREFS;
+  }
+}
+
 /** 公开笔记详情：正文只读渲染，音频只在确实生成过时显示播放器。 */
 const PublicNoteDetailView: React.FC = () => {
   const { slug = '' } = useParams();
@@ -17,6 +41,8 @@ const PublicNoteDetailView: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [speed, setSpeed] = useState(1);
   const [copied, setCopied] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [reading, setReading] = useState<ReadingPrefs>(loadReadingPrefs);
 
   useEffect(() => {
     let alive = true;
@@ -36,6 +62,14 @@ const PublicNoteDetailView: React.FC = () => {
     return () => { alive = false; };
   }, [slug]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem(READING_PREFS_KEY, JSON.stringify(reading));
+    } catch {
+      // 隐私模式下 localStorage 不可写：不影响本次阅读，下次回到默认值。
+    }
+  }, [reading]);
+
   const progressKey = note ? `uread:audio:${note.content_hash}` : '';
   const player = useSpeechPlayer(note?.body ?? '', note?.slug ?? '');
   useEffect(() => {
@@ -44,6 +78,27 @@ const PublicNoteDetailView: React.FC = () => {
     return () => { document.title = 'uRead · 个人阅读档案与知识沉淀'; };
   }, [note]);
   // 续播点只在用户真正听过之后才写：没听过的笔记不该被记成 0 秒。
+
+  // 阅读进度：被动监听 + rAF 合帧，滚动时最多每帧更新一次，不抢主线程。
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const value = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 100;
+      setProgress(Math.max(0, Math.min(100, value)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [note?.slug]);
 
   const headings = useMemo(() =>
     [...(note?.body ?? '').matchAll(/^#{1,3}\s+(.+)$/gm)].map((match) => ({
@@ -91,7 +146,45 @@ const PublicNoteDetailView: React.FC = () => {
   }
 
   return (
-    <article className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white p-6 md:p-10 font-inter">
+    <article
+      className="mx-auto max-w-4xl rounded-xl border border-gray-200 bg-white p-6 md:p-10 font-inter"
+      style={{
+        '--note-font-size': `${reading.fontSize}px`,
+        '--note-line-height': reading.lineHeight,
+      } as React.CSSProperties}
+    >
+      <div
+        role="progressbar"
+        aria-label="阅读进度"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(progress)}
+        className="sticky top-16 z-30 -mx-6 mb-4 border-b border-border bg-surface/90 px-6 py-1 backdrop-blur md:-mx-10 md:px-10"
+      >
+        <div className="h-1 rounded-full bg-mist">
+          <div className="h-1 rounded-full bg-brand transition-[width] duration-150" style={{ width: `${progress}%` }} />
+        </div>
+        <span className="sr-only">已读 {Math.round(progress)}%</span>
+      </div>
+      <div className="mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-xs text-muted">
+        <span>阅读设置</span>
+        <button type="button" aria-label="缩小字号" title="缩小字号"
+          onClick={() => setReading((value) => ({ ...value, fontSize: Math.max(14, value.fontSize - 1) }))}
+          className="rounded border border-border px-2 py-1 hover:bg-mist">A−</button>
+        <span className="min-w-[3rem] text-center text-navy" aria-live="polite">{reading.fontSize}px</span>
+        <button type="button" aria-label="放大字号" title="放大字号"
+          onClick={() => setReading((value) => ({ ...value, fontSize: Math.min(22, value.fontSize + 1) }))}
+          className="rounded border border-border px-2 py-1 hover:bg-mist">A+</button>
+        <span className="mx-1">·</span>
+        <button type="button" aria-label="切换行距" title="切换行距"
+          onClick={() => setReading((value) => ({
+            ...value,
+            lineHeight: value.lineHeight >= 2.1
+              ? 1.7
+              : Math.round((value.lineHeight + 0.2) * 10) / 10,
+          }))}
+          className="rounded border border-border px-2 py-1 hover:bg-mist">行距 {reading.lineHeight}</button>
+      </div>
       <div className="mb-3 flex items-center gap-3">
         <button type="button" onClick={() => {
           void navigator.clipboard?.writeText(window.location.href).then(() => setCopied(true));
@@ -121,7 +214,7 @@ const PublicNoteDetailView: React.FC = () => {
       {note.audio ? (
         <div className="my-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
           <div className="mb-2 flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-gray-800">听这篇笔记</span>
+            <span className="text-sm font-medium text-gray-800">收听原文录音</span>
             {[1, 1.25, 1.5, 2].map((rate) => (
               <button key={rate} type="button" aria-pressed={speed === rate}
                 onClick={() => { if (audioRef.current) audioRef.current.playbackRate = rate; setSpeed(rate); }}
@@ -150,10 +243,10 @@ const PublicNoteDetailView: React.FC = () => {
         </div>
       ) : null}
 
-      <section className="my-6 rounded-lg border border-border bg-surface p-4" aria-label="听这篇笔记">
+      <section className="my-6 rounded-lg border border-border bg-surface p-4" aria-label="朗读正文（设备语音）">
         <div className="flex flex-wrap items-center gap-2">
           <HeadphonesIcon size="md" className="text-brand" />
-          <span className="text-sm font-semibold text-navy">听这篇笔记</span>
+          <span className="text-sm font-semibold text-navy">朗读正文（设备语音）</span>
           {player.state === 'playing' ? (
             <button type="button" onClick={player.pause} className="rounded border border-border px-3 py-1.5 text-xs">暂停</button>
           ) : player.state === 'paused' ? (

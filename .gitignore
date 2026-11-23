@@ -10,6 +10,10 @@ yarn-error.log*
 build/
 *.tsbuildinfo
 
+# Python 生成物
+__pycache__/
+*.pyc
+
 # IDE and editor files
 .vscode/
 .idea/

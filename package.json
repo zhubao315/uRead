@@ -1,7 +1,7 @@
 {
   "name": "uread",
-  "version": "0.33.1",
-  "description": "uRead · AI 阅读与知识萃取工作台（本地优先）",
+  "version": "0.34.0",
+  "description": "uRead · 本地优先的个人深度阅读与结构化笔记工作台",
   "private": true,
   "type": "module",
   "engines": {
@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run build:publish-config && npm run books:build && npm run books:index && npm run media:build && npm run build:fallbacks && npm run build:discovery",
+    "sw:precache": "node scripts/build-sw-precache.mjs",
+    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -28,7 +29,9 @@
     "publish:report": "node scripts/publish-check.mjs --write",
     "content:inventory": "node scripts/content-inventory.mjs",
     "books:index": "node scripts/build-books-index.mjs",
-    "verify:release": "node scripts/reconcile-release.mjs",
+    "homepage:snapshot": "node scripts/build-homepage-snapshot.mjs",
+    "verify:release": "node scripts/check-bundle-budget.mjs && node scripts/reconcile-release.mjs",
+    "budget:check": "node scripts/check-bundle-budget.mjs",
     "test:e2e": "playwright test",
     "publish:preview": "node scripts/publish-preview.mjs",
     "publish:approve": "node scripts/publish-approve.mjs",

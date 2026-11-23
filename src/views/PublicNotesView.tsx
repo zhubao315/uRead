@@ -10,7 +10,7 @@ function highlight(text: string, words: string[]): React.ReactNode {
       : part,
   );
 }
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { TagsIcon, ListIcon, BookOpenIcon } from '../components/icons';
 import { SITE_BASE } from '../config';
 import { filterNotes, loadNoteIndexResult, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
@@ -20,6 +20,7 @@ import { filterNotes, loadNoteIndexResult, watchPublicNotes, type PublicNotesRes
  * 因此不影响本地数据的八类备份口径。
  */
 const PublicNotesView: React.FC = () => {
+  const navigate = useNavigate();
   const [result, setResult] = useState<PublicNotesResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [params, setParams] = useSearchParams();
@@ -129,6 +130,16 @@ const PublicNotesView: React.FC = () => {
         <button type="button" onClick={() => void refresh()} className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm hover:bg-gray-50">
           立即刷新
         </button>
+        {visible.length ? (
+          <button type="button"
+            onClick={() => {
+              const picked = visible[Math.floor(Math.random() * visible.length)];
+              navigate(`/read/${encodeURIComponent(picked.slug)}`);
+            }}
+            className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800 hover:bg-amber-100">
+            随手翻一篇
+          </button>
+        ) : null}
       </div>
 
       <div className="mb-5 flex flex-wrap gap-2">

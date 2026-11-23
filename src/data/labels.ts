@@ -5,7 +5,7 @@
  * （「待读 / 想读」这种漂移没人会发现）。`tests/data/ui-invariants.test.ts`
  * 要求全仓库只有一处定义阅读状态标签。
  */
-import type { ReadingStatus } from './types';
+import type { ContentProvenance, NoteKind, ReadingStatus } from './types';
 
 export const READING_STATUS_LABEL: Record<ReadingStatus, string> = {
   wishlist: '待读',
@@ -27,3 +27,20 @@ export const ORPHAN_BOOK_HINT =
 
 export const ORPHAN_NO_TARGET_HINT =
   '资料库里现在没有任何资料：先到「资料库」导入内容，再回来改挂这条笔记。';
+
+/** 新用途的笔记标签；保留原三类文案，避免工作台其它地方出现漂移。 */
+export const NOTE_KIND_LABEL: Record<NoteKind, string> = {
+  highlight: '原文摘录',
+  note: '个人理解',
+  summary: '延伸思考',
+  intent: '阅读意图',
+  feynman: '费曼输出',
+};
+
+/** 内容归属：AI 参考材料不能混进人的理解。 */
+export const PROVENANCE_LABEL: Record<ContentProvenance, string> = {
+  HUMAN_WRITTEN: '亲笔记录',
+  AI_GENERATED: 'AI 生成（仅供参考）',
+  AI_ASSISTED: 'AI 辅助整理',
+  HUMAN_VERIFIED: '本人已核验',
+};
