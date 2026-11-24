@@ -17,6 +17,7 @@
  */
 
 import { createHash } from 'node:crypto';
+
 import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
@@ -95,6 +96,18 @@ function sha256(buffer) {
   return createHash('sha256').update(buffer).digest('hex');
 }
 
+/** GitHub Git Tree 里的 sha 是 Git blob SHA-1（不是 SHA-256）。 */
+function gitBlobSha(buffer) {
+  return createHash('sha1')
+    .update(Buffer.concat([Buffer.from(`blob ${buffer.length}\0`), buffer]))
+    .digest('hex');
+}
+
+/** 明确排除归档/历史基线/标注「勿投」的电子书。 */
+function publishable(path) {
+  return !/(^|\/)(_?archive|历史|old)(\/|$)/i.test(path) && !/勿投|历史基线/.test(path);
+}
+
 async function api(url) {
   let lastError = '';
   for (let attempt = 0; attempt < 5; attempt += 1) {
@@ -133,10 +146,11 @@ async function listRemoteFiles(paths) {
     (item) =>
       item.type === 'blob' &&
       /\.epub$/i.test(item.path) &&
+      publishable(item.path) &&
       paths.some((prefix) => underPrefix(item.path, prefix)),
   );
   return found
-    .map((item) => ({ remotePath: item.path, sha: item.sha, size: item.size }))
+    .map((item) => ({ remotePath: item.path, sha: item.sha, verify: item.sha, size: item.size }))
     .sort((a, b) => a.remotePath.localeCompare(b.remotePath, 'zh-Hans-CN'));
 }
 
@@ -150,7 +164,7 @@ async function listLocalFiles(paths) {
         const info = await stat(root);
         if (info.isFile()) {
           const buffer = await readFile(root);
-          found.push({ remotePath: prefix, sha: sha256(buffer), size: buffer.length, buffer });
+          found.push({ remotePath: prefix, sha: sha256(buffer), verify: sha256(buffer), size: buffer.length, buffer });
         }
       } catch {
         console.warn(`  本地文件不存在：${root}`);
@@ -175,6 +189,7 @@ async function listLocalFiles(paths) {
           found.push({
             remotePath: relPath,
             sha: sha256(buffer),
+            verify: sha256(buffer),
             size: buffer.length,
             buffer,
           });
@@ -242,12 +257,13 @@ const nextState = { files: {} };
 for (const item of plan) {
   const targetPath = path.join(BOOKS_OUT, item.target);
   const cached = state.files[item.remotePath];
+  const digest = localRoot ? sha256 : gitBlobSha;
   let buffer = item.buffer;
 
   if (!buffer && cached === item.sha) {
     try {
       const existing = await readFile(targetPath);
-      if (sha256(existing) === item.sha) {
+      if (digest(existing) === item.sha) {
         buffer = existing;
         skipped += 1;
         console.log(`  缓存命中：${item.target}`);
@@ -259,7 +275,7 @@ for (const item of plan) {
 
   if (!buffer) {
     buffer = await downloadBlob(item.sha);
-    if (sha256(buffer) !== item.sha) fail(`${item.remotePath} 下载内容 sha 不匹配`);
+    if (digest(buffer) !== item.verify) fail(`${item.remotePath} 下载内容 sha 不匹配`);
     downloaded += 1;
     console.log(`  已下载：${item.target}`);
   }
