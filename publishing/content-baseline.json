@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T07:44:27.755Z",
+  "generated_at": "2026-11-24T12:17:19.707Z",
   "counts": {
     "notes": 1599,
     "notes_with_source_path": 1599,
@@ -12,11 +12,11 @@
     "unresolved_book_links": 93,
     "raw_book_entries": 679,
     "duplicate_book_candidates": 59,
-    "library_books": 6,
+    "library_books": 5,
     "audio_files": 10
   },
   "manifests": {
-    "notes": "8e4d20afc6ebbde7",
+    "notes": "f8b53b07a168b35b",
     "lists": "1c606c35c7d77d94"
   },
   "hashes": {
@@ -3393,7 +3393,7 @@
       },
       {
         "id": "B3-认知成长__《千分之一的你》-朱宝",
-        "hash": "5f4ec14cc161bb68",
+        "hash": "6207fe5df4ac8433",
         "path": "B3-认知成长/《千分之一的你》-朱宝.md"
       },
       {
@@ -4178,7 +4178,7 @@
       },
       {
         "id": "B3-认知成长__《AI时代，如何真正学会》-朱宝",
-        "hash": "b86dd820f7c0e233",
+        "hash": "fd15b7ca881f14c9",
         "path": "B3-认知成长/《AI时代，如何真正学会》-朱宝.md"
       },
       {
@@ -5803,7 +5803,7 @@
       },
       {
         "id": "B5-科技科普__《知识库工程学》-朱宝",
-        "hash": "a2c943c285569f2f",
+        "hash": "a0636e57ba5d688e",
         "path": "B5-科技科普/《知识库工程学》-朱宝.md"
       },
       {
@@ -6423,7 +6423,7 @@
       },
       {
         "id": "B6-投资理财__《投资的纪律》-朱宝",
-        "hash": "fcf37552c33a9d64",
+        "hash": "806f40436260d60b",
         "path": "B6-投资理财/《投资的纪律》-朱宝.md"
       },
       {

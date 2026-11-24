@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "approved_at": "2026-11-24T07:44:43.034Z",
+  "approved_at": "2026-11-24T12:17:36.371Z",
   "scope": "07-SOURCES/71-书籍",
   "note_count": 1599,
   "notes": [
@@ -3376,7 +3376,7 @@
     },
     {
       "slug": "B3-认知成长__《千分之一的你》-朱宝",
-      "content_hash": "5f4ec14cc161bb68",
+      "content_hash": "6207fe5df4ac8433",
       "source_path": "B3-认知成长/《千分之一的你》-朱宝.md"
     },
     {
@@ -4161,7 +4161,7 @@
     },
     {
       "slug": "B3-认知成长__《AI时代，如何真正学会》-朱宝",
-      "content_hash": "b86dd820f7c0e233",
+      "content_hash": "fd15b7ca881f14c9",
       "source_path": "B3-认知成长/《AI时代，如何真正学会》-朱宝.md"
     },
     {
@@ -5786,7 +5786,7 @@
     },
     {
       "slug": "B5-科技科普__《知识库工程学》-朱宝",
-      "content_hash": "a2c943c285569f2f",
+      "content_hash": "a0636e57ba5d688e",
       "source_path": "B5-科技科普/《知识库工程学》-朱宝.md"
     },
     {
@@ -6406,7 +6406,7 @@
     },
     {
       "slug": "B6-投资理财__《投资的纪律》-朱宝",
-      "content_hash": "fcf37552c33a9d64",
+      "content_hash": "806f40436260d60b",
       "source_path": "B6-投资理财/《投资的纪律》-朱宝.md"
     },
     {
