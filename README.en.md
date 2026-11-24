@@ -178,11 +178,14 @@ Public content is synced from a private Obsidian vault by local scripts. **The b
 ```bash
 npm run notes:sync:dry      # preview, no writes
 npm run lists:sync:dry
+npm run books:sync:dry
 
 GITHUB_TOKEN=... npm run notes:sync -- --no-audio
 GITHUB_TOKEN=... npm run lists:sync
+GITHUB_TOKEN=... npm run books:sync          # 4 private EPUBs → book-library/books/
 
 node scripts/sync-notes.mjs --local=/path/to/07-SOURCES/71-书籍 --no-audio
+node scripts/sync-books.mjs --local=/path/to/obsidian-vault
 npm run build               # public/ → dist/
 ```
 
@@ -190,6 +193,7 @@ npm run build               # public/ → dist/
 | --- | --- | --- |
 | `GITHUB_TOKEN` | Read-only PAT; **env only**, never in code, artifacts or logs | required in GitHub mode |
 | `NOTES_REPO` / `NOTES_BRANCH` / `NOTES_PATH` | Source repository, branch, note directory | `zhubao315/obsidian-vault` / `main` / `07-SOURCES/71-书籍` |
+| `BOOKS_REPO` / `BOOKS_BRANCH` / `BOOKS_PATHS` | Private repo, branch and 4 EPUB directory prefixes | `zhubao315/obsidian-vault` / `main` / see `scripts/sync-books.mjs` |
 | `TTS_BASE_URL` / `TTS_MODEL` / `TTS_VOICE` | Optional audio-generation endpoint | local service |
 | `--audio-limit=N` / `AUDIO_LIMIT` | Max new audio files per run, cached by content hash | `10` |
 | `--no-audio` / `--dry-run` | Skip audio / plan only | off |
@@ -208,16 +212,18 @@ npm run publish:check -- --strict  # fail on unapproved changes, new sensitive h
 APPROVE=1 npm run publish:approve  # human confirmation updates the approved baseline
 ```
 
-`require_approval` is enforced. `deploy.yml` runs release reconciliation and a strict publish check after building; failure blocks deployment. `publish:approve` is never called in CI. Policy lives in `publishing/policy.json` and currently uses `allow_all_legacy` (the confirmed temporary full-public state); the tooling never deletes or edits files under `public/`.
+`require_approval` is enforced. `deploy.yml` runs release reconciliation and a strict publish check after building; failure blocks deployment. Policy lives in `publishing/policy.json` and currently uses `allow_all_legacy` (the confirmed temporary full-public state); the tooling never deletes or edits files under `public/`.
+
+> **Legacy-mode approval**: while `allow_all_legacy` is active, `auto-sync.yml` refreshes the approved baseline with `APPROVE=1 npm run publish:approve` before committing (otherwise newly synced notes always fail `--strict`). Once the policy switches to a real allowlist, that step fails deliberately and a human must run `publish:approve` and review the diff. See [`docs/audit/PUBLISH_POLICY_NOTE.md`](docs/audit/PUBLISH_POLICY_NOTE.md).
 
 | Workflow | Schedule | Job |
 | --- | --- | --- |
-| `auto-sync.yml` | Daily 02:00 UTC (10:00 Beijing) | Notes (`--no-audio`) |
+| `auto-sync.yml` | Daily 02:00 UTC (10:00 Beijing) | Notes (`--no-audio`) + 4 private EPUBs, rebuild library and publish |
 | `lists-sync.yml` | Mondays 03:00 UTC (11:00 Beijing) | Themes and booklists |
 | `ci.yml` | on push | typecheck, lint, tests, build, docs check |
 | `deploy.yml` | push / dispatch | reconciliation, strict publish check, Pages deploy |
 
-Both sync workflows can be run manually and share the `content-sync` concurrency group. Before committing, they compare manifest versions: if only `generated_at` timestamps changed, they skip the commit and deployment instead of producing an empty commit. Required secret: `OBSIDIAN_TOKEN` (read-only PAT).
+All three sync workflows can be run manually and share the `content-sync` concurrency group. Before committing, they compare content versions and skip empty commits/deploys. Required secret: `OBSIDIAN_TOKEN` (read-only PAT). To publish the latest notes and the 4 books now, run **`Sync Reading Notes & Books`** once.
 
 ---
 

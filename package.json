@@ -22,6 +22,8 @@
     "docs:check": "node scripts/check-docs-site.mjs",
     "notes:sync": "node scripts/sync-notes.mjs",
     "notes:sync:dry": "node scripts/sync-notes.mjs --dry-run",
+    "books:sync": "node scripts/sync-books.mjs",
+    "books:sync:dry": "node scripts/sync-books.mjs --dry-run",
     "books:build": "python3 book-library/build.py",
     "build:fallbacks": "node scripts/make-fallback-pages.mjs",
     "lists:sync": "node scripts/sync-lists.mjs",

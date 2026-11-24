@@ -1,4 +1,4 @@
-name: Sync Reading Notes
+name: Sync Reading Notes & Books
 
 on:
   schedule:
@@ -44,11 +44,19 @@ jobs:
         id: before
         run: echo "version=$(node -p "require('./public/notes/manifest.json').version")" >> "$GITHUB_OUTPUT"
 
-      - name: 同步 Obsidian 笔记（书单已拆到每周的 lists-sync）
+      - name: 同步 Obsidian 读书笔记（书单已拆到每周的 lists-sync）
         env:
           # 只读 PAT，需在仓库 Settings → Secrets → Actions 中配置 OBSIDIAN_TOKEN
           GITHUB_TOKEN: ${{ secrets.OBSIDIAN_TOKEN }}
         run: npm run notes:sync -- --no-audio
+
+      - name: 同步私库电子书到书库
+        env:
+          GITHUB_TOKEN: ${{ secrets.OBSIDIAN_TOKEN }}
+          BOOKS_REPO: ${{ vars.BOOKS_REPO || 'zhubao315/obsidian-vault' }}
+          # 可选：用仓库 Variables 覆盖默认 4 个目录前缀（JSON 数组或逗号分隔）
+          BOOKS_PATHS: ${{ vars.BOOKS_PATHS }}
+        run: npm run books:sync
 
       - name: 构建站点产物
         run: npm run build
@@ -74,23 +82,36 @@ jobs:
           # 不能因此每天制造一个空提交并触发部署。
           before="${{ steps.before.outputs.version }}"
           after="$(node -p "require('./public/notes/manifest.json').version")"
-          if [ "$before" = "$after" ]; then
-            echo "笔记版本未变（$after），只有生成时间变化，无需提交"
+          books_dirty="$(git status --porcelain -- book-library/books book-library/covers | wc -l)"
+          if [ "$before" = "$after" ] && [ "$books_dirty" -eq 0 ]; then
+            echo "笔记版本未变（$after）且书库无变化，只有生成时间变化，无需提交"
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          # 当前策略是 allow_all_legacy（全量公开）。deploy.yml 的 publish:check --strict
+          # 会因审批基线落后于新笔记而拦截发布，因此在「仅 legacy 模式」下刷新基线。
+          # 一旦切换到 allowlist 等正式策略，这里直接失败，强制人工复核 publish:approve。
+          mode="$(node -p "require('./publishing/policy.json').mode")"
+          if [ "$mode" = "allow_all_legacy" ]; then
+            echo "allow_all_legacy 模式：刷新发布审批基线"
+            APPROVE=1 npm run publish:approve
+          else
+            echo "策略已切换为 $mode：请人工复核并执行 publish:approve，工作流不自动批准"
+            exit 1
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # 都是已知会随笔记同步更新的路径：显式列出，不让 2>/dev/null || true
+          # 都是已知会随笔记/书籍同步更新的路径：显式列出，不让 2>/dev/null || true
           # 把「路径写错」或「git add 失败」伪装成正常情况。
-          git add public/notes publishing/content-baseline.json docs/migration
+          git add public/notes publishing/content-baseline.json publishing/approved-baseline.json docs/migration book-library/books book-library/covers
           if git diff --cached --quiet; then
             echo "没有内容变化，无需提交"
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           # 当前 runner 的 git 不支持 push --retry，故不用 || true 掩盖推送失败。
-          git commit -m "chore(notes-sync): sync reading notes $(date -u +%Y-%m-%dT%H:%MZ)" && git push
+          git commit -m "chore(content-sync): sync notes and books $(date -u +%Y-%m-%dT%H:%MZ)" && git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: 触发 Pages 部署

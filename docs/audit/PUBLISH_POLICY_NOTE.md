@@ -27,6 +27,14 @@ description: "当前发布策略模式、被拦截笔记/孤儿音频事实，�
 
 **本次审计不修改发布策略模式**：从全量公开切到默认拒绝会立刻改变线上可见内容，属于需要人工确认的发布决策。
 
+### 1.1 同步工作流对审批基线的处理
+
+在 `allow_all_legacy` 模式下，新同步的笔记必然与 `publishing/approved-baseline.json` 产生差异，从而使 `deploy.yml` 的 `publish:check --strict` 挡住部署。因此 `auto-sync.yml` 在**确认有内容变化后**会执行一次 `APPROVE=1 npm run publish:approve` 刷新基线，并把 `publishing/approved-baseline.json` 一起提交。
+
+这是一段**仅限临时模式**的兼容逻辑：步骤里会先读 `policy.json` 的 `mode`，只要不是 `allow_all_legacy` 就立刻失败，强制人工复核。切换正式策略后必须先删掉 `auto-sync.yml` 中这段自动批准逻辑（或确认人工已更新基线），否则同步工作流会红。
+
+注意：自动批准只清除「审批差异」，不会绕过新增敏感命中、策略拦截或新增孤儿音频——这些仍会让 `deploy.yml` 失败。
+
 ## 2. 切换到默认拒绝（allowlist）的精确步骤
 
 1. 生成当前报告并人工复核：

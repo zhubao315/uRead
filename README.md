@@ -193,9 +193,16 @@ npm run lists:sync:dry
 # 真实同步（GitHub 模式，token 只从环境变量读）
 GITHUB_TOKEN=... npm run notes:sync -- --no-audio
 GITHUB_TOKEN=... npm run lists:sync
+GITHUB_TOKEN=... npm run books:sync          # 私库 4 本 EPUB → book-library/books/
+
+# 只看计划，不写文件
+npm run notes:sync:dry
+npm run lists:sync:dry
+npm run books:sync:dry
 
 # 本机目录模式（离线校准解析器）
 node scripts/sync-notes.mjs --local=/path/to/07-SOURCES/71-书籍 --no-audio
+node scripts/sync-books.mjs --local=/path/to/obsidian-vault
 
 # 构建把 public/ 产物带进 dist/
 npm run build
@@ -205,6 +212,7 @@ npm run build
 | --- | --- | --- |
 | `GITHUB_TOKEN` | 私有仓库只读 PAT；**只从环境变量读**，不进代码/产物/日志 | GitHub 模式必填 |
 | `NOTES_REPO` / `NOTES_BRANCH` / `NOTES_PATH` | 仓库、分支、笔记目录 | `zhubao315/obsidian-vault` / `main` / `07-SOURCES/71-书籍` |
+| `BOOKS_REPO` / `BOOKS_BRANCH` / `BOOKS_PATHS` | 电子书所在的私库、分支、4 个目录前缀（JSON 数组或逗号分隔） | `zhubao315/obsidian-vault` / `main` / 见 `scripts/sync-books.mjs` |
 | `TTS_BASE_URL` / `TTS_MODEL` / `TTS_VOICE` | 预生成音频的端点与音色 | 本机 `192.168.1.3:40000/v1` |
 | `--audio-limit=N` / `AUDIO_LIMIT` | 每次最多新生成多少篇音频（按内容哈希缓存） | `10` |
 | `--no-audio` / `--dry-run` | 不生成音频 / 只看计划不写文件 | 关闭 |
@@ -225,18 +233,20 @@ npm run publish:check -- --strict  # 未批准变更 / 新敏感命中 / 新孤�
 APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 ```
 
-`require_approval` 真实生效；`deploy.yml` 在构建后执行内容对账与严格发布检查，失败直接阻止 Pages 部署。`publish:approve` 只在人工确认后运行，不在任何 CI 中调用。策略在 `publishing/policy.json`，当前为 `allow_all_legacy`（全量公开），这是已确认的临时状态；治理工具不会删除或修改 `public/` 下任何文件。
+`require_approval` 真实生效；`deploy.yml` 在构建后执行内容对账与严格发布检查，失败直接阻止 Pages 部署。策略在 `publishing/policy.json`，当前为 `allow_all_legacy`（全量公开）临时状态；治理工具不会删除或修改 `public/` 下任何文件。
+
+> **临时模式的审批处理**：在 `allow_all_legacy` 下，`auto-sync.yml` 提交前会以 `APPROVE=1 npm run publish:approve` 刷新一次审批基线（否则新笔记必然被 `--strict` 拦截）。一旦策略切换为 allowlist 等正式模式，该步骤会**直接失败**，强制人工运行 `publish:approve` 并复核 `git diff`。切换步骤见 [`docs/audit/PUBLISH_POLICY_NOTE.md`](docs/audit/PUBLISH_POLICY_NOTE.md)。
 
 ### 6.2 GitHub Actions
 
 | 工作流 | 周期 | 职责 |
 | --- | --- | --- |
-| `auto-sync.yml` | 每天 UTC 02:00（北京 10:00） | 同步笔记（`--no-audio`） |
+| `auto-sync.yml` | 每天 UTC 02:00（北京 10:00） | 同步读书笔记（`--no-audio`）与私库 4 本 EPUB，重建书库并发布 |
 | `lists-sync.yml` | 每周一 UTC 03:00（北京 11:00） | 同步主题与书单 |
 | `ci.yml` | push | 类型 + Lint + 单测 + 构建 + 文档自检 |
 | `deploy.yml` | push / 派发 | 对账 + 严格发布检查 + Pages 部署 |
 
-两个同步工作流都支持手动 `Run workflow`，共用 `content-sync` 并发组，且在提交前比对 manifest 版本——版本未变时只有生成时间戳变化，会跳过提交与部署，不制造空提交。所需 Secret：`OBSIDIAN_TOKEN`（对私库只读的 PAT）。
+三个同步工作流都支持手动 `Run workflow`，共用 `content-sync` 并发组，且在提交前比对内容版本——笔记版本未变且书库无文件变化时会跳过提交与部署，不制造空提交。所需 Secret：`OBSIDIAN_TOKEN`（对私库只读的 PAT）。要立即发布最新笔记和 4 本书，手动运行 **`Sync Reading Notes & Books`** 一次即可。
 
 ---
 
