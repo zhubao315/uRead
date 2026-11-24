@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "status": "DRAFT_AWAITING_OWNER_APPROVAL",
+  "note": "本文件是电子书分发授权清单草案。未获所有者逐本批准前，不改 book-library/build.py 的门禁行为，不下架任何已发布内容。",
+  "generated_at": "2026-11-24T11:40:00Z",
+  "books": [
+    {
+      "source_filename": "《AI时代，如何真正学会》-朱宝.epub",
+      "published_id": "dd24f66b8e72",
+      "title": "AI 时代，如何真正学会：从记住到调用，重建你的学习闭环",
+      "author": "朱宝",
+      "size_bytes": 12518217,
+      "rights_basis": "作者本人作品（待确认）",
+      "private_source_path": "02-BUILD/28-创作/书-AI时代，如何真正学会/电子书/dist",
+      "approval": "pending"
+    },
+    {
+      "source_filename": "《千分之一的你：从16型到64型》.epub",
+      "published_id": "df4c81f86b08",
+      "title": "千分之一的你：从16型到64型",
+      "author": "朱宝",
+      "size_bytes": 16425557,
+      "rights_basis": "作者本人作品（待确认）",
+      "private_source_path": "02-BUILD/24-项目支持/64personalities-cn/书-千分之一的你",
+      "approval": "pending"
+    },
+    {
+      "source_filename": "《投资的纪律》-朱宝.epub",
+      "published_id": "a2e2ed0dd1d8",
+      "title": "投资的纪律：从情绪交易到纪律复利",
+      "author": "朱宝",
+      "size_bytes": 2751628,
+      "rights_basis": "作者本人作品（待确认）",
+      "private_source_path": "02-BUILD/28-创作/书-投资的纪律/电子书/dist",
+      "approval": "pending"
+    },
+    {
+      "source_filename": "《知识库工程学：从万篇笔记治理到 AI 时代的第二认知底座》-朱宝.epub",
+      "published_id": "38036cf7bf29",
+      "title": "知识库工程学：从万篇笔记治理到 AI 时代的第二认知底座",
+      "author": "朱宝",
+      "size_bytes": 9639670,
+      "rights_basis": "作者本人作品（待确认）",
+      "private_source_path": "02-BUILD/28-创作/书-知识库工程学/电子书/dist",
+      "approval": "pending"
+    },
+    {
+      "source_filename": "朱光潜作品集(共六册).epub",
+      "published_id": "5a6e6a83b4b2",
+      "title": "朱光潜作品集（共六册）",
+      "author": "朱光潜",
+      "size_bytes": 3716990,
+      "rights_basis": "第三方作品，来源与授权记录缺失",
+      "private_source_path": null,
+      "approval": "pending"
+    }
+  ]
+}
