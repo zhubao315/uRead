@@ -193,6 +193,7 @@ npm run lists:sync:dry
 # 真实同步（GitHub 模式，token 只从环境变量读）
 GITHUB_TOKEN=... npm run notes:sync -- --no-audio
 GITHUB_TOKEN=... npm run lists:sync
+GITHUB_TOKEN=... npm run books:sync          # 私库 4 本 EPUB → book-library/books/
 
 # 本机目录模式（离线校准解析器）
 node scripts/sync-notes.mjs --local=/path/to/07-SOURCES/71-书籍 --no-audio
@@ -231,12 +232,12 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 | 工作流 | 周期 | 职责 |
 | --- | --- | --- |
-| `auto-sync.yml` | 每天 UTC 02:00（北京 10:00） | 同步笔记（`--no-audio`） |
+| `auto-sync.yml` | 每天 UTC 02:00（北京 10:00） | 同步笔记（`--no-audio`）与私库 4 本 EPUB，重建书库并发布 |
 | `lists-sync.yml` | 每周一 UTC 03:00（北京 11:00） | 同步主题与书单 |
 | `ci.yml` | push | 类型 + Lint + 单测 + 构建 + 文档自检 |
 | `deploy.yml` | push / 派发 | 对账 + 严格发布检查 + Pages 部署 |
 
-两个同步工作流都支持手动 `Run workflow`，共用 `content-sync` 并发组，且在提交前比对 manifest 版本——版本未变时只有生成时间戳变化，会跳过提交与部署，不制造空提交。所需 Secret：`OBSIDIAN_TOKEN`（对私库只读的 PAT）。
+三个同步工作流都支持手动 `Run workflow`，共用 `content-sync` 并发组，且在提交前比对 manifest 版本——版本未变时只有生成时间戳变化，会跳过提交与部署，不制造空提交。所需 Secret：`OBSIDIAN_TOKEN`（对私库只读的 PAT）。
 
 ---
 
