@@ -35,7 +35,7 @@ const BRANCH = process.env.BOOKS_BRANCH ?? 'main';
 /** 4 个待发布 EPUB 的目录前缀（相对 vault 根目录，使用 POSIX 分隔符）。 */
 const DEFAULT_PATHS = [
   '02-BUILD/24-项目支持/64personalities-cn/书-千分之一的你',
-  '02-BUILD/28-创作/书-知识库工程学',
+  '02-BUILD/28-创作/书-知识库工程学/电子书/dist',
   '02-BUILD/28-创作/书-投资的纪律',
   '02-BUILD/28-创作/书-AI时代，如何真正学会/电子书/dist',
 ];
