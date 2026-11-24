@@ -226,7 +226,7 @@ Both sync workflows can be run manually and share the `content-sync` concurrency
 ```bash
 npm run typecheck
 npm run lint
-npm test                 # 226 passed, 1 skipped across 32 files
+npm test                 # 229 passed, 1 skipped across 33 files
 npm run build
 npm run docs:build
 npm run docs:check

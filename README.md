@@ -243,7 +243,7 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 ## 7. 质量与门禁
 
-单元测试：**npm test 报 226 passed / 1 跳过，共 227 个用例**（32 个测试文件）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **215 passed / 12 跳过，共 227 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
+单元测试：**npm test 报 229 passed / 1 跳过，共 230 个用例**（33 个测试文件）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **218 passed / 12 跳过，共 230 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
 
 ```bash
 npm run typecheck        # tsc --noEmit
