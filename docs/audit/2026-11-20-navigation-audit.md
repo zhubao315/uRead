@@ -4,6 +4,9 @@ title: 2026-11-20 路由与导航审计
 description: "公开站与工作台的真实路由映射、旧路径兼容与移动端重复导航问题。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 审计时间：2026-11-20
 
 ## 真实路由映射（src/App.tsx）

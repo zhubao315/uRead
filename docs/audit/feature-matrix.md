@@ -9,6 +9,9 @@ menus:
 description: "按真实代码与测试判定的当前功能矩阵；与 2026-11-16 的 functionality-matrix.md 历史快照并存。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 | 模块 | 状态 | 证据 | 备注 |
 | --- | --- | --- | --- |
 | 资料库 CRUD | IMPLEMENTED | `src/data/repository.ts` + `tests/data/repository.test.ts` | 八类 store 之一 |

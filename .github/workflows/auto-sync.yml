@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: write
+  # 必需：GITHUB_TOKEN 产生的 push 不会触发其他 workflow，
+  # 因此内容提交后必须用 workflow_dispatch 显式触发 deploy.yml（见末尾步骤）。
   actions: write
 
 concurrency:
@@ -17,7 +19,8 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     steps:
       - name: 检出 uRead
         uses: actions/checkout@v4
@@ -78,17 +81,16 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            public/notes \
-            publishing/content-baseline.json \
-            docs/migration 2>/dev/null || true
+          # 都是已知会随笔记同步更新的路径：显式列出，不让 2>/dev/null || true
+          # 把「路径写错」或「git add 失败」伪装成正常情况。
+          git add public/notes publishing/content-baseline.json docs/migration
           if git diff --cached --quiet; then
             echo "没有内容变化，无需提交"
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m "chore(notes-sync): sync reading notes $(date -u +%Y-%m-%dT%H:%MZ)"
-          git push
+          # 当前 runner 的 git 不支持 push --retry，故不用 || true 掩盖推送失败。
+          git commit -m "chore(notes-sync): sync reading notes $(date -u +%Y-%m-%dT%H:%MZ)" && git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: 触发 Pages 部署
@@ -97,7 +99,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -sS -X POST \
+          curl -fsS -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches" \

@@ -48,8 +48,17 @@ export function nowIso(): string {
 }
 
 export function createId(prefix: string): string {
-  const random = Math.random().toString(36).slice(2, 10);
+  // 优先用密码学随机源；老浏览器 / 非安全上下文没有 randomUUID 时退回旧算法。
+  const uuid = typeof globalThis.crypto?.randomUUID === 'function'
+    ? globalThis.crypto.randomUUID().replace(/-/g, '')
+    : '';
+  const random = uuid || Math.random().toString(36).slice(2, 10);
   return `${prefix}-${Date.now().toString(36)}-${random}`;
+}
+
+/** 导入 JSON 的最小形状校验：只挡住明显不是备份/资产的载荷，不要求特定类别必须存在。 */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function bumpVersion(current: string): string {
@@ -571,8 +580,14 @@ export interface BundleImportResult {
 }
 
 export async function importBundle(bundle: ExportBundle): Promise<BundleImportResult> {
-  if (bundle?.format !== EXPORT_FORMAT) {
-    throw new Error(`不支持的导入格式: ${bundle?.format}`);
+  if (!isRecord(bundle)) {
+    throw new Error('导入失败：备份内容不是对象');
+  }
+  if (bundle.format !== EXPORT_FORMAT) {
+    throw new Error(`不支持的导入格式: ${bundle.format}`);
+  }
+  if (!isRecord(bundle.data)) {
+    throw new Error('导入失败：备份缺少 data 对象');
   }
   const data = bundle.data;
   const restored: BundleImportResult['restored'] = {};
@@ -584,6 +599,9 @@ export async function importBundle(bundle: ExportBundle): Promise<BundleImportRe
       // 把前者静默写成空集合，用户就再也没机会找回。
       missing.push(entry.label);
       continue;
+    }
+    if (!Array.isArray(value)) {
+      throw new Error(`导入失败：${entry.label} 数据不是数组`);
     }
     restored[entry.key] = value.length;
   }
@@ -654,10 +672,16 @@ export async function importMarkdown(markdown: string): Promise<MarkdownImportRe
     if (!trimmed.startsWith('{')) continue;
     const end = trimmed.indexOf('\n---');
     const jsonText = end === -1 ? trimmed : trimmed.slice(0, end);
-    let payload: Record<string, unknown>;
+    let payload: unknown;
     try {
       payload = JSON.parse(jsonText);
     } catch {
+      skipped += 1;
+      continue;
+    }
+    // Markdown 里的 { } 可能是人工编辑过的残块：不是对象、缺 id/type 的一律
+    // 计入 skipped，不能在 put() 时才抛异常或静默写进一条没有身份的记录。
+    if (!isRecord(payload) || typeof payload.id !== 'string' || typeof payload.type !== 'string') {
       skipped += 1;
       continue;
     }

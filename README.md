@@ -6,8 +6,8 @@
 
 让读过的书，留下值得反复阅读的内容。
 
-[![version](https://img.shields.io/badge/version-0.33.1-2457A6?style=flat-square)](CHANGELOG.md)
-[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENCE)
+[![version](https://img.shields.io/badge/version-0.34.5-2457A6?style=flat-square)](CHANGELOG.md)
+[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENSE)
 [![site](https://img.shields.io/badge/site-GitHub%20Pages-17243A?style=flat-square)](https://zhubao315.github.io/uRead/)
 [![tests](https://img.shields.io/badge/tests-226%20passed-2E7D5B?style=flat-square)](#7-质量与门禁)
 
@@ -46,7 +46,7 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | 密钥 | 不含任何 token | 不含任何 token |
 | 适合 | 分享给别人的阅读档案 | 自己的资料、笔记、卡片与阅读记录 |
 
-> **当前版本：0.33.1**（变更记录见 [`CHANGELOG.md`](CHANGELOG.md)）。
+> **当前版本：0.34.5**（变更记录见 [`CHANGELOG.md`](CHANGELOG.md)）。
 
 **真实内容基线**（来自当前构建产物，不是规划数字）：
 
@@ -139,7 +139,7 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | 加载 / 空 / 出错三种界面互不混淆，出错可重试 | ✅ 已实现 | `npm test -- tests/components/state-and-feedback.test.tsx` |
 | 每个写盘动作都有成功或失败提示，不再静默 | ✅ 已实现 | `tests/store/errors.test.ts` |
 | 删除类操作两步确认，并先说明级联后果 | ✅ 已实现 | `npm test -- tests/components/state-and-feedback.test.tsx` |
-| 键盘可达：焦点轮廓、可访问名称、动态提示 `aria-live` | ✅ 已实现 | `npm run lint`（jsx-a11y）+ 组件测试 |
+| 键盘可达：焦点轮廓、可访问名称、动态提示 `aria-live` | ✅ 已实现 | ESLint 9 + React Hooks 规则 + 组件测试 |
 | 合成示例库：一键加载/清除演示数据 | ✅ 已实现 | `tests/data/sample.test.ts` |
 | 与共享契约的枚举对齐（`AssetType` / `RelationType` / `Anchor.kind` / `source_type`） | ✅ 已实现（测试锁住） | `npm test -- tests/data/contract-alignment.test.ts` |
 | 未提交内容本机暂存，恢复时明说「尚未保存」 | ✅ 已实现 | `npm test -- tests/views/drafts.test.tsx` |
@@ -246,8 +246,9 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 ```bash
 npm run typecheck        # tsc --noEmit
-npm run lint             # ESLint 9 + jsx-a11y
+npm run lint             # ESLint 9 + typescript-eslint + react-hooks
 npm test                 # Vitest（单元 + 页面 + 静态不变量）
+npm run test:coverage    # Vitest + V8 覆盖率报告（写到 coverage/，已 gitignore）
 npm run build            # 生产构建 + 书库 + 书籍索引 + 媒体产物 + sitemap/RSS
 npm run docs:build       # Hugo Extended 0.168 + OINK
 npm run docs:check       # 文档站自检（死链 / 两跳可达 / 回应用路径）
@@ -258,7 +259,7 @@ npm run publish:check -- --strict
 npx playwright test      # 端到端（桌面 + 移动）
 ```
 
-全仓统一门禁：`ROUND=<n> bash ../scripts/quality_round.sh`（最近一次 **37/37**）。
+CI 门禁以 `.github/workflows/ci.yml` 为准：版本一致性断言、生产依赖高危审计、类型检查、Lint、带覆盖率的完整单测、SPA 构建、打包体积门禁、Playwright E2E、Hugo 文档构建与自检。旧的「37/37」是工作区外部脚本的历史台账，**不是**本仓库 CI 的步骤数。
 
 ---
 
@@ -341,4 +342,4 @@ uRead/
 
 ## 13. 许可
 
-MIT，见 [`LICENCE`](LICENCE)。第三方组件（foliate-js、OINK 等）保留各自许可。
+MIT，见 [`LICENSE`](LICENSE)（历史文件 `LICENCE` 同样保留）。第三方组件（foliate-js、OINK 等）保留各自许可。

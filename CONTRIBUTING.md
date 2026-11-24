@@ -44,10 +44,17 @@ git push origin feature/amazing-feature
 
 ## 开发环境设置
 
+### 前置条件
+
+- Node.js 26+ 与 npm（`package.json` 的 `engines` 要求）
+- Hugo Extended 0.168+：`npm run docs:build` / `npm run docs:check` 需要它（普通 Hugo 会因 SCSS 构建失败）
+- Python 3：`npm run books:build` 通过 `book-library/build.py` 构建 EPUB/PDF 书库
+
 ### 安装依赖
 ```bash
-npm install
+npm ci
 ```
+`npm ci` 严格按 `package-lock.json` 安装，避免本地依赖版本与 CI 漂移；新增依赖时再显式更新 lockfile。
 
 ### 启动开发服务器
 ```bash

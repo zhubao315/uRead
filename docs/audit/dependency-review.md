@@ -9,6 +9,9 @@ menus:
 description: "退出码：0。真实输出（省略重复的弃用告警行后保留关键内容）："
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 > **历史时点快照（2026-11-16）**：本文件记录的是审计当天的代码状态，其中部分问题已修复。
 > 当前状态以 `docs/PROJECT-STATUS.md` 与 `docs/audit/current-state.md` 为准；不要把这里当成待办清单。
 

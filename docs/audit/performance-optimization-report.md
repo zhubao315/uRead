@@ -3,6 +3,9 @@ title: 性能优化实施报告
 description: "路由级代码拆分、工作台 IndexedDB 延迟初始化、构建分块、Service Worker 缓存治理与搜索热路径优化的实测前后对比。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 日期：2026-11-20
 仓库：`zhubao315/uRead`（本地工作副本 `/oc/upstream/uRead`）
 构建：`vite 8.3` / `rolldown`，生产构建（`vite build`）
@@ -110,7 +113,7 @@ index-*.css             34.1 KB raw / 7.4 KB gzip
 - 新增 `npm run budget:check`：解析 `dist/index.html` 得到真实首屏资源集合，
   按 gzip 统计并与预算比较（初始 JS ≤ 200 KB、初始 CSS ≤ 50 KB、
   单 chunk ≤ 150 KB、生产产物不得出现 `.map`）。
-- 报告写入 `docs/audit/bundle-report.json`。
+- 报告写入 gitignore 的 `node_modules/.cache/uread/bundle-report.json`（当时写的是 `docs/audit/bundle-report.json`）。
 - `verify:release` 前置该检查，发布对账不会被绕过。
 
 ## 五、验证结果

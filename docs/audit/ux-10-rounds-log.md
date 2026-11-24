@@ -3,6 +3,9 @@ title: UI / UX 与响应速度 10 轮迭代记录
 description: "以易用性、专业性、趣味性为视角的 10 次「发现 → 优化 → 验证」循环，每轮均通过类型检查、Lint 与相关测试。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 日期：2026-11-20
 范围：`/oc/upstream/uRead`，仅前端交互与呈现，不改动内容、ID、路由契约与数据结构。
 

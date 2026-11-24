@@ -3,6 +3,9 @@ title: Phase 1 工程优化完成报告
 description: "首页轻量快照、搜索防抖、Service Worker 真实预缓存、离线验收与 CI 门禁的实测前后对比。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 日期：2026-11-23
 仓库：`zhubao315/uRead`（本地 `/oc/upstream/uRead`）
 

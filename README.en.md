@@ -6,8 +6,8 @@
 
 A home for the books you have read — and the passages worth returning to.
 
-[![version](https://img.shields.io/badge/version-0.33.1-2457A6?style=flat-square)](CHANGELOG.md)
-[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENCE)
+[![version](https://img.shields.io/badge/version-0.34.5-2457A6?style=flat-square)](CHANGELOG.md)
+[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENSE)
 [![site](https://img.shields.io/badge/site-GitHub%20Pages-17243A?style=flat-square)](https://zhubao315.github.io/uRead/)
 
 [中文](README.md) · [English](README.en.md)
@@ -45,7 +45,7 @@ uRead is two products that share one site:
 | Secrets | None | None |
 | Purpose | A reading archive you can share | Your own books, notes, cards and reading history |
 
-> Current version: **0.33.1** (see [`CHANGELOG.md`](CHANGELOG.md)).
+> Current version: **0.34.5** (see [`CHANGELOG.md`](CHANGELOG.md)).
 
 **Real content baseline** (from the current build, not a roadmap):
 
@@ -227,6 +227,7 @@ Both sync workflows can be run manually and share the `content-sync` concurrency
 npm run typecheck
 npm run lint
 npm test                 # 226 passed, 1 skipped across 32 files
+npm run test:coverage    # Vitest + V8 coverage report in coverage/ (gitignored)
 npm run build
 npm run docs:build
 npm run docs:check
@@ -237,7 +238,7 @@ npm run publish:check -- --strict
 npx playwright test      # desktop + mobile Chromium
 ```
 
-The repository-wide gate is `ROUND=<n> bash ../scripts/quality_round.sh` (latest: **37/37**). `python3 ../scripts/mutation_check.py` reintroduces fixed bugs one by one and requires the matching test to fail — a test that can never fail is not a test.
+The CI gate is defined by `.github/workflows/ci.yml`: version consistency, high-severity production dependency audit, typecheck, lint, the full test suite with coverage, SPA build, bundle budget, Playwright E2E, and Hugo docs build/check. The old "37/37" refers to a historical external script ledger, not to this repository's CI steps. `python3 ../scripts/mutation_check.py` reintroduces fixed bugs one by one and requires the matching test to fail — a test that can never fail is not a test.
 
 ---
 
@@ -315,4 +316,4 @@ The site is served from **https://zhubao315.github.io/uRead/**. `vite.config.ts`
 
 ## 13. License
 
-MIT — see [`LICENCE`](LICENCE). Third-party components (foliate-js, OINK, etc.) retain their own licenses.
+MIT — see [`LICENSE`](LICENSE) (the historical `LICENCE` file is kept as well). Third-party components (foliate-js, OINK, etc.) retain their own licenses.

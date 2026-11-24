@@ -4,6 +4,9 @@ title: 2026-11-20 当前状态审计
 description: "按真实源码与构建产物复核的当前状态，基于 v0.29.0。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 审计时间：2026-11-20
 基准版本：`package.json` = 0.29.0（执行时重新读取，不写死）
 

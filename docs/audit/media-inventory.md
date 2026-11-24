@@ -4,6 +4,9 @@ title: 媒体资产与视觉覆盖审计（2026-11-20）
 description: "基于当前源码与真实构建产物的图片资源盘点、覆盖率、链路问题与实施顺序建议。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 审计时间：2026-11-20
 基准版本：`package.json` = **0.33.0**（README / CHANGELOG 一致）
 数据来源：`public/notes/index.json`、`public/lists/*.json`、`dist/books/aggregate.json`、`dist/books/catalog.json`、`book-library/books/` 与前端源码实读；未采用历史文档中的统计数字。

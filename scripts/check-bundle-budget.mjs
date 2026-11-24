@@ -5,8 +5,11 @@
  * 读取 dist/index.html 中真正会阻塞首屏的 <script type="module"> 与
  * <link rel="modulepreload">（懒加载路由不在其中），统计 gzip 体积并与预算比较。
  * 超预算时退出码为 1，可直接挂到 verify:release 上。
+ *
+ * 报告写到 gitignore 的 node_modules/.cache/uread/：这是「检查」，不该在
+ * 每次运行时修改 docs/audit/ 下的受版本控制文档（CI 读完退出码就结束）。
  */
-import { readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -94,11 +97,9 @@ const report = {
   problems,
 };
 
-await writeFile(
-  path.join(ROOT, 'docs/audit/bundle-report.json'),
-  `${JSON.stringify(report, null, 2)}\n`,
-  'utf8',
-);
+const reportPath = path.join(ROOT, 'node_modules/.cache/uread/bundle-report.json');
+await mkdir(path.dirname(reportPath), { recursive: true });
+await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
 
 console.log('uRead 构建体积门禁');
 for (const [label, actual, budget] of rows) {

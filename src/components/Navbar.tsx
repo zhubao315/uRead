@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SITE_BASE } from '../config';
 import { useColorScheme } from '../hooks/useColorScheme';
@@ -45,6 +45,16 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const { dark, toggle: toggleTheme } = useColorScheme();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // 菜单打开时按 Esc 关闭：键盘用户不必先把焦点移回按钮。
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
 
   const navItems: Array<{
     path: string;
@@ -128,14 +138,15 @@ const Navbar: React.FC = () => {
               {dark ? '☀' : '☾'}
             </button>
             <button type="button" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen}
-              aria-label="打开导航菜单"
+              aria-controls="uread-navbar-mobile-menu"
+              aria-label={menuOpen ? '关闭导航菜单' : '打开导航菜单'}
               className="min-h-[44px] min-w-[44px] rounded border border-border px-3 text-sm">
               菜单
             </button>
           </div>
         </div>
         {menuOpen ? (
-          <ul className="border-t border-border px-4 py-2">
+          <ul id="uread-navbar-mobile-menu" className="border-t border-border px-4 py-2">
             {navItems.map((item) => (
               <li key={item.path}>
                 {item.staticHref ? (
