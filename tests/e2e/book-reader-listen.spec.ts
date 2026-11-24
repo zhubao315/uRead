@@ -72,6 +72,8 @@ test.describe('book reader immersive + listen', () => {
       });
     });
     await page.goto('/uRead/books/reader.html?id=df4c81f86b08');
+    // 等阅读器模块完成初始化（EPUB 解析 + UI 绑定），避免慢环境下点击过早。
+    await expect.poll(() => page.evaluate(() => typeof (window as any).__ureadReader)).toBe('object');
   });
 
   test('opens EPUB, enters immersive mode, and starts speech from current page', async ({ page }) => {
