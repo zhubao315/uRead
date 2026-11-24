@@ -88,6 +88,10 @@ export class BookSpeechController {
       this._startSleepTimer();
       await this._requestWakeLock();
       if (gen !== this.gen) return;
+      if (!this.keepAwake && this.capabilities.wakeLock && !this._wakeHintShown) {
+        this._wakeHintShown = true;
+        this._notice('屏幕关闭后朗读会停止，请在播放器中开启「保持屏幕常亮」');
+      }
       this._speakCurrent(gen);
     } catch (error) {
       if (gen !== this.gen) return;

@@ -116,6 +116,22 @@ test.describe('book reader immersive + listen', () => {
     await expect(page.locator('#btn-listen')).toHaveAttribute('data-state', 'idle');
   });
 
+  test('wake lock is requested while listening and released on stop', async ({ page }) => {
+    await page.locator('#btn-listen').click();
+    await expect(page.locator('#btn-listen')).toHaveAttribute('data-state', 'playing');
+    // 展开播放器后才能操作常亮开关（收起状态下面板在视口外）。
+    await expect(page.locator('#player')).toHaveClass(/expanded/);
+    await page.locator('#wake-toggle').check();
+    await expect.poll(() => page.evaluate(() => (window as any).__reader.wakeRequests)).toBeGreaterThan(0);
+
+    // 设置应被持久化到 localStorage，下次打开仍然生效。
+    const saved = await page.evaluate(() => localStorage.getItem('uread:listen-settings'));
+    expect(saved).toContain('"keepAwake":true');
+
+    await page.locator('#btn-stop').click();
+    await expect.poll(() => page.evaluate(() => (window as any).__reader.wakeReleases)).toBeGreaterThan(0);
+  });
+
   test('registers Media Session handlers', async ({ page }) => {
     await page.locator('#btn-listen').click();
     const actions = await page.evaluate(() => (window as any).__reader.mediaActions);

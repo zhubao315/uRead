@@ -145,6 +145,7 @@ body.is-listening #player-mini { display: flex; }
 #player .player-row label { font-size: .8rem; color: var(--ur-muted); }
 #player select { min-height: 40px; max-width: 45vw; }
 #player-progress { margin-left: auto; font-variant-numeric: tabular-nums; font-size: .8rem; color: var(--ur-muted); }
+#player .player-hint { margin: .5rem 0 0; font-size: .75rem; line-height: 1.5; color: var(--ur-muted); }
 
 /* ---------- toast ---------- */
 #notice-toast {
