@@ -85,10 +85,10 @@ test.describe('book reader immersive + listen', () => {
     await page.locator('#btn-listen').click();
     await expect(page.locator('#btn-listen')).toHaveAttribute('data-state', 'playing');
     await expect.poll(() => page.evaluate(() => typeof (window as any).__ureadReader)).toBe('object');
-    const state = await page.evaluate(() => window.__ureadReader?.controller?.getState?.());
+    const state = await page.evaluate(() => (window as any).__ureadReader?.controller?.getState?.());
     expect(state).toBe('playing');
 
-    const utterances = await page.evaluate(() => window.__reader.utterances);
+    const utterances = await page.evaluate(() => (window as any).__reader.utterances);
     expect(utterances.length).toBeGreaterThan(0);
     expect(utterances[0].length).toBeGreaterThan(2);
   });
@@ -104,8 +104,8 @@ test.describe('book reader immersive + listen', () => {
 
     await page.locator('#btn-next').click();
     const after = await page.evaluate(() => ({
-      cursor: window.__ureadReader?.controller?.getCursor?.(),
-      total: window.__ureadReader?.controller?.getQueue?.().length,
+      cursor: (window as any).__ureadReader?.controller?.getCursor?.(),
+      total: (window as any).__ureadReader?.controller?.getQueue?.().length,
     }));
     expect(after.cursor).toBeGreaterThanOrEqual(0);
     expect(after.total).toBeGreaterThan(0);
@@ -116,7 +116,7 @@ test.describe('book reader immersive + listen', () => {
 
   test('registers Media Session handlers', async ({ page }) => {
     await page.locator('#btn-listen').click();
-    const actions = await page.evaluate(() => window.__reader.mediaActions);
+    const actions = await page.evaluate(() => (window as any).__reader.mediaActions);
     for (const action of ['play', 'pause', 'stop', 'nexttrack', 'previoustrack']) {
       expect(actions).toContain(action);
     }
