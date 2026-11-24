@@ -1,3 +1,4 @@
+/* global NodeFilter, Range */
 /**
  * uRead 静态书库 — EPUB 当前文档文本分段与 Range 映射。
  * 只读取 foliate 已经渲染的 iframe 文档，不重新解析整本书。

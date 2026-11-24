@@ -1,3 +1,4 @@
+/* global window, document, navigator, localStorage, setTimeout, clearTimeout, SpeechSynthesisUtterance, MediaMetadata */
 /**
  * uRead 静态书库 — 原生语音听书控制器（V1）。
  * 从当前可见位置起读，用 foliate 已渲染文档的 Range 做精确高亮，章节自动续播。

@@ -1,3 +1,4 @@
+/* global window, document, localStorage, setTimeout, clearTimeout */
 /**
  * uRead 静态书库 — 沉浸式阅读 + 听书播放器 UI。
  * 纯 DOM 操作，不依赖框架；只在 reader.html 中使用。
@@ -7,14 +8,13 @@ import { RATES } from './book-speech.js';
 const SETTINGS_KEY = 'uread:reader-settings';
 const $ = (id) => document.getElementById(id);
 
-export function setupReaderUI({ view, book, isEpub, controller }) {
+export function setupReaderUI({ view, controller }) {
   const root = document.documentElement;
   const stage = $('stage');
   const notice = $('notice-toast');
   let immersive = false;
   let hideTimer = null;
   let noticeTimer = null;
-  let playerExpanded = false;
 
   const readSettings = () => {
     try { return JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'); }
@@ -118,7 +118,6 @@ export function setupReaderUI({ view, book, isEpub, controller }) {
 
   /* ---------- player ---------- */
   const setPlayerExpanded = (value) => {
-    playerExpanded = value;
     $('player')?.classList?.toggle('expanded', value);
     $('player')?.setAttribute('aria-expanded', String(value));
   };

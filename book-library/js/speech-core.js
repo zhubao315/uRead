@@ -1,3 +1,4 @@
+/* global window, document, navigator, DOMParser */
 /**
  * uRead 静态书库 — 语音公共工具（纯浏览器 ES Module，无构建步骤）。
  * 只依赖浏览器标准 API；与 src/ 下的 React 语音模块保持独立，避免两套状态机互相覆盖。
