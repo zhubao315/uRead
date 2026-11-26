@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite",
     "sw:precache": "node scripts/build-sw-precache.mjs",
-    "build": "tsc && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery",
+    "build": "tsc && npm run books:covers && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run notes:excerpts && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -21,6 +21,7 @@
     "docs:check": "node scripts/check-docs-site.mjs",
     "notes:sync": "node scripts/sync-notes.mjs",
     "notes:sync:dry": "node scripts/sync-notes.mjs --dry-run",
+    "notes:excerpts": "node scripts/normalize-excerpts.mjs",
     "books:build": "python3 book-library/build.py",
     "build:fallbacks": "node scripts/make-fallback-pages.mjs",
     "lists:sync": "node scripts/sync-lists.mjs",
@@ -40,6 +41,7 @@
     "media:audit": "node scripts/media-audit.mjs",
     "media:validate": "node scripts/media-validate.mjs",
     "media:build": "node scripts/media-build.mjs",
+    "books:covers": "node scripts/build-book-covers.mjs",
     "books:sync": "node scripts/sync-books.mjs",
     "books:sync:dry": "node scripts/sync-books.mjs --dry-run"
   },

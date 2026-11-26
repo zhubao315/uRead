@@ -3,12 +3,14 @@ import { Link, useParams } from 'react-router-dom';
 import SafeMarkdown from '../components/SafeMarkdown';
 import { loadPublicLists, type ListsResult, type PublicList } from '../data/publicLists';
 import CollectionArtwork from '../components/media/CollectionArtwork';
+import { useWikiImages } from '../hooks/useWikiImages';
 
 /** 主题 / 书单详情：书表是主角，正文只作补充说明，避免把同一份信息念两遍。 */
 const PublicListDetailView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }) => {
   const { id = '' } = useParams();
   const [result, setResult] = useState<ListsResult | null>(null);
   const [loading, setLoading] = useState(true);
+  const images = useWikiImages();
 
   useEffect(() => {
     let alive = true;
@@ -83,7 +85,7 @@ const PublicListDetailView: React.FC<{ kind: 'theme' | 'booklist' }> = ({ kind }
       {item.body.replace(/^[\s\S]*?^#\s+[^\n]*\n/m, '').trim() ? (
         <details className="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-4">
           <summary className="cursor-pointer text-sm font-medium text-gray-800">查看原文与其他说明</summary>
-          <div className="mt-4"><SafeMarkdown source={item.body} /></div>
+          <div className="mt-4"><SafeMarkdown source={item.body} images={images} /></div>
         </details>
       ) : null}
 

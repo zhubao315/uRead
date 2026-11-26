@@ -12,6 +12,8 @@ export interface BookEntry {
   lists: Array<{ id: string; title: string; kind: string; recommendation: string; href: string }>;
 }
 export interface BookCatalog { books: BookEntry[]; summary: Record<string, number>; }
+export interface RealCover { src: string; stem?: string; douban?: string; }
+export type RealCoverMap = Record<string, RealCover>;
 export function buildBookCatalog(notes: unknown[], lists: unknown[], libraryBooks?: unknown[]): BookCatalog;
-export function renderBookIndex(books: BookEntry[], libraryBooks?: Array<{ id: string; title: string; author: string; format: string; cover: string }>): string;
-export function renderBookDetail(book: BookEntry): string;
+export function renderBookIndex(books: BookEntry[], libraryBooks?: Array<{ id: string; title: string; author: string; format: string; cover: string }>, coverMap?: RealCoverMap): string;
+export function renderBookDetail(book: BookEntry, coverMap?: RealCoverMap): string;

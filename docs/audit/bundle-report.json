@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T08:21:55.929Z",
+  "generatedAt": "2026-11-26T07:42:57.409Z",
   "base": "/uRead/",
   "budget": {
     "initialJsGzip": "200.0 KB",
@@ -9,9 +9,9 @@
   "initial": {
     "js": [
       {
-        "file": "index-C0UCvDzx.js",
-        "raw": 40525,
-        "gzip": 12208
+        "file": "index-AH6XqO0o.js",
+        "raw": 40935,
+        "gzip": 12320
       },
       {
         "file": "rolldown-runtime-WkwZ5CU-.js",
@@ -27,6 +27,11 @@
         "file": "router-B0SUpGsS.js",
         "raw": 39084,
         "gzip": 13868
+      },
+      {
+        "file": "config-B_QOgbEA.js",
+        "raw": 47,
+        "gzip": 64
       }
     ],
     "css": [
@@ -36,19 +41,19 @@
         "gzip": 8408
       }
     ],
-    "jsGzipTotal": 93832,
+    "jsGzipTotal": 94008,
     "cssGzipTotal": 8408
   },
   "chunks": [
     {
-      "file": "BookListsView-C0kQTwlo.js",
+      "file": "BookListsView-NH6vh_YM.js",
       "raw": 10507,
-      "gzip": 3717
+      "gzip": 3718
     },
     {
-      "file": "BooklistsHubView-Dcq6MyaB.js",
+      "file": "BooklistsHubView-tc-nzttr.js",
       "raw": 3617,
-      "gzip": 1590
+      "gzip": 1593
     },
     {
       "file": "Card-DXvSpVb9.js",
@@ -56,14 +61,14 @@
       "gzip": 329
     },
     {
-      "file": "CardsView-BI_K2FzH.js",
+      "file": "CardsView-CiQlDE--.js",
       "raw": 10903,
-      "gzip": 3595
+      "gzip": 3594
     },
     {
-      "file": "Dashboard-BHTKyHkg.js",
-      "raw": 11510,
-      "gzip": 4408
+      "file": "Dashboard-BDwbBBW3.js",
+      "raw": 11544,
+      "gzip": 4426
     },
     {
       "file": "DraftNotice-ObreHkSy.js",
@@ -71,44 +76,44 @@
       "gzip": 1058
     },
     {
-      "file": "FindView-CDJhik5H.js",
-      "raw": 5225,
-      "gzip": 2244
+      "file": "FindView-BH-NUBLU.js",
+      "raw": 5259,
+      "gzip": 2264
     },
     {
-      "file": "LibraryView-CwvmFKSL.js",
+      "file": "LibraryView-BOVNbJIS.js",
       "raw": 10161,
-      "gzip": 3536
+      "gzip": 3538
     },
     {
-      "file": "NotesView-Mwh6fSuD.js",
-      "raw": 13297,
-      "gzip": 4534
+      "file": "NotesView-Blw7k5YJ.js",
+      "raw": 13292,
+      "gzip": 4533
     },
     {
-      "file": "PublicListDetailView-g3_PJa7j.js",
-      "raw": 4007,
-      "gzip": 1783
+      "file": "PublicListDetailView-B2JeBHQv.js",
+      "raw": 4030,
+      "gzip": 1799
     },
     {
-      "file": "PublicListView-Bx37U99b.js",
-      "raw": 3969,
-      "gzip": 1762
+      "file": "PublicListView-DYy2Wfvn.js",
+      "raw": 3974,
+      "gzip": 1766
     },
     {
-      "file": "PublicNoteDetailView-Va4SFomU.js",
-      "raw": 20191,
-      "gzip": 7488
+      "file": "PublicNoteDetailView-B6PjpiLx.js",
+      "raw": 20248,
+      "gzip": 7516
     },
     {
-      "file": "PublicNotesView-BEJaqTiP.js",
-      "raw": 6176,
-      "gzip": 2577
+      "file": "PublicNotesView-r94l56ng.js",
+      "raw": 6215,
+      "gzip": 2597
     },
     {
-      "file": "ReaderHubView-CGtGbgMw.js",
-      "raw": 5128,
-      "gzip": 2316
+      "file": "ReaderHubView-DUmzMyh9.js",
+      "raw": 5162,
+      "gzip": 2334
     },
     {
       "file": "ReadingLoopView-By3-suv5.js",
@@ -116,19 +121,14 @@
       "gzip": 4244
     },
     {
-      "file": "SafeMarkdown-BSSqYQft.js",
-      "raw": 3611,
-      "gzip": 1521
-    },
-    {
       "file": "Search-DvFZRa75.js",
       "raw": 952,
       "gzip": 641
     },
     {
-      "file": "SearchView-dEaLR3iX.js",
+      "file": "SearchView-BaoB_ex1.js",
       "raw": 3981,
-      "gzip": 1751
+      "gzip": 1749
     },
     {
       "file": "StateBlock-D6OCc_qI.js",
@@ -141,9 +141,14 @@
       "gzip": 569
     },
     {
-      "file": "index-C0UCvDzx.js",
-      "raw": 40525,
-      "gzip": 12208
+      "file": "config-B_QOgbEA.js",
+      "raw": 47,
+      "gzip": 64
+    },
+    {
+      "file": "index-AH6XqO0o.js",
+      "raw": 40935,
+      "gzip": 12320
     },
     {
       "file": "labels-CQP6i9uL.js",
@@ -184,6 +189,11 @@
       "file": "useUrlSync-B3Gtzoha.js",
       "raw": 579,
       "gzip": 306
+    },
+    {
+      "file": "useWikiImages-DvPfrWe0.js",
+      "raw": 4266,
+      "gzip": 1807
     },
     {
       "file": "index-CwEymB_6.css",

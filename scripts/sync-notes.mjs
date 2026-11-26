@@ -30,6 +30,7 @@ import {
   publicNote,
   splitForTts,
 } from './notes-format.mjs';
+import { excerptFromBody } from './plain-text.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -304,7 +305,7 @@ async function main() {
     updated: note.updated,
     tags: note.tags,
     aliases: note.aliases,
-    excerpt: note.body.replace(/[#*`>|]/g, '').trim().slice(0, 160),
+    excerpt: excerptFromBody(note.body, 160),
     audio: !!note.audio,
     content_hash: note.content_hash,
     source_path: note.source_ref?.path ?? '',

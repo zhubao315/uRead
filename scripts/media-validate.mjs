@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 /** 媒体清单校验：结构、审核态、来源标记、实体 ID 与本地路径安全。无第三方依赖。 */
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { currentNoteBodies } from './note-bodies.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = async (file) => JSON.parse(await readFile(path.join(ROOT, file), 'utf8'));
@@ -12,6 +14,8 @@ const aggregate = await readJson('dist/books/aggregate.json');
 const themes = await readJson('public/lists/themes.json');
 const lists = await readJson('public/lists/booklists.json');
 const notes = await readJson('public/notes/index.json');
+const noteBodies = await currentNoteBodies(ROOT);
+const wikiImages = await readJson('media/wiki-images.json', { images: {} });
 
 const errors = [];
 const fail = (message) => errors.push(message);
@@ -58,6 +62,22 @@ for (const [key, asset] of Object.entries(manifest.assets ?? {})) {
   if (asset.src.includes('..') || asset.src.startsWith('/')) fail(`${key}: 本地 src 必须是相对 dist 的路径`);
   if (seenSources.has(asset.src)) fail(`${key}: src 与 ${seenSources.get(asset.src)} 重复`);
   seenSources.set(asset.src, key);
+}
+
+// 正文里的 Obsidian 图片嵌入必须全部有本地映射，否则页面只能显示裸 ![[...]] 文字。
+const embeds = new Set();
+for (const body of noteBodies) {
+  for (const match of body.matchAll(/!\[\[([^\]\n]+)\]\]/g)) {
+    const target = match[1].split('|')[0].trim();
+    if (target) embeds.add(target);
+  }
+}
+for (const target of embeds) {
+  if (!wikiImages.images?.[target]) fail(`正文图片 ![[${target}]] 没有 wiki-images.json 映射`);
+}
+for (const [target, src] of Object.entries(wikiImages.images ?? {})) {
+  if (src.includes('..') || src.startsWith('/')) fail(`图片 ${target} 的 src 必须是相对 dist 的路径：${src}`);
+  if (!existsSync(path.join(ROOT, 'dist', src))) fail(`图片 ${target} 的静态文件不存在：dist/${src}`);
 }
 
 if (errors.length) {

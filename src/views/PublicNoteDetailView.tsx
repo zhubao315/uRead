@@ -7,6 +7,7 @@ import { loadNoteDetail, loadNoteIndex, type PublicNote } from '../data/publicNo
 import { SECTION_LABEL, splitNoteSections } from '../domain/note-sections';
 import { relatedNotes } from '../domain/note-relations';
 import { useSpeechPlayer } from '../hooks/useSpeechPlayer';
+import { useWikiImages } from '../hooks/useWikiImages';
 import { HeadphonesIcon } from '../components/icons';
 
 type ReadingTheme = 'paper' | 'sepia' | 'green' | 'night';
@@ -121,6 +122,7 @@ const PublicNoteDetailView: React.FC = () => {
     })), [note]);
 
   const sections = useMemo(() => (note ? splitNoteSections(note.body) : []), [note]);
+  const images = useWikiImages();
   const related = useMemo(() => note
     ? relatedNotes(
         { slug: note.slug, title: note.title, category: note.category, tags: note.tags },
@@ -358,7 +360,7 @@ const PublicNoteDetailView: React.FC = () => {
                 {section.heading}
               </h3>
             ) : null}
-            <SafeMarkdown source={section.body} links={links} />
+            <SafeMarkdown source={section.body} links={links} images={images} />
           </section>
         ))}
       </div>
