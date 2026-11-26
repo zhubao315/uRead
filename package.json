@@ -41,6 +41,9 @@
     "media:audit": "node scripts/media-audit.mjs",
     "media:validate": "node scripts/media-validate.mjs",
     "media:build": "node scripts/media-build.mjs",
+    "booklist-art:audit": "node scripts/booklist-art.mjs --audit",
+    "booklist-art:generate": "node scripts/booklist-art.mjs --generate",
+    "booklist-art:status": "node scripts/booklist-art.mjs --status",
     "books:covers": "node scripts/build-book-covers.mjs",
     "books:sync": "node scripts/sync-books.mjs",
     "books:sync:dry": "node scripts/sync-books.mjs --dry-run"

@@ -110,6 +110,7 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | 正文图片映射 | `media/wiki-images.json`：正文 `![[图片.jpg]]` → `dist/media/wiki-images.json`，由 `SafeMarkdown` 渲染成 `<img>` |
 | 列表封面映射 | `media/note-covers.json`：笔记 slug → 封面，供 `/read` 列表显示缩略图 |
 | 自著书稿封面 | `media/own-book-covers.json` + `public/media/own-books/*.webp`（来自主站 `/books/`，本地发布） |
+| 书单智能配图 | `media/booklist-art-plan.json` + `public/media/booklists/<id>.webp`（`npm run booklist-art:generate`，49 项独立视觉） |
 | 书籍主题视觉 | `dist/media/books/<id>.svg`（2:3，按书籍 ID 种子确定；无笔记封面时使用） |
 | 栏目视觉 | `dist/media/collections/<kind>-<id>.svg`（16:9） |
 | 真实封面 | `dist/books/covers/*`（仅来自有权分发的 EPUB） |
@@ -247,7 +248,7 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 ## 7. 质量与门禁
 
-单元测试：**npm test 报 227 passed / 12 跳过，共 239 个用例**（36 个测试文件）。其中一组契约核对依赖工作区共享契约文件；该文件不在时多跳过 1 条，那种环境下报 **226 passed / 13 跳过，共 239 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
+单元测试：**npm test 报 229 passed / 12 跳过，共 241 个用例**（37 个测试文件）。其中一组契约核对依赖工作区共享契约文件；该文件不在时多跳过 1 条，那种环境下报 **228 passed / 13 跳过，共 241 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
 
 ```bash
 npm run typecheck        # tsc --noEmit

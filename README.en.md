@@ -109,6 +109,7 @@ Image assets are kept separate from Obsidian notes, booklist source files and pu
 | Inline image map | `media/wiki-images.json`: note `![[image.jpg]]` → `dist/media/wiki-images.json`, rendered as `<img>` by `SafeMarkdown` |
 | Note list covers | `media/note-covers.json`: note slug → cover, shown as thumbnails on `/read` |
 | Own-book covers | `media/own-book-covers.json` + `public/media/own-books/*.webp` (from the portfolio `/books/`, served locally) |
+| Booklist artwork | `media/booklist-art-plan.json` + `public/media/booklists/<id>.webp` (`npm run booklist-art:generate`, 49 distinct visuals) |
 | Book theme visuals | `dist/media/books/<id>.svg` (2:3, seeded by book ID; used when no note cover exists) |
 | Collection artwork | `dist/media/collections/<kind>-<id>.svg` (16:9) |
 | Real covers | `dist/books/covers/*` (from redistributable EPUBs only) |

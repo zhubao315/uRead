@@ -82,6 +82,12 @@ for (const note of allNotes) {
   if (!/!\[\[[^\]\n]+\]\]/.test(String(note.body ?? ''))) continue;
   if (!noteCovers.covers?.[note.slug]) fail(`笔记 ${note.slug} 有正文图片但 note-covers.json 缺少封面映射`);
 }
+for (const item of [...lists, ...themes]) {
+  const key = `${item.kind}:${item.id}`;
+  const asset = manifest.assets?.[key];
+  if (!asset) { fail(`书单 ${item.title} 缺少配图清单条目 ${key}`); continue; }
+  if (!existsSync(path.join(ROOT, 'dist', asset.src))) fail(`书单封面文件不存在：${key} → dist/${asset.src}`);
+}
 for (const slug of Object.keys(ownBookCovers.covers ?? {})) {
   if (!noteCovers.covers?.[slug]) fail(`自著书稿 ${slug} 缺少 note-covers.json 封面映射`);
 }

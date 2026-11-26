@@ -78,6 +78,15 @@ npm run books:covers -- --from /path/to/obsidian-vault/07-SOURCES/71-书籍/asse
 3. `notes:excerpts` 从正文重建 `index.json` 摘要，首页 / 搜索 / RSS / 书籍详情 meta 不会残留 `![[...]]` 或 `[[...]]`。
 4. `SafeMarkdown` 的回归测试覆盖「有映射」「无映射」「与普通 wikilink 混排」三种情况，防止后续改动把图片重新变成纯文字。
 
+### 书单智能配图（2026-11-26）
+
+`/booklists` 展示 39 份书单 + 10 个主题，共 49 项，每项一张独立封面：
+
+- 真实数据源：`public/lists/booklists.json` + `public/lists/themes.json`；策划表 `media/booklist-art-concepts.json` 与英文主题 `media/booklist-art-theme-en.json` 逐项人工编写，完整提示词与状态在 `media/booklist-art-plan.json`。
+- 生成命令：`npm run booklist-art:audit` → `npm run booklist-art:generate` → `npm run booklist-art:status`。服务为本地 OpenAI 兼容接口 `http://192.168.1.3:18199/v1`，模型 `minimax-h3-image`，2048×2048、n=1、串行、超时 1200 秒、失败重试 2 次且单项失败不中断整批；不传 `steps` / `cfg` / `negative_prompt`。
+- 提示词只传英文视觉语义（主体 / 构图 / 配色 / 材质），不传任何书名、主题词或标题——实测这些会被模型画成文字、伪文字或符文。原图（2048²）保留在 `/tmp/opencode/uRead-booklist-art/original/`，站点展示版为 16:9 中心安全裁切的 1600×900 WebP，位于 `public/media/booklists/<id>.webp`。
+- 生成成功后自动登记 `booklist:<id>` / `theme:<id>` 的 `ai_generated` 资产，前端 `CollectionArtwork` 无需改代码即按清单优先、SVG 回退。审计与逐张日志见 `docs/audit/booklist-art-audit.md`、`docs/audit/booklist-art-run.log`。
+
 ## 新增一张图片的步骤
 
 1. 把图片放到 `public/media/` 对应子目录（最终随构建进入 `dist/media/`）；

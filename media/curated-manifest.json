@@ -16380,6 +16380,496 @@
       "is_official_cover": true,
       "is_ai_generated": false,
       "review_status": "approved"
+    },
+    "booklist:72ea28d70ac7": {
+      "type": "booklist",
+      "src": "media/booklists/72ea28d70ac7.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "领域索引 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:b7c61632855c": {
+      "type": "booklist",
+      "src": "media/booklists/b7c61632855c.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "2026年度 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:1789d1068c78": {
+      "type": "booklist",
+      "src": "media/booklists/1789d1068c78.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "书单：64型MBTI衍生测评溯源与对照阅读书单 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:392eb891eb74": {
+      "type": "booklist",
+      "src": "media/booklists/392eb891eb74.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "北京文脉与京郊徒步书单（古都文脉→山水地理→徒步越野） 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:847f1a40d87b": {
+      "type": "booklist",
+      "src": "media/booklists/847f1a40d87b.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "北欧神话与维京历史精选书单 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:e5034b910d65": {
+      "type": "booklist",
+      "src": "media/booklists/e5034b910d65.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "道教养生与国学养生精选书单（入门→进阶→专业） 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:996b13bbfc5b": {
+      "type": "booklist",
+      "src": "media/booklists/996b13bbfc5b.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师-产品经理 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:40b9910211f0": {
+      "type": "booklist",
+      "src": "media/booklists/40b9910211f0.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师-开源发烧友 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:34042e903f25": {
+      "type": "booklist",
+      "src": "media/booklists/34042e903f25.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师-全栈工程师 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:61768356b0c5": {
+      "type": "booklist",
+      "src": "media/booklists/61768356b0c5.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师-人工智能专家 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:70a4bc91a16a": {
+      "type": "booklist",
+      "src": "media/booklists/70a4bc91a16a.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师-云计算与云原生 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:76cde6528f7d": {
+      "type": "booklist",
+      "src": "media/booklists/76cde6528f7d.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师-知识产权顾问 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:d0048b17e2e1": {
+      "type": "booklist",
+      "src": "media/booklists/d0048b17e2e1.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "架构师 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:a0873266ae35": {
+      "type": "booklist",
+      "src": "media/booklists/a0873266ae35.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "九个维度的人生 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:1ea2125f09a2": {
+      "type": "booklist",
+      "src": "media/booklists/1ea2125f09a2.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "人生回报率最高的30本书 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:69a2a7e842fb": {
+      "type": "booklist",
+      "src": "media/booklists/69a2a7e842fb.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "人生算法 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:4fdf8d60a4be": {
+      "type": "booklist",
+      "src": "media/booklists/4fdf8d60a4be.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "深度阅读精选8本 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:864c8fc932f1": {
+      "type": "booklist",
+      "src": "media/booklists/864c8fc932f1.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家-户外大神 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:942c6bef588e": {
+      "type": "booklist",
+      "src": "media/booklists/942c6bef588e.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家-健身跑者 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:2dc6feb04f30": {
+      "type": "booklist",
+      "src": "media/booklists/2dc6feb04f30.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家-葡萄酒大师 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:d564a5e16229": {
+      "type": "booklist",
+      "src": "media/booklists/d564a5e16229.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家-摄影家 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:7ce5e583fd13": {
+      "type": "booklist",
+      "src": "media/booklists/7ce5e583fd13.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家-数字人生 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:20a09789f6fa": {
+      "type": "booklist",
+      "src": "media/booklists/20a09789f6fa.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家-游戏王者 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:6f1ee2958bb7": {
+      "type": "booklist",
+      "src": "media/booklists/6f1ee2958bb7.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "生活艺术家 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:fbc651219823": {
+      "type": "booklist",
+      "src": "media/booklists/fbc651219823.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "十一假期 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:8f2bbd572d84": {
+      "type": "booklist",
+      "src": "media/booklists/8f2bbd572d84.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "送髋跑 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:2a8501dfb99a": {
+      "type": "booklist",
+      "src": "media/booklists/2a8501dfb99a.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "投资人-技术投资 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:6ee84773f7cd": {
+      "type": "booklist",
+      "src": "media/booklists/6ee84773f7cd.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "投资人-金融市场 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:3f2e491231c9": {
+      "type": "booklist",
+      "src": "media/booklists/3f2e491231c9.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "投资人-商品交易 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:d4766572f9fc": {
+      "type": "booklist",
+      "src": "media/booklists/d4766572f9fc.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "投资人 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:f45c7a185a5c": {
+      "type": "booklist",
+      "src": "media/booklists/f45c7a185a5c.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "有趣的人 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:996aa22e71a4": {
+      "type": "booklist",
+      "src": "media/booklists/996aa22e71a4.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "长寿科学与抗衰书单（底层理论→实操→器官细分→精神安顿） 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:3a77c81acc63": {
+      "type": "booklist",
+      "src": "media/booklists/3a77c81acc63.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "终身学习者-北京文化使者 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:b9d4c2e07e7f": {
+      "type": "booklist",
+      "src": "media/booklists/b9d4c2e07e7f.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "终身学习者-国学大师 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:5793d89b8141": {
+      "type": "booklist",
+      "src": "media/booklists/5793d89b8141.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "终身学习者-心理学专家 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:ac014155bad1": {
+      "type": "booklist",
+      "src": "media/booklists/ac014155bad1.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "终身学习者 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:d95020c16c8f": {
+      "type": "booklist",
+      "src": "media/booklists/d95020c16c8f.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "AI时代底层能力 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:971a5a20e8f2": {
+      "type": "booklist",
+      "src": "media/booklists/971a5a20e8f2.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "uRead 8月选品清单：10篇提纯弹药 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "booklist:3d687fb90179": {
+      "type": "booklist",
+      "src": "media/booklists/3d687fb90179.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "uRead 9月选品清单：B5 科技科普首批 10 篇提纯弹药 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:11c853041286": {
+      "type": "theme",
+      "src": "media/booklists/11c853041286.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "古典文学 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:a204468defe7": {
+      "type": "theme",
+      "src": "media/booklists/a204468defe7.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "旅行游记 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:b2bc8cf0f183": {
+      "type": "theme",
+      "src": "media/booklists/b2bc8cf0f183.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "冥想灵性 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:cb9edbb77fcb": {
+      "type": "theme",
+      "src": "media/booklists/cb9edbb77fcb.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "跑步健身 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:4938b067c405": {
+      "type": "theme",
+      "src": "media/booklists/4938b067c405.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "人生哲学 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:206bdffae9b8": {
+      "type": "theme",
+      "src": "media/booklists/206bdffae9b8.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "易经学习 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:d6ae3078c237": {
+      "type": "theme",
+      "src": "media/booklists/d6ae3078c237.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "饮食酒类 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:fa283fc41e79": {
+      "type": "theme",
+      "src": "media/booklists/fa283fc41e79.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "成长与智慧 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:9a19df90e5fb": {
+      "type": "theme",
+      "src": "media/booklists/9a19df90e5fb.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "跑步与运动科学 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
+    },
+    "theme:3a6f6d5f089d": {
+      "type": "theme",
+      "src": "media/booklists/3a6f6d5f089d.webp",
+      "source_type": "ai_generated",
+      "attribution": "minimax-h3-image · 按真实书单内容策划",
+      "alt": "投资与人生 书单封面",
+      "is_official_cover": false,
+      "is_ai_generated": true,
+      "review_status": "approved"
     }
   }
 }
