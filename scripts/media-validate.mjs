@@ -18,6 +18,7 @@ const noteBodies = await currentNoteBodies(ROOT);
 const allNotes = await readJson('public/notes/notes.json', []);
 const wikiImages = await readJson('media/wiki-images.json', { images: {} });
 const noteCovers = await readJson('media/note-covers.json', { covers: {} });
+const ownBookCovers = await readJson('media/own-book-covers.json', { covers: {} });
 
 const errors = [];
 const fail = (message) => errors.push(message);
@@ -80,6 +81,9 @@ for (const target of embeds) {
 for (const note of allNotes) {
   if (!/!\[\[[^\]\n]+\]\]/.test(String(note.body ?? ''))) continue;
   if (!noteCovers.covers?.[note.slug]) fail(`笔记 ${note.slug} 有正文图片但 note-covers.json 缺少封面映射`);
+}
+for (const slug of Object.keys(ownBookCovers.covers ?? {})) {
+  if (!noteCovers.covers?.[slug]) fail(`自著书稿 ${slug} 缺少 note-covers.json 封面映射`);
 }
 for (const [slug, src] of Object.entries(noteCovers.covers ?? {})) {
   if (src.includes('..') || src.startsWith('/')) fail(`笔记封面 ${slug} 的 src 必须是相对 dist 的路径：${src}`);

@@ -142,6 +142,17 @@ for (const note of notes) {
   if (wikiImages[target]) noteCovers[note.slug] = wikiImages[target];
 }
 
+// 自著书稿没有豆瓣 wikilink，用主站 /books/ 已确认的书封补齐这四篇。
+const ownBookCovers = await readJson('media/own-book-covers.json', { covers: {} });
+for (const [slug, entry] of Object.entries(ownBookCovers.covers ?? {})) {
+  if (!entry?.src) continue;
+  if (!existsSync(path.join(ROOT, 'public', entry.src))) {
+    console.error(`自著书稿封面缺少本地文件：${slug} → public/${entry.src}`);
+    process.exit(1);
+  }
+  noteCovers[slug] = entry.src;
+}
+
 if (!dryRun) {
   await writeFile(
     path.join(ROOT, 'media', 'wiki-images.json'),
