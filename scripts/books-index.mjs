@@ -236,6 +236,26 @@ ${SITE_NAV}
 </body></html>`;
 }
 
+/** 自著书稿：uRead 书籍详情 → 主站落地页 + 在线阅读器。按关联笔记 slug 匹配。 */
+const OWN_BOOK_LINKS = {
+  'B5-科技科普__《知识库工程学》-朱宝': {
+    landing: 'https://zhubao315.github.io/books/knowledge-base-engineering/',
+    readerId: '38036cf7bf29',
+  },
+  'B6-投资理财__《投资的纪律》-朱宝': {
+    landing: 'https://zhubao315.github.io/books/investment-discipline/',
+    readerId: 'a2e2ed0dd1d8',
+  },
+  'B3-认知成长__《AI时代，如何真正学会》-朱宝': {
+    landing: 'https://zhubao315.github.io/books/ai-era-learning/',
+    readerId: 'dd24f66b8e72',
+  },
+  'B3-认知成长__《千分之一的你》-朱宝': {
+    landing: 'https://zhubao315.github.io/books/one-in-a-thousand/',
+    readerId: 'df4c81f86b08',
+  },
+};
+
 export function renderBookDetail(book) {
   const notes = book.notes.map((note) => `
     <li class="card">
@@ -248,6 +268,12 @@ export function renderBookDetail(book) {
     <li><a href="..${entry.href}/">${esc(entry.title)}</a>${entry.recommendation ? `<span class="small"> — ${esc(entry.recommendation)}</span>` : ''}</li>`).join('') || '<li class="small">未收录在公开书单里。</li>';
   const aliases = book.aliases.length ? `<p class="small">原始 wikilink：${book.aliases.map(esc).join(' / ')}</p>` : '';
   const reader = book.library_book_id ? `<p><a href="./reader.html?id=${encodeURIComponent(book.library_book_id)}">在线阅读原文 →</a></p>` : '';
+  const ownNote = book.notes.find((note) => OWN_BOOK_LINKS[note.slug]);
+  const ownBook = ownNote ? OWN_BOOK_LINKS[ownNote.slug] : null;
+  const ownBookLink = ownBook
+    ? `<p><a href="${ownBook.landing}">作者书稿落地页（核心观点 · 笔记 · 互引）→</a></p>`
+      + `<p><a href="../reader.html?id=${ownBook.readerId}">在线阅读全书 →</a></p>`
+    : '';
   return `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>${esc(book.original_title)} · uRead</title>
@@ -264,6 +290,7 @@ ${bookCover(book, '../', '../../')}
 <p class="small">作者：${esc(book.author || '未标注')} · ${book.notes.length} 篇笔记 · ${book.lists.length} 份书单${book.format ? ` · ${esc(book.format.toUpperCase())}` : ''}</p>
 ${aliases}
 ${reader}
+${ownBookLink}
 <h2>关联笔记</h2><ul>${notes}</ul>
 <h2>所属书单</h2><ul>${lists}</ul>
 </main>
