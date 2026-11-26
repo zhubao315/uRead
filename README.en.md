@@ -107,6 +107,7 @@ Image assets are kept separate from Obsidian notes, booklist source files and pu
 | Curated manifest | `media/curated-manifest.json` + `media/manifest.schema.json` (1489 book covers) |
 | Note cover sync | `npm run books:covers -- --from <vault>/07-SOURCES/71-书籍/assets/covers` → `public/media/books/<id>.jpg` |
 | Inline image map | `media/wiki-images.json`: note `![[image.jpg]]` → `dist/media/wiki-images.json`, rendered as `<img>` by `SafeMarkdown` |
+| Note list covers | `media/note-covers.json`: note slug → cover, shown as thumbnails on `/read` |
 | Book theme visuals | `dist/media/books/<id>.svg` (2:3, seeded by book ID; used when no note cover exists) |
 | Collection artwork | `dist/media/collections/<kind>-<id>.svg` (16:9) |
 | Real covers | `dist/books/covers/*` (from redistributable EPUBs only) |

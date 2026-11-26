@@ -115,4 +115,5 @@ for (const [kind, file] of [['theme', 'public/lists/themes.json'], ['booklist', 
 }
 await writeFile(path.join(DIST, 'manifest.json'), await readFile(path.join(ROOT, 'media', 'curated-manifest.json'), 'utf8'), 'utf8');
 await writeFile(path.join(DIST, 'wiki-images.json'), await readFile(path.join(ROOT, 'media', 'wiki-images.json'), 'utf8'), 'utf8');
+await writeFile(path.join(DIST, 'note-covers.json'), await readFile(path.join(ROOT, 'media', 'note-covers.json'), 'utf8'), 'utf8');
 console.log(`媒体产物已生成：${aggregate.books.length} 张书籍封面 + ${collectionCount} 张主题/书单视觉 + manifest.json → dist/media/`);

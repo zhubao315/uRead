@@ -16,18 +16,43 @@ export function loadWikiImages(): Promise<WikiImageMap> {
   if (!cachedWikiImages) {
     cachedWikiImages = fetch(`${SITE_BASE}media/wiki-images.json`, { cache: 'no-store' })
       .then(async (response): Promise<WikiImagesFile> => {
-        if (!response.ok || !response.headers.get('content-type')?.includes('application/json')) return {};
+        const contentType = response.headers?.get?.('content-type') ?? '';
+        if (!response.ok || (contentType && !contentType.includes('application/json'))) return {};
         return await response.json() as WikiImagesFile;
       })
       .then((data): WikiImageMap => Object.fromEntries(
         Object.entries(data.images ?? {}).map(([target, src]): [string, string] => [
           target,
-          /^(https?:)?\/\//.test(src) ? src : `${SITE_BASE}${src.replace(/^\/+/, '')}`,
+          /^(https?:)?\/\//.test(src) || src.startsWith('/') ? src : `${SITE_BASE}${src.replace(/^\/+/, '')}`,
         ]),
       ))
       .catch((): WikiImageMap => ({}));
   }
   return cachedWikiImages;
+}
+
+/** 公开笔记列表用的 slug → 封面路径。 */
+export type NoteCoverMap = Record<string, string>;
+interface NoteCoversFile { covers?: Record<string, string> }
+let cachedNoteCovers: Promise<NoteCoverMap> | null = null;
+
+export function loadNoteCovers(): Promise<NoteCoverMap> {
+  if (!cachedNoteCovers) {
+    cachedNoteCovers = fetch(`${SITE_BASE}media/note-covers.json`, { cache: 'no-store' })
+      .then(async (response): Promise<NoteCoversFile> => {
+        const contentType = response.headers?.get?.('content-type') ?? '';
+        if (!response.ok || (contentType && !contentType.includes('application/json'))) return {};
+        return await response.json() as NoteCoversFile;
+      })
+      .then((data): NoteCoverMap => Object.fromEntries(
+        Object.entries(data.covers ?? {}).map(([slug, src]): [string, string] => [
+          slug,
+          /^(https?:)?\/\//.test(src) || src.startsWith('/') ? src : `${SITE_BASE}${src.replace(/^\/+/, '')}`,
+        ]),
+      ))
+      .catch((): NoteCoverMap => ({}));
+  }
+  return cachedNoteCovers;
 }
 
 /** 媒体清单全站只取一次；404 或类型不对时降级为空清单，不阻塞内容渲染。 */

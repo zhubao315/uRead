@@ -58,7 +58,9 @@ beforeEach(() => {
         : url.includes('/detail/hash-bbbb.json') ? noteB
           : url.includes('index.json')
             ? [noteA, noteB].map((n) => ({ ...n, excerpt: n.body.slice(0, 60), source_path: n.source_ref.path }))
-            : url.includes('manifest.json') ? manifest : [noteA, noteB];
+            : url.includes('note-covers.json')
+              ? { covers: { [noteA.slug]: '/uRead/media/books/aaaaaaaa.jpg' } }
+              : url.includes('manifest.json') ? manifest : [noteA, noteB];
     return { ok: true, status: 200, json: async () => body } as Response;
   }));
 });
@@ -77,6 +79,16 @@ describe('公开笔记列表', () => {
     expect(screen.getByText('思考的快与慢')).toBeInTheDocument();
     fireEvent.change(screen.getByPlaceholderText('搜索标题、标签或正文'), { target: { value: '三体' } });
     expect(document.querySelector('mark')?.textContent).toBe('三体');
+  });
+
+  it('有封面的笔记在列表里显示缩略图，没封面的不放假图', async () => {
+    render(<MemoryRouter><PublicNotesView /></MemoryRouter>);
+    await screen.findByText('三体（全集）-刘慈欣');
+
+    const images = [...document.querySelectorAll('li img')];
+    expect(images).toHaveLength(1);
+    expect(images[0].getAttribute('src')).toBe('/uRead/media/books/aaaaaaaa.jpg');
+    expect(images[0].getAttribute('loading')).toBe('lazy');
   });
 });
 

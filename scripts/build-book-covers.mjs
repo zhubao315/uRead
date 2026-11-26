@@ -133,12 +133,29 @@ if (unresolved.size) {
   process.exit(1);
 }
 
+// 列表页按 slug 取封面：标题可能与 wikilink stem 不一致，必须以正文里的图片名为准。
+const noteCovers = {};
+for (const note of notes) {
+  const match = /!\[\[([^\]\n]+)\]\]/.exec(String(note.body ?? ''));
+  if (!match) continue;
+  const target = match[1].split('|')[0].trim();
+  if (wikiImages[target]) noteCovers[note.slug] = wikiImages[target];
+}
+
 if (!dryRun) {
   await writeFile(
     path.join(ROOT, 'media', 'wiki-images.json'),
     `${JSON.stringify({
       note: '笔记正文 ![[文件.jpg]] 的文件名 → 本地静态路径（相对 dist）。缺失的图片会让构建校验失败。',
       images: wikiImages,
+    }, null, 2)}\n`,
+    'utf8',
+  );
+  await writeFile(
+    path.join(ROOT, 'media', 'note-covers.json'),
+    `${JSON.stringify({
+      note: '笔记 slug → 正文图片封面路径（相对 dist）。按正文 wikilink 精确映射，不按标题猜测。',
+      covers: noteCovers,
     }, null, 2)}\n`,
     'utf8',
   );
@@ -162,5 +179,5 @@ if (!dryRun) {
 console.log(
   `${dryRun ? 'DRY' : '已同步'}：${Object.keys(covers).length} 本书有真实封面（复制 ${copied} 张，${skipped} 本保留 SVG 主题视觉）`,
 );
-console.log(`正文图片映射：${Object.keys(wikiImages).length} 项`);
+console.log(`正文图片映射：${Object.keys(wikiImages).length} 项（笔记封面 ${Object.keys(noteCovers).length} 篇）`);
 console.log(`封面源：${sourceDir}`);

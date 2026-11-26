@@ -14,6 +14,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { TagsIcon, ListIcon, BookOpenIcon } from '../components/icons';
 import { SITE_BASE } from '../config';
 import { filterNotes, loadNoteIndexResult, watchPublicNotes, type PublicNotesResult } from '../data/publicNotes';
+import { useNoteCovers } from '../hooks/useNoteCovers';
 
 /**
  * 公开笔记列表。只读：不写 IndexedDB、不新建任何 store，
@@ -29,6 +30,7 @@ const PublicNotesView: React.FC = () => {
   const [category, setCategory] = useState('');
   const [shown, setShown] = useState(60);
   const [updated, setUpdated] = useState(false);
+  const covers = useNoteCovers();
 
   const refresh = async () => {
     setLoading(true);
@@ -167,17 +169,30 @@ const PublicNotesView: React.FC = () => {
       ) : (
         <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {visible.slice(0, shown).map((note) => (
-            <li key={note.slug} className="rounded-xl border border-gray-200 bg-white p-4 hover:border-blue-300">
-              <Link to={`/read/${encodeURIComponent(note.slug)}`} className="font-inter text-lg font-semibold text-blue-700 hover:underline">
-                {highlight(note.title, query.trim().split(/\s+/).filter(Boolean))}
-              </Link>
-              <p className="mt-1 text-sm text-gray-600">
-                {note.author || '作者未标注'} · {note.category || '未分类'}
-                {note.audio ? ' · 可听' : ''}
-              </p>
-              {note.tags.length > 0 ? (
-                <p className="mt-2 text-xs text-gray-500">{note.tags.join(' / ')}</p>
+            <li key={note.slug} className="flex gap-3 rounded-xl border border-gray-200 bg-white p-4 hover:border-blue-300">
+              {covers[note.slug] ? (
+                <img
+                  src={covers[note.slug]}
+                  alt=""
+                  width={48}
+                  height={72}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-[72px] w-12 shrink-0 rounded border border-gray-200 object-cover"
+                />
               ) : null}
+              <div className="min-w-0">
+                <Link to={`/read/${encodeURIComponent(note.slug)}`} className="font-inter text-lg font-semibold text-blue-700 hover:underline">
+                  {highlight(note.title, query.trim().split(/\s+/).filter(Boolean))}
+                </Link>
+                <p className="mt-1 text-sm text-gray-600">
+                  {note.author || '作者未标注'} · {note.category || '未分类'}
+                  {note.audio ? ' · 可听' : ''}
+                </p>
+                {note.tags.length > 0 ? (
+                  <p className="mt-2 text-xs text-gray-500">{note.tags.join(' / ')}</p>
+                ) : null}
+              </div>
             </li>
           ))}
         </ul>

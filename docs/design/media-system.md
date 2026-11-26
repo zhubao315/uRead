@@ -14,6 +14,7 @@ description: "独立媒体清单、解析优先级、统一图片组件与构建
 | 结构约束 | `media/manifest.schema.json` | Draft-07，约束类型、来源、审核态与官方封面标记 |
 | 静态书页映射 | `media/book-covers.json` | `books:covers` 产物：书籍 ID → 图片路径 / 笔记 stem / 豆瓣条目 |
 | 正文图片映射 | `media/wiki-images.json` → `dist/media/wiki-images.json` | 笔记 `![[文件.jpg]]` 的文件名 → 本地静态路径；缺失会让 `media:validate` 失败 |
+| 列表封面映射 | `media/note-covers.json` → `dist/media/note-covers.json` | 笔记 slug → 正文图片封面路径，供公开笔记列表 `/read` 显示缩略图 |
 | 笔记封面源文件 | `obsidian-vault/07-SOURCES/71-书籍/assets/covers/` | 豆瓣 subject 页 `og:image` 下载到本地的 1372 张 JPG |
 | 浏览器侧产物 | `dist/media/manifest.json` | 由 `media:build` 从源文件复制 |
 | 本地书籍封面 | `public/media/books/<id>.jpg` → `dist/media/books/<id>.jpg` | 经审核的出版封面，2:3 |
