@@ -4,9 +4,7 @@ title: 书单配图审计清单
 description: "uRead /booklists 全部条目的真实数据审计、视觉策划与生成清单。"
 ---
 
-# 书单配图审计清单
-
-生成时间：2026-11-26T09:51:03.660Z
+生成时间：2026-11-26T10:57:17.373Z
 
 - 数据源：`public/lists/booklists.json`（39）+ `public/lists/themes.json`（10）
 - 总数：**49**；无简介：2；无书籍：0

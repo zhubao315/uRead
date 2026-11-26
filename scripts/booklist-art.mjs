@@ -107,8 +107,6 @@ function audit(items, concepts, plan) {
     'description: "uRead /booklists 全部条目的真实数据审计、视觉策划与生成清单。"',
     '---',
     '',
-    '# 书单配图审计清单',
-    '',
     `生成时间：${stamp()}`,
     '',
     `- 数据源：\`public/lists/booklists.json\`（39）+ \`public/lists/themes.json\`（10）`,
