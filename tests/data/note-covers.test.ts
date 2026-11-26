@@ -19,11 +19,10 @@ describe('note-covers 自著书稿封面', () => {
     }
   });
 
-  it('封面文件同时存在于 public 与构建产物中', () => {
+  it('封面源文件存在于 public（dist 产物由 media:validate 在构建后校验）', () => {
     for (const slug of Object.keys(own)) {
       const src = own[slug].src as string;
       expect(existsSync(path.join(ROOT, 'public', src)), `public/${src}`).toBe(true);
-      expect(existsSync(path.join(ROOT, 'dist', src)), `dist/${src}`).toBe(true);
     }
   });
 });
