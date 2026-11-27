@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: 检出 uRead
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 设置 Node.js
         uses: actions/setup-node@v4
