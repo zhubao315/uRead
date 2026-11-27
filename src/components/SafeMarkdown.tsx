@@ -34,7 +34,8 @@ export function headingId(text: string): string {
   return text.replace(/[#*`[\]()]/g, '').trim().replace(/[^\p{L}\p{N}]+/gu, '-').slice(0, 60);
 }
 
-const SAFE_URL = /^(https?:\/\/|\/|#)/i;
+// 以 / 开头是站内路径，但不能是 //host 或 /\host（浏览器会把它们当成协议相对 URL）。
+const SAFE_URL = /^(https?:\/\/|\/(?![/\\])|#)/i;
 
 function externalUrl(raw: string): string | null {
   const url = raw.trim();
@@ -102,7 +103,16 @@ function inline(text: string, links: WikilinkMap, images: WikiImageMap, key: str
       if (!url) {
         nodes.push(part);
       } else if (image) {
-        nodes.push(<img key={id} src={url} alt={label} className="my-3 max-w-full rounded-lg border border-gray-200" />);
+        nodes.push(
+          <img
+            key={id}
+            src={url}
+            alt={label}
+            loading="lazy"
+            decoding="async"
+            className="my-3 h-auto max-h-96 max-w-full rounded-lg border border-gray-200 object-contain"
+          />,
+        );
       } else {
         nodes.push(
           <a key={id} href={url} target="_blank" rel="noreferrer" className="text-blue-700 underline decoration-blue-300 hover:decoration-blue-600">

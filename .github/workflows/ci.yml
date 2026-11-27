@@ -11,7 +11,8 @@ permissions:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -22,8 +23,23 @@ jobs:
           node-version: '26'
           cache: npm
 
+      - name: 版本一致性断言
+        run: |
+          pkg="$(node -p "require('./package.json').version")"
+          lock="$(node -p "require('./package-lock.json').version")"
+          lock_root="$(node -p "require('./package-lock.json').packages[''].version")"
+          test "$pkg" = "$lock" || { echo "package-lock.json 顶层版本与 package.json 不一致"; exit 1; }
+          test "$pkg" = "$lock_root" || { echo "package-lock.json packages[\"\"].version 与 package.json 不一致"; exit 1; }
+          grep -q "version-$pkg-" README.md || { echo "README.md 版本徽章与 package.json 不一致"; exit 1; }
+          grep -q "version-$pkg-" README.en.md || { echo "README.en.md 版本徽章与 package.json 不一致"; exit 1; }
+          echo "版本一致：$pkg"
+
       - name: 安装依赖
         run: npm ci
+
+      - name: 依赖高危审计（仅生产依赖）
+        # 只拦截 high/critical；moderate 与历史 dev 依赖不阻断本门禁。
+        run: npm audit --omit=dev --audit-level=high
 
       - name: 类型检查
         run: npm run typecheck
@@ -31,8 +47,9 @@ jobs:
       - name: 代码检查
         run: npm run lint
 
-      - name: 单元测试
-        run: npm test
+      - name: 单元测试与覆盖率
+        # vitest run --coverage 跑的是完整测试集，覆盖率报告写到 gitignored 的 coverage/。
+        run: npm run test:coverage
 
       - name: 构建（SPA）
         run: npm run build

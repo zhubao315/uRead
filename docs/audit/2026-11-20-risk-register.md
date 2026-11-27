@@ -4,6 +4,9 @@ title: 2026-11-20 风险登记
 description: "按数据与发布风险登记，含不可突破的边界。"
 ---
 
+> **历史快照（historical snapshot）**：本文只记录审计当时的状态，不代表当前实现；现状以 `README.md` 与 `docs/PROJECT-STATUS.md` 为准。
+
+
 审计时间：2026-11-20
 
 | 风险 | 等级 | 现状 | 控制措施 |

@@ -6,8 +6,8 @@
 
 让读过的书，留下值得反复阅读的内容。
 
-[![version](https://img.shields.io/badge/version-0.33.1-2457A6?style=flat-square)](CHANGELOG.md)
-[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENCE)
+[![version](https://img.shields.io/badge/version-0.34.5-2457A6?style=flat-square)](CHANGELOG.md)
+[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENSE)
 [![site](https://img.shields.io/badge/site-GitHub%20Pages-17243A?style=flat-square)](https://zhubao315.github.io/uRead/)
 [![tests](https://img.shields.io/badge/tests-226%20passed-2E7D5B?style=flat-square)](#7-质量与门禁)
 
@@ -46,7 +46,7 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | 密钥 | 不含任何 token | 不含任何 token |
 | 适合 | 分享给别人的阅读档案 | 自己的资料、笔记、卡片与阅读记录 |
 
-> **当前版本：0.33.1**（变更记录见 [`CHANGELOG.md`](CHANGELOG.md)）。
+> **当前版本：0.34.5**（变更记录见 [`CHANGELOG.md`](CHANGELOG.md)）。
 
 **真实内容基线**（来自当前构建产物，不是规划数字）：
 
@@ -144,7 +144,7 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | 加载 / 空 / 出错三种界面互不混淆，出错可重试 | ✅ 已实现 | `npm test -- tests/components/state-and-feedback.test.tsx` |
 | 每个写盘动作都有成功或失败提示，不再静默 | ✅ 已实现 | `tests/store/errors.test.ts` |
 | 删除类操作两步确认，并先说明级联后果 | ✅ 已实现 | `npm test -- tests/components/state-and-feedback.test.tsx` |
-| 键盘可达：焦点轮廓、可访问名称、动态提示 `aria-live` | ✅ 已实现 | `npm run lint`（jsx-a11y）+ 组件测试 |
+| 键盘可达：焦点轮廓、可访问名称、动态提示 `aria-live` | ✅ 已实现 | ESLint 9 + React Hooks 规则 + 组件测试 |
 | 合成示例库：一键加载/清除演示数据 | ✅ 已实现 | `tests/data/sample.test.ts` |
 | 与共享契约的枚举对齐（`AssetType` / `RelationType` / `Anchor.kind` / `source_type`） | ✅ 已实现（测试锁住） | `npm test -- tests/data/contract-alignment.test.ts` |
 | 未提交内容本机暂存，恢复时明说「尚未保存」 | ✅ 已实现 | `npm test -- tests/views/drafts.test.tsx` |
@@ -153,7 +153,9 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | PDF/EPUB 解析与渲染（工作台内） | ⛔ 未实现；站点的书库由 foliate-js 独立提供 | — |
 | 浏览器直连私有 GitHub 仓库 / 云端自动同步 | ⛔ 刻意不做：私库 token 不能进前端 | — |
 | 检索 / RAG / 向量库 | ⛔ 本仓库不做（由 uAI Core 承担） | — |
-| 撤销 / 回收站 | ⛔ 未实现（删除永久生效，因此两步确认） | — |
+| 软删除 / 回收站（数据层） | ✅ 已实现：普通删除写入 `deleted_at`，列表与详情不可见、备份仍保留；`listTrashed` / `restoreTrashed` / `purgeDeleted` 提供恢复与永久删除，恢复图书会级联恢复其笔记与卡片 | `npm test -- tests/data/repository.test.ts`（软删除与回收站 5 项） |
+| 回收站界面入口 | ⛔ 尚未接入导航（API 与测试已就绪） | — |
+| 备份校验 | ✅ 已实现：`npm run backup:verify -- <file>` 只读校验 v2 八类集合、id 唯一与引用完整性，输出 checksum | 有效备份 exit 0 / 损坏备份 exit 1 |
 
 ### 4.1 备份的真实范围
 
@@ -200,8 +202,14 @@ GITHUB_TOKEN=... npm run notes:sync -- --no-audio
 GITHUB_TOKEN=... npm run lists:sync
 GITHUB_TOKEN=... npm run books:sync          # 私库 4 本 EPUB → book-library/books/
 
+# 只看计划，不写文件
+npm run notes:sync:dry
+npm run lists:sync:dry
+npm run books:sync:dry
+
 # 本机目录模式（离线校准解析器）
 node scripts/sync-notes.mjs --local=/path/to/07-SOURCES/71-书籍 --no-audio
+node scripts/sync-books.mjs --local=/path/to/obsidian-vault
 
 # 构建把 public/ 产物带进 dist/
 npm run build
@@ -211,6 +219,7 @@ npm run build
 | --- | --- | --- |
 | `GITHUB_TOKEN` | 私有仓库只读 PAT；**只从环境变量读**，不进代码/产物/日志 | GitHub 模式必填 |
 | `NOTES_REPO` / `NOTES_BRANCH` / `NOTES_PATH` | 仓库、分支、笔记目录 | `zhubao315/obsidian-vault` / `main` / `07-SOURCES/71-书籍` |
+| `BOOKS_REPO` / `BOOKS_BRANCH` / `BOOKS_PATHS` | 电子书所在的私库、分支、4 个目录前缀（JSON 数组或逗号分隔） | `zhubao315/obsidian-vault` / `main` / 见 `scripts/sync-books.mjs` |
 | `TTS_BASE_URL` / `TTS_MODEL` / `TTS_VOICE` | 预生成音频的端点与音色 | 本机 `192.168.1.3:40000/v1` |
 | `--audio-limit=N` / `AUDIO_LIMIT` | 每次最多新生成多少篇音频（按内容哈希缓存） | `10` |
 | `--no-audio` / `--dry-run` | 不生成音频 / 只看计划不写文件 | 关闭 |
@@ -231,7 +240,9 @@ npm run publish:check -- --strict  # 未批准变更 / 新敏感命中 / 新孤�
 APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 ```
 
-`require_approval` 真实生效；`deploy.yml` 在构建后执行内容对账与严格发布检查，失败直接阻止 Pages 部署。`publish:approve` 只在人工确认后运行，不在任何 CI 中调用。策略在 `publishing/policy.json`，当前为 `allow_all_legacy`（全量公开），这是已确认的临时状态；治理工具不会删除或修改 `public/` 下任何文件。
+`require_approval` 真实生效；`deploy.yml` 在构建后执行内容对账与严格发布检查，失败直接阻止 Pages 部署。策略在 `publishing/policy.json`，当前为 `allow_all_legacy`（全量公开）临时状态；治理工具不会删除或修改 `public/` 下任何文件。
+
+> **临时模式的审批处理**：在 `allow_all_legacy` 下，`auto-sync.yml` 提交前会以 `APPROVE=1 npm run publish:approve` 刷新一次审批基线（否则新笔记必然被 `--strict` 拦截）。一旦策略切换为 allowlist 等正式模式，该步骤会**直接失败**，强制人工运行 `publish:approve` 并复核 `git diff`。切换步骤见 [`docs/audit/PUBLISH_POLICY_NOTE.md`](docs/audit/PUBLISH_POLICY_NOTE.md)。
 
 ### 6.2 GitHub Actions
 
@@ -248,12 +259,14 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 ## 7. 质量与门禁
 
-单元测试：**npm test 报 229 passed / 12 跳过，共 241 个用例**（37 个测试文件）。其中一组契约核对依赖工作区共享契约文件；该文件不在时多跳过 1 条，那种环境下报 **228 passed / 13 跳过，共 241 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
+单元测试：**npm test 报 245 passed / 1 跳过，共 246 个用例**（37 个测试文件，含软删除与回收站 5 项）。其中一组契约核对依赖工作区共享契约文件；该文件不在时多跳过 12 条，那种环境下报 **233 passed / 13 跳过，共 246 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。
 
 ```bash
 npm run typecheck        # tsc --noEmit
-npm run lint             # ESLint 9 + jsx-a11y
+npm run lint             # ESLint 9 + typescript-eslint + react-hooks
 npm test                 # Vitest（单元 + 页面 + 静态不变量）
+npm run backup:verify -- ./backup.json  # 只读校验 JSON 备份（恢复前）
+npm run test:coverage    # Vitest + V8 覆盖率报告（写到 coverage/，已 gitignore）
 npm run build            # 生产构建 + 书库 + 书籍索引 + 媒体产物 + sitemap/RSS
 npm run docs:build       # Hugo Extended 0.168 + OINK
 npm run docs:check       # 文档站自检（死链 / 两跳可达 / 回应用路径）
@@ -264,7 +277,7 @@ npm run publish:check -- --strict
 npx playwright test      # 端到端（桌面 + 移动）
 ```
 
-全仓统一门禁：`ROUND=<n> bash ../scripts/quality_round.sh`（最近一次 **37/37**）。
+CI 门禁以 `.github/workflows/ci.yml` 为准：版本一致性断言、生产依赖高危审计、类型检查、Lint、带覆盖率的完整单测、SPA 构建、打包体积门禁、Playwright E2E、Hugo 文档构建与自检。旧的「37/37」是工作区外部脚本的历史台账，**不是**本仓库 CI 的步骤数。
 
 ---
 
@@ -347,4 +360,4 @@ uRead/
 
 ## 13. 许可
 
-MIT，见 [`LICENCE`](LICENCE)。第三方组件（foliate-js、OINK 等）保留各自许可。
+MIT，见 [`LICENSE`](LICENSE)（历史文件 `LICENCE` 同样保留）。第三方组件（foliate-js、OINK 等）保留各自许可。

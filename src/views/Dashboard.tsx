@@ -233,6 +233,10 @@ const Dashboard: React.FC = () => {
         <span className="mt-3 inline-block text-sm font-medium text-brand">进入阅读闭环 →</span>
       </Link>
 
+      <Link to="/workspace/trash" className="mt-3 inline-block text-sm text-gray-600 hover:text-brand hover:underline">
+        查看回收站（可恢复误删的资料、笔记与卡片）→
+      </Link>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <section>
           <Card variant="default" className="p-6">

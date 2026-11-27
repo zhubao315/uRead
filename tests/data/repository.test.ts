@@ -319,3 +319,67 @@ describe('导入导出', () => {
     ).rejects.toThrow(/不支持的导入格式/);
   });
 });
+
+describe('软删除与回收站', () => {
+  beforeEach(async () => {
+    await Promise.all([
+      clear('books'), clear('notes'), clear('knowledgeCards'), clear('booklists'),
+      clear('knowledgeRelations'), clear('readingSessions'), clear('highlights'), clear('annotations'),
+    ]);
+  });
+
+  it('删除后列表与详情不可见，但备份仍包含实体', async () => {
+    const book = await repo.createBook({ title: '可恢复的书' });
+    await repo.deleteBook(book.id);
+
+    expect(await repo.listBooks()).toHaveLength(0);
+    expect(await repo.getBook(book.id)).toBeUndefined();
+    expect(await getById('books', book.id)).toBeDefined();
+    const bundle = await repo.exportBundle();
+    expect(bundle.data.books).toHaveLength(1);
+    expect(bundle.data.books[0].deleted_at).toBeTruthy();
+  });
+
+  it('回收站列出已删除条目，恢复后重新可见', async () => {
+    const note = await repo.createNote({ title: '误删笔记', content: '内容' });
+    await repo.deleteNote(note.id);
+    const trashed = await repo.listTrashed();
+    expect(trashed.some((entry) => entry.id === note.id && entry.store === 'notes')).toBe(true);
+
+    await repo.restoreTrashed('notes', note.id);
+    expect(await repo.listNotes()).toHaveLength(1);
+    expect((await repo.listTrashed()).some((entry) => entry.id === note.id)).toBe(false);
+  });
+
+  it('恢复图书会一并恢复级联进入回收站的笔记与卡片', async () => {
+    const book = await repo.createBook({ title: '整本书' });
+    const note = await repo.createNote({ title: '章内笔记', content: 'x', book_id: book.id });
+    const card = await repo.createCard({ title: '章内卡片', content: 'y', book_id: book.id });
+
+    await repo.deleteBook(book.id);
+    expect(await repo.listNotes()).toHaveLength(0);
+    expect(await repo.listCards()).toHaveLength(0);
+
+    await repo.restoreTrashed('books', book.id);
+    expect(await repo.listBooks()).toHaveLength(1);
+    expect(await repo.listNotes().then((rows) => rows.map((row) => row.id))).toContain(note.id);
+    expect(await repo.listCards().then((rows) => rows.map((row) => row.id))).toContain(card.id);
+  });
+
+  it('永久删除只由回收站显式调用，之后备份也不再包含', async () => {
+    const list = await repo.createBookList({ title: '待清空书单' });
+    await repo.deleteBookList(list.id);
+    expect(await repo.listBookLists()).toHaveLength(0);
+
+    await repo.purgeDeleted('booklists', list.id);
+    expect(await getById('booklists', list.id)).toBeUndefined();
+    expect((await repo.exportBundle()).data.booklists).toHaveLength(0);
+  });
+
+  it('数据全景只统计未删除条目', async () => {
+    await repo.createBook({ title: '保留' });
+    const removed = await repo.createBook({ title: '删除' });
+    await repo.deleteBook(removed.id);
+    expect((await repo.libraryInventory()).books).toBe(1);
+  });
+});
