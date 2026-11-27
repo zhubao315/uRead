@@ -6,7 +6,7 @@
 
 A home for the books you have read — and the passages worth returning to.
 
-[![version](https://img.shields.io/badge/version-0.33.1-2457A6?style=flat-square)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-0.34.5-2457A6?style=flat-square)](CHANGELOG.md)
 [![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENCE)
 [![site](https://img.shields.io/badge/site-GitHub%20Pages-17243A?style=flat-square)](https://zhubao315.github.io/uRead/)
 
@@ -45,7 +45,7 @@ uRead is two products that share one site:
 | Secrets | None | None |
 | Purpose | A reading archive you can share | Your own books, notes, cards and reading history |
 
-> Current version: **0.33.1** (see [`CHANGELOG.md`](CHANGELOG.md)).
+> Current version: **0.34.5** (see [`CHANGELOG.md`](CHANGELOG.md)).
 
 **Real content baseline** (from the current build, not a roadmap):
 
