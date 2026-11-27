@@ -1,9 +1,9 @@
 /**
  * 破坏性动作的两步确认。
  *
- * 原来所有「删除」按钮点一下就删，而删除图书会级联删掉它的笔记与卡片
- * （`repository.deleteBook`）。本地优先应用没有回收站，也没有撤销栈，
- * 一次误点就是永久丢失——至少要让人确认一次，并说清会连带删掉什么。
+ * 删除图书会级联影响它的笔记与卡片（`repository.deleteBook`）。
+ * 现在普通删除先进入回收站，可从 repository.listTrashed/restoreTrashed 恢复；
+ * 只有回收站里的「永久删除」才真正移除数据。两步确认仍保留，用于说清级联后果。
  */
 import React, { useEffect, useRef, useState } from 'react';
 

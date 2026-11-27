@@ -127,6 +127,10 @@ export interface BaseAsset {
   status: AssetStatus;
   created_at: string;
   updated_at: string;
+  /** 软删除时间。有值即进入回收站；列表与详情默认不可见，备份仍会保留。 */
+  deleted_at?: string;
+  /** 由哪条图书删除级联而来；恢复图书时据此恢复其笔记与卡片。 */
+  deleted_with?: string;
 }
 
 export type ReadingStatus = 'wishlist' | 'reading' | 'completed';
@@ -226,6 +230,7 @@ export interface BookList {
   version: string;
   created_at: string;
   updated_at: string;
+  deleted_at?: string;
 }
 
 export interface LibrarySnapshot {

@@ -77,6 +77,92 @@ function withMeta<T extends { id: string; created_at: string; updated_at: string
   return { ...value, created_at: value.created_at || now, updated_at: now };
 }
 
+type SoftDeletable = {
+  id: string;
+  updated_at: string;
+  deleted_at?: string;
+  deleted_with?: string;
+};
+
+const isActive = (value: SoftDeletable): boolean => !value.deleted_at;
+
+/** 软删除：保留实体供回收站恢复；备份导出仍包含它，列表与详情默认不可见。 */
+async function softDelete<T extends SoftDeletable>(
+  store: StoreName,
+  id: string,
+  deletedWith?: string,
+): Promise<void> {
+  const current = await getById<T>(store, id);
+  if (!current || current.deleted_at) return;
+  const now = nowIso();
+  await put<T>(store, {
+    ...current,
+    deleted_at: now,
+    updated_at: now,
+    ...(deletedWith ? { deleted_with: deletedWith } : {}),
+  });
+}
+
+/** 永久删除：只由回收站里的明确二次确认调用，不影响普通「删除」按钮。 */
+export async function purgeDeleted(store: StoreName, id: string): Promise<void> {
+  const current = await getById<SoftDeletable>(store, id);
+  if (!current?.deleted_at) return;
+  if (store === 'knowledgeRelations') await removeRelationsTouching(id);
+  await remove(store, id);
+}
+
+/** 回收站条目：带上仓储名与显示类别，供 UI 与备份对账共用。 */
+export interface TrashedEntry {
+  store: StoreName;
+  id: string;
+  title: string;
+  deleted_at: string;
+  deleted_with?: string;
+}
+
+export async function listTrashed(): Promise<TrashedEntry[]> {
+  const candidates: [StoreName, string][] = [
+    ['books', '资料'], ['notes', '笔记'], ['knowledgeCards', '知识卡片'], ['booklists', '书单'],
+    ['readingSessions', '阅读记录'], ['highlights', '划线'], ['annotations', '批注'],
+  ];
+  const groups = await Promise.all(candidates.map(async ([store, label]) => {
+    const rows = await getAll<SoftDeletable & { title?: string }>(store);
+    return rows.filter((row) => row.deleted_at).map((row) => ({
+      store, id: row.id, title: row.title ?? label, label,
+      deleted_at: row.deleted_at!, deleted_with: row.deleted_with,
+    }));
+  }));
+  return groups.flat().map(({ label, ...entry }) => ({ ...entry, title: `${label} · ${entry.title}` }))
+    .sort((a, b) => b.deleted_at.localeCompare(a.deleted_at));
+}
+
+/** 恢复：图书会连同级联进入回收站的笔记/卡片一起恢复。 */
+export async function restoreTrashed(store: StoreName, id: string): Promise<void> {
+  const item = await getById<SoftDeletable>(store, id);
+  if (!item?.deleted_at) return;
+  await put(store, { ...item, deleted_at: undefined, deleted_with: undefined, updated_at: nowIso() });
+  if (store === 'books') {
+    const [notes, cards, highlights] = await Promise.all([
+      getAll<SoftDeletable>('notes'),
+      getAll<SoftDeletable>('knowledgeCards'),
+      getAll<SoftDeletable>('highlights'),
+    ]);
+    const groups: [StoreName, SoftDeletable[]][] = [
+      ['notes', notes], ['knowledgeCards', cards], ['highlights', highlights],
+    ];
+    for (const [childStore, rows] of groups) {
+      for (const child of rows.filter((entry) => entry.deleted_with === id && entry.deleted_at)) {
+        await put(childStore, {
+          ...child,
+          deleted_at: undefined,
+          deleted_with: undefined,
+          updated_at: nowIso(),
+        });
+      }
+    }
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Books                                                               */
 /* ------------------------------------------------------------------ */
@@ -97,12 +183,13 @@ export interface BookInput {
 }
 
 export async function listBooks(): Promise<Book[]> {
-  const books = await getAll<Book>('books');
+  const books = (await getAll<Book>('books')).filter(isActive);
   return books.sort((a, b) => b.updated_at.localeCompare(a.updated_at));
 }
 
 export async function getBook(id: string): Promise<Book | undefined> {
-  return getById<Book>('books', id);
+  const book = await getById<Book>('books', id);
+  return book && isActive(book) ? book : undefined;
 }
 
 export async function createBook(input: BookInput): Promise<Book> {
@@ -162,18 +249,18 @@ async function removeRelationsTouching(id: string): Promise<void> {
   await Promise.all(doomed.map((relation) => remove('knowledgeRelations', relation.id)));
 }
 
-/** 删除图书：级联删除其笔记、卡片、划线，以及牵涉它们的全部关系边。 */
+/** 删除图书：级联进入回收站；关系边仍物理清除，因为它们是派生数据且确认文案如此承诺。 */
 export async function deleteBook(id: string): Promise<void> {
   const [notes, cards, highlights] = await Promise.all([
     getByIndex<Note>('notes', 'by_book', id),
     getByIndex<KnowledgeCard>('knowledgeCards', 'by_book', id),
-    getByIndex<{ id: string }>('highlights', 'by_book', id),
+    getByIndex<Highlight>('highlights', 'by_book', id),
   ]);
-  await remove('books', id);
+  await softDelete<Book>('books', id);
   await Promise.all([
-    ...notes.map((note) => removeRelationsTouching(note.id).then(() => remove('notes', note.id))),
-    ...cards.map((card) => removeRelationsTouching(card.id).then(() => remove('knowledgeCards', card.id))),
-    ...highlights.map((item) => remove('highlights', item.id)),
+    ...notes.map((note) => removeRelationsTouching(note.id).then(() => softDelete<Note>('notes', note.id, id))),
+    ...cards.map((card) => removeRelationsTouching(card.id).then(() => softDelete<KnowledgeCard>('knowledgeCards', card.id, id))),
+    ...highlights.map((item) => softDelete<Highlight>('highlights', item.id, id)),
   ]);
   await removeRelationsTouching(id);
 }
@@ -197,7 +284,7 @@ export interface NoteInput {
 }
 
 export async function listNotes(filter?: { book_id?: string; note_kind?: NoteKind }): Promise<Note[]> {
-  let notes = await getAll<Note>('notes');
+  let notes = (await getAll<Note>('notes')).filter(isActive);
   if (filter?.book_id) {
     notes = notes.filter((note) => note.book_id === filter.book_id);
   }
@@ -208,7 +295,8 @@ export async function listNotes(filter?: { book_id?: string; note_kind?: NoteKin
 }
 
 export async function getNote(id: string): Promise<Note | undefined> {
-  return getById<Note>('notes', id);
+  const note = await getById<Note>('notes', id);
+  return note && isActive(note) ? note : undefined;
 }
 
 export async function createNote(input: NoteInput): Promise<Note> {
@@ -253,7 +341,7 @@ export async function updateNote(id: string, patch: Partial<Note>): Promise<Note
 }
 
 export async function deleteNote(id: string): Promise<void> {
-  await remove('notes', id);
+  await softDelete<Note>('notes', id);
   await removeRelationsTouching(id);
 }
 
@@ -275,7 +363,7 @@ export interface CardInput {
 }
 
 export async function listCards(filter?: { book_id?: string }): Promise<KnowledgeCard[]> {
-  let cards = await getAll<KnowledgeCard>('knowledgeCards');
+  let cards = (await getAll<KnowledgeCard>('knowledgeCards')).filter(isActive);
   if (filter?.book_id) {
     cards = cards.filter((card) => card.book_id === filter.book_id);
   }
@@ -283,7 +371,8 @@ export async function listCards(filter?: { book_id?: string }): Promise<Knowledg
 }
 
 export async function getCard(id: string): Promise<KnowledgeCard | undefined> {
-  return getById<KnowledgeCard>('knowledgeCards', id);
+  const card = await getById<KnowledgeCard>('knowledgeCards', id);
+  return card && isActive(card) ? card : undefined;
 }
 
 export async function createCard(input: CardInput): Promise<KnowledgeCard> {
@@ -328,7 +417,7 @@ export async function updateCard(id: string, patch: Partial<KnowledgeCard>): Pro
 }
 
 export async function deleteCard(id: string): Promise<void> {
-  await remove('knowledgeCards', id);
+  await softDelete<KnowledgeCard>('knowledgeCards', id);
   await removeRelationsTouching(id);
 }
 
@@ -367,7 +456,7 @@ export async function deleteRelation(id: string): Promise<void> {
 /* ------------------------------------------------------------------ */
 
 export async function listSessions(bookId?: string): Promise<ReadingSession[]> {
-  const sessions = await getAll<ReadingSession>('readingSessions');
+  const sessions = (await getAll<ReadingSession>('readingSessions')).filter(isActive);
   return bookId ? sessions.filter((item) => item.book_id === bookId) : sessions;
 }
 
@@ -426,7 +515,8 @@ export async function addHighlight(
 }
 
 export async function listHighlights(bookId?: string): Promise<{ id: string; quote: string }[]> {
-  const all = await getAll<{ id: string; book_id: string; quote: string }>('highlights');
+  const all = (await getAll<{ id: string; book_id: string; quote: string; deleted_at?: string }>('highlights'))
+    .filter((item) => !item.deleted_at);
   return bookId ? all.filter((item) => item.book_id === bookId) : all;
 }
 
@@ -435,7 +525,7 @@ export async function listHighlights(bookId?: string): Promise<{ id: string; quo
 /* ------------------------------------------------------------------ */
 
 export async function listBookLists(): Promise<BookList[]> {
-  const lists = await getAll<BookList>('booklists');
+  const lists = (await getAll<BookList>('booklists')).filter(isActive);
   return lists.sort((a, b) => b.updated_at.localeCompare(a.updated_at));
 }
 
@@ -473,7 +563,7 @@ export async function updateBookList(id: string, patch: Partial<BookList>): Prom
 }
 
 export async function deleteBookList(id: string): Promise<void> {
-  await remove('booklists', id);
+  await softDelete<BookList>('booklists', id);
 }
 
 /* ------------------------------------------------------------------ */
@@ -549,10 +639,13 @@ export async function libraryInventory(): Promise<LibraryInventory> {
   // 备份里的键是 snake_case，IndexedDB 的仓储名是 camelCase：必须显式映射，
   // 拿备份键当仓储名会在运行时才炸（fake-indexeddb 实测过）。
   const rows = await Promise.all(
-    SNAPSHOT_STORES.map((entry) => getAll<Identifiable>(entry.store as StoreName)),
+    SNAPSHOT_STORES.map((entry) => getAll<Identifiable & SoftDeletable>(entry.store as StoreName)),
   );
   const values = Object.fromEntries(
-    SNAPSHOT_STORES.map((entry, index) => [entry.key, (rows[index] as unknown[]).length]),
+    SNAPSHOT_STORES.map((entry, index) => [
+      entry.key,
+      (rows[index] as SoftDeletable[]).filter(isActive).length,
+    ]),
   ) as Record<(typeof SNAPSHOT_STORES)[number]['key'], number>;
   return { ...values, total: Object.values(values).reduce((sum, n) => sum + n, 0) };
 }

@@ -148,7 +148,9 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 | PDF/EPUB 解析与渲染（工作台内） | ⛔ 未实现；站点的书库由 foliate-js 独立提供 | — |
 | 浏览器直连私有 GitHub 仓库 / 云端自动同步 | ⛔ 刻意不做：私库 token 不能进前端 | — |
 | 检索 / RAG / 向量库 | ⛔ 本仓库不做（由 uAI Core 承担） | — |
-| 撤销 / 回收站 | ⛔ 未实现（删除永久生效，因此两步确认） | — |
+| 软删除 / 回收站（数据层） | ✅ 已实现：普通删除写入 `deleted_at`，列表与详情不可见、备份仍保留；`listTrashed` / `restoreTrashed` / `purgeDeleted` 提供恢复与永久删除，恢复图书会级联恢复其笔记与卡片 | `npm test -- tests/data/repository.test.ts`（软删除与回收站 5 项） |
+| 回收站界面入口 | ⛔ 尚未接入导航（API 与测试已就绪） | — |
+| 备份校验 | ✅ 已实现：`npm run backup:verify -- <file>` 只读校验 v2 八类集合、id 唯一与引用完整性，输出 checksum | 有效备份 exit 0 / 损坏备份 exit 1 |
 
 ### 4.1 备份的真实范围
 
@@ -252,12 +254,13 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 ## 7. 质量与门禁
 
-单元测试：**npm test 报 226 passed / 1 跳过，共 227 个用例**（32 个测试文件）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **215 passed / 12 跳过，共 227 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
+单元测试：**npm test 报 231 passed / 1 跳过，共 232 个用例**（32 个测试文件，含软删除与回收站 5 项）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **220 passed / 12 跳过，共 232 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
 
 ```bash
 npm run typecheck        # tsc --noEmit
 npm run lint             # ESLint 9 + typescript-eslint + react-hooks
 npm test                 # Vitest（单元 + 页面 + 静态不变量）
+npm run backup:verify -- ./backup.json  # 只读校验 JSON 备份（恢复前）
 npm run test:coverage    # Vitest + V8 覆盖率报告（写到 coverage/，已 gitignore）
 npm run build            # 生产构建 + 书库 + 书籍索引 + 媒体产物 + sitemap/RSS
 npm run docs:build       # Hugo Extended 0.168 + OINK

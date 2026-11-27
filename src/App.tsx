@@ -19,6 +19,7 @@ const CardsView = lazy(() => import('./views/CardsView'));
 const BookListsView = lazy(() => import('./views/BookListsView'));
 const SearchView = lazy(() => import('./views/SearchView'));
 const ReadingLoopView = lazy(() => import('./views/ReadingLoopView'));
+const TrashView = lazy(() => import('./views/TrashView'));
 const WorkspaceGate = lazy(() => import('./components/WorkspaceGate'));
 
 const PublicNotesView = lazy(() => import('./views/PublicNotesView'));
@@ -127,6 +128,7 @@ function App() {
               <Route path="/workspace/cards" element={<CardsView />} />
               <Route path="/workspace/search" element={<SearchView />} />
               <Route path="/workspace/loop" element={<ReadingLoopView />} />
+              <Route path="/workspace/trash" element={<TrashView />} />
             </Route>
 
             {/* 旧地址跳转到工作台，重定向本身不需要初始化本地数据 */}

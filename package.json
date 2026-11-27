@@ -17,6 +17,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "backup:verify": "node scripts/backup-verify.mjs",
     "test:coverage": "vitest run --coverage",
     "docs:build": "node scripts/build-docs.mjs",
     "docs:check": "node scripts/check-docs-site.mjs",
