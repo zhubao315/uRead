@@ -41,7 +41,22 @@ export default tseslint.config(
         URLSearchParams: 'readonly',
         Request: 'readonly',
         Response: 'readonly',
+        // 统一埋点脚本运行在浏览器主线程
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        MutationObserver: 'readonly',
+        setTimeout: 'readonly',
       },
+    },
+    rules: {
+      // PostHog 官方 snippet 为压缩后的逗号表达式，按原样保留
+      '@typescript-eslint/no-unused-expressions': 'off',
+      'no-unused-expressions': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrors: 'none' },
+      ],
     },
   },
   {
