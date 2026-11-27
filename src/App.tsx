@@ -98,6 +98,11 @@ function App() {
   }, [routeTitle]);
 
   useEffect(() => {
+    // SPA 路由变化时补一次 page_view；首屏由统一 SDK 上报，脚本按 URL 去重。
+    window.ZHUBAO?.pageview();
+  }, [location.pathname]);
+
+  useEffect(() => {
     // 首次加载保持浏览器默认焦点；之后每次换页把焦点交回主内容，
     // 避免键盘用户停留在已卸载的链接上。只依赖 pathname，搜索输入时不抢焦点。
     if (firstRender.current) {

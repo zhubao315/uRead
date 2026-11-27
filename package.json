@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite",
     "sw:precache": "node scripts/build-sw-precache.mjs",
-    "build": "tsc && npm run books:covers && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run notes:excerpts && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery",
+    "build": "tsc && npm run books:covers && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run notes:excerpts && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery && node scripts/inject-analytics.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
