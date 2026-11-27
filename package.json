@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite",
     "sw:precache": "node scripts/build-sw-precache.mjs",
-    "build": "tsc && npm run books:covers && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run notes:excerpts && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery",
+    "build": "tsc && npm run books:covers && vite build && node scripts/copy-404.mjs && npm run sw:precache && npm run build:publish-config && npm run books:build && npm run books:index && npm run notes:excerpts && npm run homepage:snapshot && npm run media:build && npm run build:fallbacks && npm run build:discovery && node scripts/inject-analytics.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -48,7 +48,9 @@
     "booklist-art:audit": "node scripts/booklist-art.mjs --audit",
     "booklist-art:generate": "node scripts/booklist-art.mjs --generate",
     "booklist-art:status": "node scripts/booklist-art.mjs --status",
-    "books:covers": "node scripts/build-book-covers.mjs"
+    "books:covers": "node scripts/build-book-covers.mjs",
+    "books:sync": "node scripts/sync-books.mjs",
+    "books:sync:dry": "node scripts/sync-books.mjs --dry-run"
   },
   "keywords": [
     "reading",
@@ -84,7 +86,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.6.2",
     "tailwindcss": "^3.4.19",
-    "typescript": "^6.0.3",
+    "typescript": "5.9.3",
     "typescript-eslint": "^8.74.0",
     "vite": "^8.3.8",
     "vitest": "^5.1.0"
