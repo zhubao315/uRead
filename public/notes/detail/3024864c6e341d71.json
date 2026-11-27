@@ -1,0 +1,27 @@
+{
+  "slug": "B9-哲学宗教__《人类理解论》-洛克",
+  "title": "《人类理解论》-洛克",
+  "author": "洛克",
+  "category": "B9-哲学宗教",
+  "created": "2026-05-14",
+  "updated": "2026-07-17",
+  "source": "微信读书",
+  "status": "已读",
+  "tags": [
+    "维度/哲学",
+    "类型/读书笔记",
+    "来源/阅读"
+  ],
+  "aliases": [
+    "《人类理解论》",
+    "人类理解论"
+  ],
+  "body": "\n# 《人类理解论》 (An Essay Concerning Human Understanding)\n\n> ![[《人类理解论》-洛克.jpg]]\n> 📖 [豆瓣读书](https://book.douban.com/subject/1116325/)\n## 约翰·洛克 (John Locke)\n\n> \"No man's knowledge here can go beyond his experience.\"\n\n\n## 核心观点\n1. **白板说：人心是一块\"白板\"** -- 没有先天观念（No Innate Ideas），所有知识都来自经验。这就像一个初始化的神经网络，权重全是随机的，只有通过经验的反向传播才能形成知识。\n2. **第一性与第二性的区分** -- 体积、广延等第一性是客观的，颜色、气味等第二性是主观的。这个区分提醒我们：在任何数据系统中，必须区分客观事实与主观感受，否则系统会产生偏差。\n3. **个人同一性在于意识的连续性** -- 什么让你保持是你？洛克认为是意识的连续性，特别是记忆。如果复制你的数据到另一台服务器，那个是\"你\"吗？这个问题在AI时代尤其深刻。\n4. **简单观念组合为复杂观念** -- 感官提供简单观念（白、甜、冷），心灵通过组合、比较、抽象形成复杂观念（独角兽、正义）。这与深度学习的层级结构完全对应。\n\n## 金句摘录\n1. > \"No man's knowledge here can go beyond his experience.\" -- 经验主义的宣言，划定了人类知识的边界。\n2. > \"心灵是一块白板，上面没有任何记号，没有任何观念。\" -- 对先天观念论的彻底否定，奠定了经验主义的基础。\n\n## 🏛️ Le Miroir: 架构师视角 (Ontology Architect's View)\n\n**为什么读这本书？ (Why this book?)**\n如果说笛卡尔是唯理派（强调内置逻辑），洛克就是经验派（强调数据输入）。他认为人心是一块\"白板\" (Tabula Rasa)，所有知识都来自经验。\n这对应着 AI 的两个流派：**Symbolic AI (唯理)** vs **Machine Learning (经验)**。读洛克，就是理解 Data-Driven 的哲学基础。\n\n**核心拷问 (The First Question)**\n洛克把性质分为\"第一性\"（体积、广延）和\"第二性\"（颜色、气味）。第一性是客观的，第二性是主观的。\n**Le Miroir 问你**：在你的 uLife 数据库里，哪些字段是 First Quality (客观事实)，哪些是 Second Quality (用户的主观感受)？如果不加区分地混在一起，系统就会产生偏差。\n---\n## 📖 核心概念深度解析 (Deep Memo)\n\n### 1. 白板说 (Tabula Rasa)\n*   **观点**：没有先天观念 (No Innate Ideas)。\n*   **System 2 思考**：这就像一个初始化的 Neural Network，权重全是随机的。只有通过 Training Data (经验) 的反向传播，才能形成知识。\n\n### 2. 简单观念 vs. 复杂观念\n*   **观点**：感官提供简单观念（白、甜、冷），心灵通过组合、比较、抽象，形成复杂观念（独角兽、正义）。\n*   **System 2 思考**：Deep Learning 的层级结构。Low-level features (Edges, Pixels) -> High-level semantics (Cats, Dogs)。\n\n### 3. 个人同一性 (Personal Identity)\n*   **观点**：什么让你保持是你？洛克认为是**意识的连续性** (Continuity of Consciousness)，特别是记忆。\n*   **System 2 思考**：如果我把你的 uLife 数据复制一份到另一台服务器，那个是\"你\"吗？如果中间丢失了一年的 Log，那还是\"你\"吗？\n\n---\n\n## 📝 读书笔记与批注 (Annotations)\n\n| 章节/主题 | 核心观点 | 我的批注 (My Interpretation) |\n| :--- | :--- | :--- |\n| **反驳先天观念** | 婴儿和白痴没有逻辑同一律的概念。 | 说明逻辑思维是后天习得的软件，不是固化在硬件里的。 |\n| **实体的不可知** | 我们只知道属性，不知道支撑属性的\"实体\"是什么。 | 我们只知道 Feature Vectors，永远不知道 Data Source 的本体。 |\n\n---\n**Status**: ⚪ To Be Started\n\n## 相关笔记\n\n- [[知识产权顾问技能]]\n- [[人生文件夹：从 CompanyOS 到 LifeOS - 将文件系统哲学应用于人生管理]]\n- [[微服务课程准备笔记]]\n",
+  "source_ref": {
+    "path": "B9-哲学宗教/《人类理解论》-洛克.md",
+    "sha": "7bab007c1ca012172874fb796906c66dba2fc080",
+    "url": "https://github.com/zhubao315/obsidian-vault/blob/main/B9-%E5%93%B2%E5%AD%A6%E5%AE%97%E6%95%99/%E3%80%8A%E4%BA%BA%E7%B1%BB%E7%90%86%E8%A7%A3%E8%AE%BA%E3%80%8B-%E6%B4%9B%E5%85%8B.md"
+  },
+  "content_hash": "3024864c6e341d71",
+  "audio": false
+}

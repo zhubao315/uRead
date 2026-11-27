@@ -33,6 +33,8 @@ Thumbs.db
 # Logs
 logs/
 *.log
+# 书单配图逐张生成日志是交付记录，随仓库保留
+!docs/audit/booklist-art-run.log
 
 # Test coverage
 coverage/

@@ -10,6 +10,7 @@
  */
 
 import { SITE_BASE } from '../config';
+import { NOTE_ALIASES } from './noteAliases';
 
 export interface PublicNoteRef {
   path: string;
@@ -186,7 +187,9 @@ export async function loadNoteIndexResult(): Promise<PublicNotesResult> {
 /** 单篇按需加载：slug → hash 映射只有几十 KB，正文只有当前一篇。 */
 export async function loadNoteDetail(slug: string): Promise<PublicNote | null> {
   const slugs = await getJson<Record<string, string>>(`${SITE_BASE}notes/slugs.json`);
-  const hash = slugs[slug];
+  // ASCII 别名先还原成真实 slug；未命中的别名不会伪造内容。
+  const realSlug = slugs[slug] ? slug : (NOTE_ALIASES[slug] ?? '');
+  const hash = slugs[realSlug];
   if (!hash) return null;
   return getJson<PublicNote>(`${SITE_BASE}notes/detail/${encodeURIComponent(hash)}.json`);
 }

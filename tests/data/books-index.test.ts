@@ -63,6 +63,19 @@ describe('书籍索引聚合', () => {
     expect(html).toContain('可在线阅读的电子书');
   });
 
+  it('有已审核的笔记封面时静态书页优先使用它，真实 EPUB 封面仍最高优先级', () => {
+    const book = buildBookCatalog([note('n1', '《1984》-乔治·奥威尔', '乔治·奥威尔')], []).books[0];
+    const coverMap = {
+      [book.id]: {
+        src: `media/books/${book.id}.jpg`,
+        stem: '《1984》-乔治·奥威尔.jpg',
+        douban: 'https://book.douban.com/subject/4820710/',
+      },
+    };
+    expect(renderBookDetail(book, coverMap)).toContain(`../../media/books/${book.id}.jpg`);
+    expect(renderBookIndex([{ ...book, cover: 'cover.png' }], [], coverMap)).toContain('./cover.png');
+  });
+
   it('无真实封面时展示 uRead 主题视觉（不冒充出版封面），空关联给出真实空状态', () => {
     const book = {
       ...buildBookCatalog([note('a', '无封面书')], []).books[0],

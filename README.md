@@ -105,8 +105,13 @@ uRead 有两块彼此独立、共用同一个站点的产品：
 
 | 角色 | 路径 |
 | --- | --- |
-| 策展清单 | `media/curated-manifest.json` + `media/manifest.schema.json` |
-| 书籍主题视觉 | `dist/media/books/<id>.svg`（2:3，按书籍 ID 种子确定） |
+| 策展清单 | `media/curated-manifest.json` + `media/manifest.schema.json`（1489 条书籍封面） |
+| 笔记封面同步 | `npm run books:covers -- --from <vault>/07-SOURCES/71-书籍/assets/covers` → `public/media/books/<id>.jpg` |
+| 正文图片映射 | `media/wiki-images.json`：正文 `![[图片.jpg]]` → `dist/media/wiki-images.json`，由 `SafeMarkdown` 渲染成 `<img>` |
+| 列表封面映射 | `media/note-covers.json`：笔记 slug → 封面，供 `/read` 列表显示缩略图 |
+| 自著书稿封面 | `media/own-book-covers.json` + `public/media/own-books/*.webp`（来自主站 `/books/`，本地发布） |
+| 书单智能配图 | `media/booklist-art-plan.json` + `public/media/booklists/<id>.webp`（`npm run booklist-art:generate`，49 项独立视觉） |
+| 书籍主题视觉 | `dist/media/books/<id>.svg`（2:3，按书籍 ID 种子确定；无笔记封面时使用） |
 | 栏目视觉 | `dist/media/collections/<kind>-<id>.svg`（16:9） |
 | 真实封面 | `dist/books/covers/*`（仅来自有权分发的 EPUB） |
 
@@ -243,18 +248,18 @@ APPROVE=1 npm run publish:approve  # 人工确认后更新批准基线
 
 | 工作流 | 周期 | 职责 |
 | --- | --- | --- |
-| `auto-sync.yml` | 每天 UTC 02:00（北京 10:00） | 同步读书笔记（`--no-audio`）与私库 4 本 EPUB，重建书库并发布 |
+| `auto-sync.yml` | 每天 UTC 02:00（北京 10:00） | 同步笔记（`--no-audio`）与私库 4 本 EPUB，重建书库并发布 |
 | `lists-sync.yml` | 每周一 UTC 03:00（北京 11:00） | 同步主题与书单 |
 | `ci.yml` | push | 类型 + Lint + 单测 + 构建 + 文档自检 |
 | `deploy.yml` | push / 派发 | 对账 + 严格发布检查 + Pages 部署 |
 
-三个同步工作流都支持手动 `Run workflow`，共用 `content-sync` 并发组，且在提交前比对内容版本——笔记版本未变且书库无文件变化时会跳过提交与部署，不制造空提交。所需 Secret：`OBSIDIAN_TOKEN`（对私库只读的 PAT）。要立即发布最新笔记和 4 本书，手动运行 **`Sync Reading Notes & Books`** 一次即可。
+三个同步工作流都支持手动 `Run workflow`，共用 `content-sync` 并发组，且在提交前比对 manifest 版本——版本未变时只有生成时间戳变化，会跳过提交与部署，不制造空提交。所需 Secret：`OBSIDIAN_TOKEN`（对私库只读的 PAT）。
 
 ---
 
 ## 7. 质量与门禁
 
-单元测试：**npm test 报 231 passed / 1 跳过，共 232 个用例**（32 个测试文件，含软删除与回收站 5 项）。唯一会跳过的是工作区共享契约文件不在时的那组契约核对——那种环境下报 **220 passed / 12 跳过，共 232 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。这些断言本身也被核对：`python3 ../scripts/mutation_check.py` 会把已修复的行为逐个改回缺陷形态，要求对应测试必须变红——**不会失败的测试等于没有测试**。
+单元测试：**npm test 报 245 passed / 1 跳过，共 246 个用例**（37 个测试文件，含软删除与回收站 5 项）。其中一组契约核对依赖工作区共享契约文件；该文件不在时多跳过 12 条，那种环境下报 **233 passed / 13 跳过，共 246 个用例**（两组数字的 passed + skipped 都等于总数，由 `tests/data/ui-invariants.test.ts` 验算）。
 
 ```bash
 npm run typecheck        # tsc --noEmit

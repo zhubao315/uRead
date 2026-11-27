@@ -1,0 +1,25 @@
+{
+  "note": "四部自著书稿的封面：来自主站 /books/ 的书封，按笔记 slug 对应。图片随 uRead 一起发布，不热链主站带 hash 的 _astro 路径。",
+  "covers": {
+    "B5-科技科普__《知识库工程学》-朱宝": {
+      "src": "media/own-books/38036cf7bf29.webp",
+      "source_url": "https://zhubao315.github.io/books/knowledge-base-engineering/",
+      "title": "知识库工程学"
+    },
+    "B6-投资理财__《投资的纪律》-朱宝": {
+      "src": "media/own-books/a2e2ed0dd1d8.webp",
+      "source_url": "https://zhubao315.github.io/books/investment-discipline/",
+      "title": "投资的纪律"
+    },
+    "B3-认知成长__《AI时代，如何真正学会》-朱宝": {
+      "src": "media/own-books/dd24f66b8e72.webp",
+      "source_url": "https://zhubao315.github.io/books/ai-era-learning/",
+      "title": "AI时代，如何真正学会"
+    },
+    "B3-认知成长__《千分之一的你》-朱宝": {
+      "src": "media/own-books/df4c81f86b08.webp",
+      "source_url": "https://zhubao315.github.io/books/one-in-a-thousand/",
+      "title": "千分之一的你"
+    }
+  }
+}

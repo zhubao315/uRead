@@ -2,8 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="light dark">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="color-scheme" content="light dark">
 <title>在线阅读 · uRead 书库</title>
+<link rel="stylesheet" href="./css/reader.css">
 <style>
   body { font-family: system-ui, -apple-system, "PingFang SC", sans-serif; margin: 0; color: light-dark(#1f2937,#f1f5f9); background: light-dark(#fff,#0f172a); }
   .reader-bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .6rem .8rem; border-bottom: 1px solid light-dark(#e5e7eb,#334155); position: sticky; top: 64px; background: light-dark(#fff,#1e293b); z-index: 2; }
@@ -29,14 +30,70 @@
   <button id="prev" type="button">上一页</button>
   <button id="next" type="button">下一页</button>
   <select id="toc" aria-label="目录"><option value="">目录</option></select>
+  <button id="btn-listen" type="button" aria-label="听">听</button>
+  <button id="btn-immersive" type="button" aria-pressed="false" aria-label="沉浸阅读">沉浸阅读</button>
   <span id="progress"></span>
 </header>
+<button id="btn-immersive-exit" type="button" hidden aria-label="退出沉浸阅读">退出沉浸</button>
 <div id="stage">
   <div id="notice"></div>
 </div>
 
+<div class="bottom-tools" aria-label="移动端阅读工具">
+  <button id="btn-immersive-listen" type="button" aria-label="听">▶ 听</button>
+  <button id="btn-font-down" type="button" aria-label="缩小字号">A−</button>
+  <button id="btn-font-up" type="button" aria-label="放大字号">A＋</button>
+  <button id="btn-line-down" type="button" aria-label="缩小行距">↕−</button>
+  <button id="btn-line-up" type="button" aria-label="放大行距">↕＋</button>
+  <button id="btn-theme" type="button" aria-label="切换主题">主题</button>
+  <button id="btn-margin" type="button" aria-label="调整页边距">边距</button>
+</div>
+
+<button id="player-mini" type="button" aria-label="展开播放器">
+  <span class="mini-title" id="mini-title">正在朗读</span>
+  <span class="mini-hint">点按展开控制</span>
+</button>
+
+<section id="player" role="dialog" aria-label="听书播放器" aria-expanded="false">
+  <div class="player-head">
+    <span class="player-title">🎧 听书 · <span id="player-book">本书</span></span>
+    <button id="btn-close-player" type="button" aria-label="收起播放器">收起</button>
+  </div>
+  <p class="player-text" id="player-text">点击「听」从当前阅读位置开始</p>
+  <div class="player-controls">
+    <button id="btn-prev" type="button" aria-label="上一段">⏮</button>
+    <button id="btn-play-pause" type="button" aria-label="播放或暂停">▶</button>
+    <button id="btn-next" type="button" aria-label="下一段">⏭</button>
+    <button id="btn-stop" type="button" aria-label="停止">⏹</button>
+  </div>
+  <div class="player-row">
+    <label for="rate-select">语速</label>
+    <select id="rate-select" aria-label="语速"></select>
+    <label for="voice-select">音色</label>
+    <select id="voice-select" aria-label="音色"></select>
+    <span id="player-progress"></span>
+  </div>
+  <div class="player-row">
+    <label for="sleep-select">定时关闭</label>
+    <select id="sleep-select" aria-label="定时关闭">
+      <option value="0">不定时</option>
+      <option value="15">15 分钟</option>
+      <option value="30">30 分钟</option>
+      <option value="45">45 分钟</option>
+      <option value="60">60 分钟</option>
+      <option value="chapter">本章结束后</option>
+    </select>
+    <label for="wake-toggle"><input type="checkbox" id="wake-toggle"> 听书时保持屏幕常亮</label>
+  </div>
+  <p class="player-hint">当前使用浏览器原生语音：屏幕关闭后朗读会停止。请开启「保持屏幕常亮」，设置会自动记住。</p>
+</section>
+<div id="notice-toast" role="status" hidden></div>
+
 <script type="module">
 import './vendor/foliate-js/view.js';
+import { Overlayer } from './vendor/foliate-js/overlayer.js';
+import { BookSpeechController } from './js/book-speech.js';
+import { setupReaderUI } from './js/reader-ui.js';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -48,6 +105,8 @@ const fail = (message) => {
   $('title').textContent = '打不开这本书';
 };
 
+const emit = (name, detail) => window.dispatchEvent(new CustomEvent(name, { detail }));
+
 try {
   const response = await fetch('./catalog.json', { cache: 'no-store' });
   if (!response.ok) throw new Error(`目录读取失败：HTTP ${response.status}`);
@@ -57,31 +116,50 @@ try {
     fail(`没有找到 id 为 ${id} 的书。请从书库列表点进来。`);
   } else {
     $('title').textContent = book.title;
+    $('mini-title').textContent = book.title;
+    $('player-book').textContent = book.title;
     $('meta').textContent = [book.author, book.format.toUpperCase(),
       `${(book.size_bytes / 1024 / 1024).toFixed(1)} MiB`].filter(Boolean).join(' · ');
 
     if (book.format === 'pdf') {
-      // PDF 走浏览器自带阅读器：比 foliate-js 的实验性 PDF 适配稳定得多。
+      // PDF 走浏览器自带阅读器；原生 iframe 没有稳定文本层，暂不支持听书。
       $('stage').innerHTML = `<iframe src="./${book.path}" title="${book.title}"></iframe>`;
       $('prev').disabled = $('next').disabled = true;
       $('toc').disabled = true;
+      $('btn-listen').disabled = true;
+      $('btn-immersive-listen').disabled = true;
+      $('btn-listen').textContent = '暂不支持听书';
+      $('btn-listen').title = '该 PDF 暂不支持听书，保留浏览器原生 PDF 阅读体验';
     } else {
       const view = document.createElement('foliate-view');
       $('stage').replaceChildren(view);
       await view.open(`./${book.path}`);
 
-      $('prev').addEventListener('click', () => view.renderer.prev());
-      const help = document.createElement('div');
-      help.hidden = true;
-      help.textContent = '快捷键：← 上一页　→ 下一页　? 显示/隐藏帮助';
-      help.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:#1f2937;color:#fff;padding:.6rem 1rem;border-radius:.5rem;z-index:9';
-      document.body.append(help);
-      window.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowLeft') view.renderer.prev();
-        else if (event.key === 'ArrowRight') view.renderer.next();
-        else if (event.key === '?') help.hidden = !help.hidden;
+      // 阅读器 UI 与语音控制器通过事件总线解耦，避免循环依赖。
+      const controller = new BookSpeechController({
+        view,
+        book,
+        onState: (state) => emit('uread:speech-state', state),
+        onSegment: (segment) => emit('uread:speech-segment', segment),
+        onChapter: (index) => emit('uread:speech-chapter', index),
+        onNotice: (message) => {
+          const toast = $('notice-toast');
+          if (!toast) return;
+          toast.textContent = message || '';
+          toast.hidden = !message;
+          clearTimeout(controller._toastTimer);
+          if (message) controller._toastTimer = setTimeout(() => { toast.hidden = true; }, 3200);
+        },
       });
+      controller.setOverlayerClass(Overlayer);
+      const ui = setupReaderUI({ view, book, isEpub: true, controller });
+
+      $('prev').addEventListener('click', () => view.renderer.prev());
       $('next').addEventListener('click', () => view.renderer.next());
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') { view.renderer.prev(); controller.onUserNavigate(); }
+        else if (event.key === 'ArrowRight') { view.renderer.next(); controller.onUserNavigate(); }
+      });
 
       const flatten = (items, depth = 0) => (items || []).flatMap((item) => [
         { label: '　'.repeat(depth) + (item.label || ''), href: item.href },
@@ -101,10 +179,10 @@ try {
       });
 
       const progressKey = `uread:book:${book.id}`;
-      try {
-        const saved = JSON.parse(localStorage.getItem(progressKey) || 'null');
-        if (saved) await view.goTo(saved);
-      } catch { /* 位置格式变了就从头读，不打断阅读 */ }
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(progressKey) || 'null'); } catch { /* ignore */ }
+      if (saved) await view.goTo(saved);
+      else await view.next(); // open() 不会渲染首屏，首次打开必须显式翻到第一页
 
       view.addEventListener('relocate', () => {
         try {
@@ -117,6 +195,14 @@ try {
         $('progress').textContent = typeof fraction === 'number'
           ? `${Math.round(fraction * 100)}%` : '';
       });
+
+      // 音色可能在页面加载后才就绪。
+      window.speechSynthesis?.addEventListener?.('voiceschanged', () => {
+        controller.refreshCapabilities().then((caps) => emit('uread:speech-caps', caps));
+      });
+
+      window.addEventListener('pagehide', () => controller.destroy());
+      window.__ureadReader = { view, book, controller, ui }; // 供自动化测试注入检查
     }
   }
 } catch (error) {

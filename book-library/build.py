@@ -7,7 +7,7 @@
   * 版权由放书的人负责：README 里写明「只放你有权公开分发的书」。
   * 大文件硬线：GitHub 单文件 >100 MiB 直接拦截、>50 MiB 告警；超线拒绝生成并点名文件。
 
-产物：uRead/dist/books/{library.html,reader.html,catalog.json,books/*,vendor/foliate-js/*}
+产物：uRead/dist/books/{library.html,reader.html,catalog.json,books/*,vendor/foliate-js/*,js/*,css/*}
 注意：index.html 由 scripts/build-books-index.mjs 生成，避免覆盖。
 """
 
@@ -170,6 +170,13 @@ def write_outputs(records: list[dict]) -> None:
                         ignore=shutil.ignore_patterns("tests", "*.md", "*.json", "rollup*", "eslint*"))
     else:
         raise SystemExit("缺少 foliate-js vendor；先在 book-library/ 里执行 npm install")
+
+    # 阅读器新增资源：沉浸式阅读 + 听书（Pages 上以相对路径加载）。
+    for name in ('js', 'css'):
+        source = ROOT / name
+        if not source.is_dir():
+            raise SystemExit(f"缺少阅读器资源目录：{name}")
+        shutil.copytree(source, DIST / name, dirs_exist_ok=True)
 
     payload = json.dumps(records, ensure_ascii=False, indent=2)
     (DIST / "catalog.json").write_text(payload, encoding="utf-8")

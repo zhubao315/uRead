@@ -6,8 +6,8 @@
 
 A home for the books you have read — and the passages worth returning to.
 
-[![version](https://img.shields.io/badge/version-0.34.5-2457A6?style=flat-square)](CHANGELOG.md)
-[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENSE)
+[![version](https://img.shields.io/badge/version-0.33.1-2457A6?style=flat-square)](CHANGELOG.md)
+[![license](https://img.shields.io/badge/license-MIT-C58B42?style=flat-square)](LICENCE)
 [![site](https://img.shields.io/badge/site-GitHub%20Pages-17243A?style=flat-square)](https://zhubao315.github.io/uRead/)
 
 [中文](README.md) · [English](README.en.md)
@@ -45,7 +45,7 @@ uRead is two products that share one site:
 | Secrets | None | None |
 | Purpose | A reading archive you can share | Your own books, notes, cards and reading history |
 
-> Current version: **0.34.5** (see [`CHANGELOG.md`](CHANGELOG.md)).
+> Current version: **0.33.1** (see [`CHANGELOG.md`](CHANGELOG.md)).
 
 **Real content baseline** (from the current build, not a roadmap):
 
@@ -104,8 +104,13 @@ Image assets are kept separate from Obsidian notes, booklist source files and pu
 
 | Role | Path |
 | --- | --- |
-| Curated manifest | `media/curated-manifest.json` + `media/manifest.schema.json` |
-| Book theme visuals | `dist/media/books/<id>.svg` (2:3, seeded by book ID) |
+| Curated manifest | `media/curated-manifest.json` + `media/manifest.schema.json` (1489 book covers) |
+| Note cover sync | `npm run books:covers -- --from <vault>/07-SOURCES/71-书籍/assets/covers` → `public/media/books/<id>.jpg` |
+| Inline image map | `media/wiki-images.json`: note `![[image.jpg]]` → `dist/media/wiki-images.json`, rendered as `<img>` by `SafeMarkdown` |
+| Note list covers | `media/note-covers.json`: note slug → cover, shown as thumbnails on `/read` |
+| Own-book covers | `media/own-book-covers.json` + `public/media/own-books/*.webp` (from the portfolio `/books/`, served locally) |
+| Booklist artwork | `media/booklist-art-plan.json` + `public/media/booklists/<id>.webp` (`npm run booklist-art:generate`, 49 distinct visuals) |
+| Book theme visuals | `dist/media/books/<id>.svg` (2:3, seeded by book ID; used when no note cover exists) |
 | Collection artwork | `dist/media/collections/<kind>-<id>.svg` (16:9) |
 | Real covers | `dist/books/covers/*` (from redistributable EPUBs only) |
 
@@ -178,14 +183,11 @@ Public content is synced from a private Obsidian vault by local scripts. **The b
 ```bash
 npm run notes:sync:dry      # preview, no writes
 npm run lists:sync:dry
-npm run books:sync:dry
 
 GITHUB_TOKEN=... npm run notes:sync -- --no-audio
 GITHUB_TOKEN=... npm run lists:sync
-GITHUB_TOKEN=... npm run books:sync          # 4 private EPUBs → book-library/books/
 
 node scripts/sync-notes.mjs --local=/path/to/07-SOURCES/71-书籍 --no-audio
-node scripts/sync-books.mjs --local=/path/to/obsidian-vault
 npm run build               # public/ → dist/
 ```
 
@@ -193,7 +195,6 @@ npm run build               # public/ → dist/
 | --- | --- | --- |
 | `GITHUB_TOKEN` | Read-only PAT; **env only**, never in code, artifacts or logs | required in GitHub mode |
 | `NOTES_REPO` / `NOTES_BRANCH` / `NOTES_PATH` | Source repository, branch, note directory | `zhubao315/obsidian-vault` / `main` / `07-SOURCES/71-书籍` |
-| `BOOKS_REPO` / `BOOKS_BRANCH` / `BOOKS_PATHS` | Private repo, branch and 4 EPUB directory prefixes | `zhubao315/obsidian-vault` / `main` / see `scripts/sync-books.mjs` |
 | `TTS_BASE_URL` / `TTS_MODEL` / `TTS_VOICE` | Optional audio-generation endpoint | local service |
 | `--audio-limit=N` / `AUDIO_LIMIT` | Max new audio files per run, cached by content hash | `10` |
 | `--no-audio` / `--dry-run` | Skip audio / plan only | off |
@@ -212,18 +213,16 @@ npm run publish:check -- --strict  # fail on unapproved changes, new sensitive h
 APPROVE=1 npm run publish:approve  # human confirmation updates the approved baseline
 ```
 
-`require_approval` is enforced. `deploy.yml` runs release reconciliation and a strict publish check after building; failure blocks deployment. Policy lives in `publishing/policy.json` and currently uses `allow_all_legacy` (the confirmed temporary full-public state); the tooling never deletes or edits files under `public/`.
-
-> **Legacy-mode approval**: while `allow_all_legacy` is active, `auto-sync.yml` refreshes the approved baseline with `APPROVE=1 npm run publish:approve` before committing (otherwise newly synced notes always fail `--strict`). Once the policy switches to a real allowlist, that step fails deliberately and a human must run `publish:approve` and review the diff. See [`docs/audit/PUBLISH_POLICY_NOTE.md`](docs/audit/PUBLISH_POLICY_NOTE.md).
+`require_approval` is enforced. `deploy.yml` runs release reconciliation and a strict publish check after building; failure blocks deployment. `publish:approve` is never called in CI. Policy lives in `publishing/policy.json` and currently uses `allow_all_legacy` (the confirmed temporary full-public state); the tooling never deletes or edits files under `public/`.
 
 | Workflow | Schedule | Job |
 | --- | --- | --- |
-| `auto-sync.yml` | Daily 02:00 UTC (10:00 Beijing) | Notes (`--no-audio`) + 4 private EPUBs, rebuild library and publish |
+| `auto-sync.yml` | Daily 02:00 UTC (10:00 Beijing) | Notes (`--no-audio`) |
 | `lists-sync.yml` | Mondays 03:00 UTC (11:00 Beijing) | Themes and booklists |
 | `ci.yml` | on push | typecheck, lint, tests, build, docs check |
 | `deploy.yml` | push / dispatch | reconciliation, strict publish check, Pages deploy |
 
-All three sync workflows can be run manually and share the `content-sync` concurrency group. Before committing, they compare content versions and skip empty commits/deploys. Required secret: `OBSIDIAN_TOKEN` (read-only PAT). To publish the latest notes and the 4 books now, run **`Sync Reading Notes & Books`** once.
+Both sync workflows can be run manually and share the `content-sync` concurrency group. Before committing, they compare manifest versions: if only `generated_at` timestamps changed, they skip the commit and deployment instead of producing an empty commit. Required secret: `OBSIDIAN_TOKEN` (read-only PAT).
 
 ---
 
@@ -232,8 +231,7 @@ All three sync workflows can be run manually and share the `content-sync` concur
 ```bash
 npm run typecheck
 npm run lint
-npm test                 # 226 passed, 1 skipped across 32 files
-npm run test:coverage    # Vitest + V8 coverage report in coverage/ (gitignored)
+npm test                 # 229 passed, 1 skipped across 33 files
 npm run build
 npm run docs:build
 npm run docs:check
@@ -244,7 +242,7 @@ npm run publish:check -- --strict
 npx playwright test      # desktop + mobile Chromium
 ```
 
-The CI gate is defined by `.github/workflows/ci.yml`: version consistency, high-severity production dependency audit, typecheck, lint, the full test suite with coverage, SPA build, bundle budget, Playwright E2E, and Hugo docs build/check. The old "37/37" refers to a historical external script ledger, not to this repository's CI steps. `python3 ../scripts/mutation_check.py` reintroduces fixed bugs one by one and requires the matching test to fail — a test that can never fail is not a test.
+The repository-wide gate is `ROUND=<n> bash ../scripts/quality_round.sh` (latest: **37/37**). `python3 ../scripts/mutation_check.py` reintroduces fixed bugs one by one and requires the matching test to fail — a test that can never fail is not a test.
 
 ---
 
@@ -322,4 +320,4 @@ The site is served from **https://zhubao315.github.io/uRead/**. `vite.config.ts`
 
 ## 13. License
 
-MIT — see [`LICENSE`](LICENSE) (the historical `LICENCE` file is kept as well). Third-party components (foliate-js, OINK, etc.) retain their own licenses.
+MIT — see [`LICENCE`](LICENCE). Third-party components (foliate-js, OINK, etc.) retain their own licenses.

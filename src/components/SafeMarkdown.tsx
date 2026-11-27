@@ -8,7 +8,7 @@ import React from 'react';
  * 这里只认有限几种块与行内结构，认不出来的原样当文字显示——宁可丑一点，也不猜。
  *
  * 支持：标题 / 段落 / 无序与有序列表 / 引用 / 代码围栏 / 水平线；
- * 行内：粗体、斜体、行内代码、普通链接、图片、Obsidian `[[wikilink]]`。
+ * 行内：粗体、斜体、行内代码、普通链接、图片、Obsidian `[[wikilink]]` 与 `![[图片]]`。
  * 链接只允许 http(s) 与站内路径，`javascript:` 之类一律降级成纯文字。
  */
 
@@ -16,10 +16,17 @@ export interface WikilinkMap {
   [target: string]: string;
 }
 
+/** Obsidian 图片嵌入的文件名 → 已同步到本地的站点路径。 */
+export interface WikiImageMap {
+  [target: string]: string;
+}
+
 interface SafeMarkdownProps {
   source: string;
   /** 目标名 → 站内 slug。没有映射的 wikilink 只显示文字，不做假链接。 */
   links?: WikilinkMap;
+  /** 图片文件名 → 静态资源路径；没有映射时显示占位文字，不把标记语法暴露给读者。 */
+  images?: WikiImageMap;
 }
 
 /** 标题锚点：TOC 与正文共用同一个算法，避免「目录跳过去找不到」。 */
@@ -35,9 +42,10 @@ function externalUrl(raw: string): string | null {
   return SAFE_URL.test(url) ? url : null;
 }
 
-function inline(text: string, links: WikilinkMap, key: string): React.ReactNode[] {
+function inline(text: string, links: WikilinkMap, images: WikiImageMap, key: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
-  const token = /(`[^`]+`)|(\*\*[^*]+\*\*)|(\*[^*\n]+\*)|(!?\[[^\]]*\]\([^)]*\))|(\[\[[^\]\n]+\]\])/g;
+  // 图片嵌入必须排在普通 wikilink 前面，否则 ![[file.jpg]] 会先被当成 [[file.jpg]]。
+  const token = /(!\[\[[^\]\n]+\]\])|(`[^`]+`)|(\*\*[^*]+\*\*)|(\*[^*\n]+\*)|(!?\[[^\]]*\]\([^)]*\))|(\[\[[^\]\n]+\]\])/g;
   let cursor = 0;
   let index = 0;
   let match: RegExpExecArray | null;
@@ -47,7 +55,27 @@ function inline(text: string, links: WikilinkMap, key: string): React.ReactNode[
     }
     const part = match[0];
     const id = `${key}-i${index++}`;
-    if (part.startsWith('`')) {
+    if (part.startsWith('![[')) {
+      const target = part.slice(3, -2).split('|')[0].trim();
+      const src = images[target];
+      if (!src) {
+        nodes.push(<span key={id} title="图片资源未同步" className="text-gray-500">[图片：{target}]</span>);
+      } else {
+        nodes.push(
+          <img
+            key={id}
+            src={src}
+            alt={target.replace(/\.[^.]+$/, '')}
+            width={400}
+            height={600}
+            loading="lazy"
+            decoding="async"
+            style={{ aspectRatio: '2 / 3', height: 'auto' }}
+            className="my-3 max-w-full rounded-lg border border-gray-200"
+          />,
+        );
+      }
+    } else if (part.startsWith('`')) {
       nodes.push(<code key={id} className="rounded bg-gray-100 px-1 py-0.5 text-sm">{part.slice(1, -1)}</code>);
     } else if (part.startsWith('**')) {
       nodes.push(<strong key={id}>{part.slice(2, -2)}</strong>);
@@ -107,7 +135,7 @@ const ORDERED = /^\s*\d+\.\s+(.*)$/;
 const QUOTE = /^\s*>\s?(.*)$/;
 const RULE = /^\s*(?:---|\*\*\*)\s*$/;
 
-const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {} }) => {
+const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {}, images = {} }) => {
   const lines = source.replace(/\r/g, '').split('\n');
   const blocks: React.ReactNode[] = [];
   let i = 0;
@@ -136,7 +164,7 @@ const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {} }) => {
     const heading = line.match(HEADING);
     if (heading) {
       const level = heading[1].length;
-      const content = inline(heading[2], links, `h${key}`);
+      const content = inline(heading[2], links, images, `h${key}`);
       const anchorId = headingId(heading[2]);
       const cls = 'font-inter font-bold text-gray-900 mt-6 mb-2';
       blocks.push(
@@ -161,7 +189,7 @@ const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {} }) => {
       }
       blocks.push(
         <blockquote key={key++} className="my-3 border-l-4 border-blue-300 bg-blue-50 px-4 py-2 text-gray-700">
-          {inline(quoted.join('\n'), links, `q${key}`)}
+          {inline(quoted.join('\n'), links, images, `q${key}`)}
         </blockquote>,
       );
       continue;
@@ -175,7 +203,7 @@ const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {} }) => {
         i += 1;
       }
       const children = items.map((item, index) => (
-        <li key={index} className="ml-5 list-disc leading-7">{inline(item, links, `li${key}-${index}`)}</li>
+        <li key={index} className="ml-5 list-disc leading-7">{inline(item, links, images, `li${key}-${index}`)}</li>
       ));
       blocks.push(
         ordered ? <ol key={key++} className="my-3">{children}</ol> : <ul key={key++} className="my-3">{children}</ul>,
@@ -190,7 +218,7 @@ const SafeMarkdown: React.FC<SafeMarkdownProps> = ({ source, links = {} }) => {
     }
     blocks.push(
       <p key={key++} className="my-2 leading-7 text-gray-800">
-        {inline(paragraph.join('\n'), links, `p${key}`)}
+        {inline(paragraph.join('\n'), links, images, `p${key}`)}
       </p>,
     );
   }

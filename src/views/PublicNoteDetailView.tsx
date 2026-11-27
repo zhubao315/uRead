@@ -2,10 +2,12 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SafeMarkdown, { headingId, type WikilinkMap } from '../components/SafeMarkdown';
 import { SITE_BASE } from '../config';
+import { ownBookBySlug } from '../data/ownBooks';
 import { loadNoteDetail, loadNoteIndex, type PublicNote } from '../data/publicNotes';
 import { SECTION_LABEL, splitNoteSections } from '../domain/note-sections';
 import { relatedNotes } from '../domain/note-relations';
 import { useSpeechPlayer } from '../hooks/useSpeechPlayer';
+import { useWikiImages } from '../hooks/useWikiImages';
 import { HeadphonesIcon } from '../components/icons';
 
 type ReadingTheme = 'paper' | 'sepia' | 'green' | 'night';
@@ -120,6 +122,7 @@ const PublicNoteDetailView: React.FC = () => {
     })), [note]);
 
   const sections = useMemo(() => (note ? splitNoteSections(note.body) : []), [note]);
+  const images = useWikiImages();
   const related = useMemo(() => note
     ? relatedNotes(
         { slug: note.slug, title: note.title, category: note.category, tags: note.tags },
@@ -226,6 +229,21 @@ const PublicNoteDetailView: React.FC = () => {
           在书库里找这本书 →
         </a>
       </div>
+
+      {ownBookBySlug[note.slug] ? (
+        <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+          <p className="text-xs font-semibold text-emerald-800">作者书稿 · {ownBookBySlug[note.slug].direction}</p>
+          <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+            <a href={ownBookBySlug[note.slug].landingUrl} target="_blank" rel="noreferrer" className="text-emerald-700 hover:underline">
+              主站书稿落地页 ↗
+            </a>
+            <a href={ownBookBySlug[note.slug].readerUrl} target="_blank" rel="noreferrer" className="text-emerald-700 hover:underline">
+              在线阅读全书 ↗
+            </a>
+            <span className="text-emerald-700">{ownBookBySlug[note.slug].title}</span>
+          </div>
+        </div>
+      ) : null}
 
       <p className="text-sm text-gray-500">
         <Link to="/read" className="hover:text-blue-700 hover:underline">公开笔记</Link>
@@ -342,7 +360,7 @@ const PublicNoteDetailView: React.FC = () => {
                 {section.heading}
               </h3>
             ) : null}
-            <SafeMarkdown source={section.body} links={links} />
+            <SafeMarkdown source={section.body} links={links} images={images} />
           </section>
         ))}
       </div>
